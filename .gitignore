@@ -3,9 +3,9 @@
 ####################
 
 #*/Build
-*/Binaries
-*/DerivedDataCache
-*/Intermediate
+*Binaries
+*DerivedDataCache
+*Intermediate
 *Saved
 
 ############
@@ -20,3 +20,4 @@
 #################
 
 *.vs
+*.sln
