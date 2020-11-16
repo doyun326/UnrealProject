@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WarCharacter.h"
+#include "PlayerCharacter.h"
 
 // Sets default values
-AWarCharacter::AWarCharacter()
+APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Character Mesh 설정
@@ -18,6 +18,7 @@ AWarCharacter::AWarCharacter()
 		ABLOG(Warning, TEXT("Complate!"))
 	}
 
+	//Mesh위치 설정
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 
 	//카메라 설정
@@ -33,31 +34,27 @@ AWarCharacter::AWarCharacter()
 }
 
 // Called when the game starts or when spawned
-void AWarCharacter::BeginPlay()
+void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
-void AWarCharacter::Tick(float DeltaTime)
+void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void AWarCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AWarCharacter::MoveForward);
-	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AWarCharacter::MoveRight);
-	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AWarCharacter::Turn);
-	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AWarCharacter::LookUp);
 }
 
-void AWarCharacter::SetControllMode(EControlMode _newMode)
+void APlayerCharacter::SetControllMode(EControlMode _newMode)
 {
 	currentControlMode_ = _newMode;
 
@@ -85,29 +82,7 @@ void AWarCharacter::SetControllMode(EControlMode _newMode)
 	}
 }
 
-//이동(앞, 뒤)
-void AWarCharacter::MoveForward(float _newAxisValue)
-{
-	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), _newAxisValue);
-}
-
-//이동(좌, 우)
-void AWarCharacter::MoveRight(float _newAxisValue)
-{
-	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), _newAxisValue);
-}
-
-void AWarCharacter::LookUp(float _newAxisValue)
-{
-	AddControllerPitchInput(_newAxisValue);
-}
-
-void AWarCharacter::Turn(float _newAxisValue)
-{
-	AddControllerYawInput(_newAxisValue);
-}
-
-EControlMode AWarCharacter::GetCurrentControllMode()
+EControlMode APlayerCharacter::GetCurrentControllMode()
 {
 	return currentControlMode_;
 }

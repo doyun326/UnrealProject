@@ -3,21 +3,20 @@
 #pragma once
 
 #include "Portpolio.h"
-#include "GameFramework/Character.h"
-#include "WarCharacter.generated.h"
+#include "BaseCharacter.h"
+#include "PlayerCharacter.generated.h"
 
-/*
-* Player캐릭터 정의
-*/
-
+/**
+ * 
+ */
 UCLASS()
-class PORTPOLIO_API AWarCharacter : public ACharacter
+class PORTPOLIO_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AWarCharacter();
+	APlayerCharacter();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,7 +24,7 @@ protected:
 
 	EControlMode	currentControlMode_;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -34,21 +33,13 @@ public:
 
 	void	SetControllMode(EControlMode _newMode);
 
-	EControlMode	GetCurrentControllMode();
-
 	//카메라 설정
 	UPROPERTY(EditAnywhere, Category = Camera)
-		UCameraComponent*		camera_;
+		UCameraComponent* camera_;
 	UPROPERTY(EditAnywhere, Category = Camera)
-		USpringArmComponent*	cameraArm_;
+		USpringArmComponent* cameraArm_;
 
 	float			armLengthTo_;
-
-private:
-	//Controll 관련
-	void	MoveForward(float _newAxisValue);
-	void	MoveRight(float _newAxisValue);
-	void	LookUp(float _newAxisValue);
-	void	Turn(float _newAxisValue);
+	EControlMode	GetCurrentControllMode();
 
 };
