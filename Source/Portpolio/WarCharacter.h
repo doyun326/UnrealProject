@@ -44,4 +44,11 @@ public:
 
 	float			armLengthTo_;
 
+private:
+	//Controll ฐüทร
+	void	MoveForward(float _newAxisValue);
+	void	MoveRight(float _newAxisValue);
+	void	LookUp(float _newAxisValue);
+	void	Turn(float _newAxisValue);
+
 };

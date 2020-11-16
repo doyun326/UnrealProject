@@ -51,6 +51,10 @@ void AWarCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AWarCharacter::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AWarCharacter::MoveRight);
+	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AWarCharacter::Turn);
+	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AWarCharacter::LookUp);
 }
 
 void AWarCharacter::SetControllMode(EControlMode _newMode)
@@ -79,6 +83,28 @@ void AWarCharacter::SetControllMode(EControlMode _newMode)
 	default:
 		break;
 	}
+}
+
+//이동(앞, 뒤)
+void AWarCharacter::MoveForward(float _newAxisValue)
+{
+	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), _newAxisValue);
+}
+
+//이동(좌, 우)
+void AWarCharacter::MoveRight(float _newAxisValue)
+{
+	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), _newAxisValue);
+}
+
+void AWarCharacter::LookUp(float _newAxisValue)
+{
+	AddControllerPitchInput(_newAxisValue);
+}
+
+void AWarCharacter::Turn(float _newAxisValue)
+{
+	AddControllerYawInput(_newAxisValue);
 }
 
 EControlMode AWarCharacter::GetCurrentControllMode()
