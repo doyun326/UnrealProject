@@ -18,11 +18,6 @@ public:
 	AWarGameMode();
 
 public:
-	//컨트롤 종류
-	enum class EControlMode
-	{
-		PLAYER
-	};
 
 	virtual void PostInitializeComponents() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;

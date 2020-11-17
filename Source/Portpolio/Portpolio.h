@@ -11,8 +11,15 @@ DECLARE_LOG_CATEGORY_EXTERN(Portpolio, Log, All);
 #define ABCHECK(Expr, ...) { if (!(Expr)) { ABLOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__; } }
 
 //컨트롤 종류
-enum class EControlMode
+enum class ControlMode
 {
 	PLAYER,
 	NPC
+};
+
+//시점 종류
+enum class ViewMode
+{
+	COMMONVIEW,
+	FREEVIEW
 };

@@ -21,6 +21,14 @@ APlayerCharacter::APlayerCharacter()
 	//Mesh위치 설정
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
 
+	//Animation 설정
+	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Player/AlienAnim_BP.AlienAnim_BP_C"));
+
+	if (Alien_Anim.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(Alien_Anim.Class);
+	}
+
 	//카메라 설정
 	cameraArm_ = CreateDefaultSubobject<USpringArmComponent>(TEXT("CAMERAARM"));
 	camera_ = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
@@ -30,7 +38,7 @@ APlayerCharacter::APlayerCharacter()
 	cameraArm_->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 	armLengthTo_ = 0.0f;
 
-	SetControllMode(EControlMode::PLAYER);
+	SetViewMode(ViewMode::COMMONVIEW);
 }
 
 // Called when the game starts or when spawned
@@ -54,16 +62,31 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 }
 
-void APlayerCharacter::SetControllMode(EControlMode _newMode)
+void APlayerCharacter::SetControllMode(ControlMode _newMode)
 {
 	currentControlMode_ = _newMode;
 
 	switch (currentControlMode_)
 	{
-	case EControlMode::PLAYER:
-		//springArm_->TargetArmLength = 450.0f;
-		//springArm_->SetRelativeRotation(FRotator::ZeroRotator);
-		armLengthTo_ = 450.0f;
+		case ControlMode::PLAYER:
+		{
+		}
+	
+	default:
+		break;
+	}
+}
+
+void APlayerCharacter::SetViewMode(ViewMode _newMode)
+{
+	currentViewMode_ = _newMode;
+
+	switch (currentViewMode_)
+	{	
+	case ViewMode::COMMONVIEW:
+	{
+		cameraArm_->TargetArmLength = 200.0f;
+		camera_->SetRelativeLocationAndRotation(FVector(0.0f, 100.0f, 80.0f), FRotator(-3.0f, 0.0f, 0.0f));
 
 		cameraArm_->bUsePawnControlRotation = true;
 		cameraArm_->bInheritPitch = true;
@@ -76,13 +99,26 @@ void APlayerCharacter::SetControllMode(EControlMode _newMode)
 		GetCharacterMovement()->bUseControllerDesiredRotation = false;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 		break;
+	}
+	
+	case ViewMode::FREEVIEW:
+	{
 
-	default:
 		break;
+	}
+	default:
+	{
+		break;
+	}
 	}
 }
 
-EControlMode APlayerCharacter::GetCurrentControllMode()
+ControlMode APlayerCharacter::GetCurrentControllMode()
 {
 	return currentControlMode_;
+}
+
+ViewMode APlayerCharacter::GetCurrentViewMode()
+{
+	return ViewMode();
 }

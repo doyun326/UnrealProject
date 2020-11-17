@@ -3,14 +3,14 @@
 
 #include "WarGameMode.h"
 #include "PlayerCharacter.h"
-//#include "WarCharacter.h"
+#include "WarPlayerController.h"
 
 
 AWarGameMode::AWarGameMode()
 {
 	//여기서 주의할 점은 ABPawn액터를 생성하고 이를 지정하는 것이 아닌, 클래스 정보를 지정. (멀티 게임 대비)
 	DefaultPawnClass = APlayerCharacter::StaticClass();
-	//PlayerControllerClass = AABPlayerController::StaticClass();
+	PlayerControllerClass = AWarPlayerController::StaticClass();
 	//PlayerStateClass = AABPlayerState::StaticClass();
 	//GameStateClass = AABGameState::StaticClass();
 }

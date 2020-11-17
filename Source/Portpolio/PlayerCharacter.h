@@ -22,7 +22,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	EControlMode	currentControlMode_;
+	ControlMode	currentControlMode_;
+	ViewMode	currentViewMode_;
 
 public:
 	// Called every frame
@@ -30,8 +31,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void ProcessPlaye
 
-	void	SetControllMode(EControlMode _newMode);
+	void	SetControllMode(ControlMode _newMode);
+	void	SetViewMode(ViewMode _newMode);
+
+	ControlMode		GetCurrentControllMode();
+	ViewMode		GetCurrentViewMode();
 
 	//카메라 설정
 	UPROPERTY(EditAnywhere, Category = Camera)
@@ -40,6 +46,5 @@ public:
 		USpringArmComponent* cameraArm_;
 
 	float			armLengthTo_;
-	EControlMode	GetCurrentControllMode();
 
 };
