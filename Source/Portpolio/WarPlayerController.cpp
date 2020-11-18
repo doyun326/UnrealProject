@@ -2,11 +2,11 @@
 
 
 #include "WarPlayerController.h"
-#include "PlayerCharacter.h"
+#include "PlayerAnimInstance.h"
 
 AWarPlayerController::AWarPlayerController()
 {
-	pressFreeBtn_ = false;
+	zoomInBtn_ = false;
 }
 
 void AWarPlayerController::PostInitializeComponents()
@@ -21,21 +21,19 @@ void AWarPlayerController::OnPossess(APawn* aPawn)
 
 void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool bGamePaused)
 {
-	bool pressFreeBtn_Old = pressFreeBtn_;
-	APlayerCharacter* MyCharacter;
-	MyCharacter = Cast<APlayerCharacter>(GetCharacter());
+	bool zoomInBtn_Old = zoomInBtn_;
 
 	Super::ProcessPlayerInput(DeltaTime, bGamePaused);
 
-	if (MyCharacter != nullptr)
+	if (myCharacter_ != nullptr)
 	{
-		if (pressFreeBtn_Old && (pressFreeBtn_Old == pressFreeBtn_))
+		if (zoomInBtn_Old && (zoomInBtn_Old == zoomInBtn_))
 		{
-			//MyCharacter->SetViewMode(ViewMode::FREEVIEW);
+			myCharacter_->SetViewMode(ViewMode::ZOOMIN);
 		}
 		else
 		{
-			//MyCharacter->SetViewMode(ViewMode::COMMONVIEW);
+			myCharacter_->SetViewMode(ViewMode::COMMONVIEW);
 		}
 	}
 }
@@ -44,22 +42,43 @@ void AWarPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction(TEXT("FreeView"), EInputEvent::IE_Pressed, this, &AWarPlayerController::FreeViewModeStarted);
-	InputComponent->BindAction(TEXT("FreeView"), EInputEvent::IE_Released, this, &AWarPlayerController::FreeViewModeReleased);
+	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ZoomInStarted);
+	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Released, this, &AWarPlayerController::ZoomInReleased);
+
+	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
 }
 
 void AWarPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	myCharacter_ = Cast<APlayerCharacter>(GetCharacter());
 }
 
-void AWarPlayerController::FreeViewModeStarted()
+void AWarPlayerController::ZoomInStarted()
 {
-	pressFreeBtn_ = true;
+	zoomInBtn_ = true;
+	ABLOG(Warning, TEXT("Let's Zoom in"));
 }
 
-void AWarPlayerController::FreeViewModeReleased()
+void AWarPlayerController::ZoomInReleased()
 {
-	pressFreeBtn_ = false;
+	zoomInBtn_ = false;
 }
 
+//구르기 모션
+void AWarPlayerController::DiveJump()
+{
+	auto AnimInstance = Cast<UPlayerAnimInstance>(GetCharacter()->GetMesh()->GetAnimInstance());
+
+	if (AnimInstance != nullptr)
+	{
+		AnimInstance->PlayDiveJumpMontage();
+	}
+
+	if (myCharacter_ != nullptr)
+	{
+		ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myCharacter_->GetActorLocation().X);
+		myCharacter_->SetActorLocation(FVector(myCharacter_->GetActorLocation().X + 100.0f, myCharacter_->GetActorLocation().Y, myCharacter_->GetActorLocation().Z));
+	}
+}

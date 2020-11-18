@@ -17,8 +17,14 @@ class PORTPOLIO_API UPlayerAnimInstance : public UAnimInstance
 public:
 	UPlayerAnimInstance();
 
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	
+	void	PlayDiveJumpMontage();
+
 public:
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Character, meta = (AllowPrivateAccess = true))
-		float currentChrSpeed_;
+		float			currentChrSpeed_;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
+		UAnimMontage*	attackMontage_;
 };

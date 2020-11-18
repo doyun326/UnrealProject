@@ -3,6 +3,7 @@
 #pragma once
 
 #include "EngineMinimal.h"
+#include "defaults.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Portpolio, Log, All);
 #define ABLOG_CALLINFO (FString(__FUNCTION__) + TEXT("(") + FString::FromInt(__LINE__) + TEXT(")"))
@@ -21,5 +22,5 @@ enum class ControlMode
 enum class ViewMode
 {
 	COMMONVIEW,
-	FREEVIEW
+	ZOOMIN
 };

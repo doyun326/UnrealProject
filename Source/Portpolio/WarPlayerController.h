@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Portpolio.h"
+#include "PlayerCharacter.h"
 #include "GameFramework/PlayerController.h"
 #include "WarPlayerController.generated.h"
 
@@ -27,8 +28,11 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	void	FreeViewModeStarted();
-	void	FreeViewModeReleased();
+	void	ZoomInStarted();
+	void	ZoomInReleased();
+	void	DiveJump();
 
-	bool	pressFreeBtn_;
+	bool	zoomInBtn_;
+
+	APlayerCharacter*	myCharacter_;
 };

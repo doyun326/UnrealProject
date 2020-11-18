@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "defaults.h"
 #include "PlayerCharacter.h"
 
 // Sets default values
@@ -19,7 +19,7 @@ APlayerCharacter::APlayerCharacter()
 	}
 
 	//Mesh위치 설정
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
+	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 
 	//Animation 설정
 	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Player/AlienAnim_BP.AlienAnim_BP_C"));
@@ -86,7 +86,7 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 	case ViewMode::COMMONVIEW:
 	{
 		cameraArm_->TargetArmLength = 200.0f;
-		camera_->SetRelativeLocationAndRotation(FVector(0.0f, 100.0f, 80.0f), FRotator(-3.0f, 0.0f, 0.0f));
+		camera_->SetRelativeLocationAndRotation(FVector(0.0f, 80.0f, 80.0f), FRotator(-3.0f, 0.0f, 0.0f));
 
 		cameraArm_->bUsePawnControlRotation = true;
 		cameraArm_->bInheritPitch = true;
@@ -95,15 +95,20 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		cameraArm_->bDoCollisionTest = true;
 		bUseControllerRotationYaw = false;
 
+		camera_->FieldOfView = 90.0f;
+
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		GetCharacterMovement()->bUseControllerDesiredRotation = false;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+
+		camera_->FieldOfView;
+
 		break;
 	}
 	
-	case ViewMode::FREEVIEW:
+	case ViewMode::ZOOMIN:
 	{
-
+		camera_->FieldOfView = 40.0f;
 		break;
 	}
 	default:
