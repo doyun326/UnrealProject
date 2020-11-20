@@ -1,7 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "defaults.h"
 #include "PlayerCharacter.h"
+#include "WarWeapon.h"
+
+#define ZOOMIN_FIELDVIEW 70.0f
+#define COMMON_FIELDVIEW 90.0f
+#define ZOOMIN_ARMLENGTH 100.0f
+#define COMMON_ARMLENGTH 200.0f
+#define CHANGEVIEW_SPEED 7.0f		//카메라봉 변환 속도
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -10,7 +16,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Character Mesh 설정
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/AlienSoldier.AlienSoldier"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/Alien.Alien"));
 
 	if (War_Alien.Succeeded())
 	{
@@ -34,9 +40,17 @@ APlayerCharacter::APlayerCharacter()
 	camera_ = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 	cameraArm_->SetupAttachment(GetCapsuleComponent());
 	camera_->SetupAttachment(cameraArm_);
-	cameraArm_->TargetArmLength = 400.0f;
+	cameraArm_->TargetArmLength = 200.0f;
 	cameraArm_->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
-	armLengthTo_ = 0.0f;
+	armLengthTo_ = 0.0f;	//카메라봉 길이
+
+	//캐릭터 이동속도
+	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+
+	/*Test View*/
+	armRotationTo_ = FRotator::ZeroRotator;
+	armRotationSpeed_ = 10.0f;
+	directionToMove_ = FVector::ZeroVector;
 
 	SetViewMode(ViewMode::COMMONVIEW);
 }
@@ -46,6 +60,14 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Defalut weapon 장착
+	FName WeaponSocket(TEXT("GripPoint"));
+	auto curWeapon = GetWorld()->SpawnActor<AWarWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+
+	if (curWeapon != nullptr)
+	{
+		curWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	}
 }
 
 // Called every frame
@@ -53,6 +75,27 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//시점 변환 보간 작업
+	cameraArm_->TargetArmLength = FMath::FInterpTo(cameraArm_->TargetArmLength, armLengthTo_, DeltaTime, CHANGEVIEW_SPEED);
+
+	switch (currentViewMode_)
+	{
+	case ViewMode::COMMONVIEW:
+		break;
+
+	case ViewMode::TESTVIEW:
+		cameraArm_->GetRelativeRotation() = FMath::RInterpTo(cameraArm_->GetRelativeRotation(), armRotationTo_, DeltaTime, armRotationSpeed_);
+
+		if (directionToMove_.SizeSquared() > 0.0f)
+		{
+			//FRoationMatrix는 회전된 좌표계를 저장하는 행렬
+			GetController()->SetControlRotation(FRotationMatrix::MakeFromX(directionToMove_).Rotator());
+			AddMovementInput(directionToMove_);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 // Called to bind functionality to input
@@ -82,10 +125,31 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 	currentViewMode_ = _newMode;
 
 	switch (currentViewMode_)
-	{	
+	{
+	case ViewMode::TESTVIEW:
+	{
+		armLengthTo_ = 800.0f;
+
+		cameraArm_->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+
+		cameraArm_->bUsePawnControlRotation = false;
+		cameraArm_->bInheritPitch = false;
+		cameraArm_->bInheritRoll = false;
+		cameraArm_->bInheritYaw = false;
+		cameraArm_->bDoCollisionTest = false;
+		bUseControllerRotationYaw = true;
+
+		bUseControllerRotationYaw = false;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
+		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+		break;
+	}
+
 	case ViewMode::COMMONVIEW:
 	{
-		cameraArm_->TargetArmLength = 200.0f;
+		camera_->FieldOfView = COMMON_FIELDVIEW;
+		armLengthTo_ = COMMON_ARMLENGTH;
 		camera_->SetRelativeLocationAndRotation(FVector(0.0f, 80.0f, 80.0f), FRotator(-3.0f, 0.0f, 0.0f));
 
 		cameraArm_->bUsePawnControlRotation = true;
@@ -95,20 +159,18 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		cameraArm_->bDoCollisionTest = true;
 		bUseControllerRotationYaw = false;
 
-		camera_->FieldOfView = 90.0f;
-
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		GetCharacterMovement()->bUseControllerDesiredRotation = false;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-
-		camera_->FieldOfView;
 
 		break;
 	}
 	
 	case ViewMode::ZOOMIN:
 	{
-		camera_->FieldOfView = 40.0f;
+		GetCharacterMovement()->MaxWalkSpeed = 800.0f;
+		armLengthTo_ = ZOOMIN_ARMLENGTH;
+		camera_->FieldOfView = ZOOMIN_FIELDVIEW;
 		break;
 	}
 	default:
@@ -125,5 +187,5 @@ ControlMode APlayerCharacter::GetCurrentControllMode()
 
 ViewMode APlayerCharacter::GetCurrentViewMode()
 {
-	return ViewMode();
+	return currentViewMode_;
 }

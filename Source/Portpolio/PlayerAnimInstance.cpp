@@ -12,7 +12,7 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 
 	if (JUMP_MONTAGE.Succeeded())
 	{
-		attackMontage_ = JUMP_MONTAGE.Object;
+		diveMontage_ = JUMP_MONTAGE.Object;
 	}
 }
 
@@ -26,14 +26,15 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (::IsValid(Pawn))
 	{
 		currentChrSpeed_ = Pawn->GetVelocity().Size();
+		ABLOG(Warning, TEXT("Speed : %f"), currentChrSpeed_);
 	}
 }
 
 //DiveJump Montage
 void UPlayerAnimInstance::PlayDiveJumpMontage()
 {
-	if (!Montage_IsPlaying(attackMontage_))
+	if (!Montage_IsPlaying(diveMontage_))
 	{
-		Montage_Play(attackMontage_, 1.5f);
+		Montage_Play(diveMontage_, 2.0f);
 	}
 }

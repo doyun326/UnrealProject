@@ -47,4 +47,8 @@ public:
 
 	float			armLengthTo_;
 
+	//TestView
+	FRotator		armRotationTo_;
+	float			armRotationSpeed_;
+	FVector			directionToMove_;
 };

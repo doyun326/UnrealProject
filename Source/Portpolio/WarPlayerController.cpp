@@ -45,7 +45,12 @@ void AWarPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ZoomInStarted);
 	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Released, this, &AWarPlayerController::ZoomInReleased);
 
+	InputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ViewChange);
+
 	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
+
+	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Pressed, this, &AWarPlayerController::RunSprintStart);
+	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Released, this, &AWarPlayerController::RunSprintReleased);
 }
 
 void AWarPlayerController::BeginPlay()
@@ -53,6 +58,25 @@ void AWarPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	myCharacter_ = Cast<APlayerCharacter>(GetCharacter());
+}
+
+void AWarPlayerController::ViewChange()
+{
+	currentView_ = myCharacter_->GetCurrentViewMode();
+	switch (currentView_)
+	{
+	case ViewMode::TESTVIEW:
+		//SetControlRotation(GetCharacter()->GetCharGetActorRotation());
+		myCharacter_->SetViewMode(ViewMode::COMMONVIEW);
+		break;
+
+	case ViewMode::COMMONVIEW:
+		//GetController()->SetControlRotation(springArm_->GetRelativeRotation());
+		myCharacter_->SetViewMode(ViewMode::TESTVIEW);
+		break;
+	default:
+		break;
+	}
 }
 
 void AWarPlayerController::ZoomInStarted()
@@ -79,6 +103,28 @@ void AWarPlayerController::DiveJump()
 	if (myCharacter_ != nullptr)
 	{
 		ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myCharacter_->GetActorLocation().X);
-		myCharacter_->SetActorLocation(FVector(myCharacter_->GetActorLocation().X + 100.0f, myCharacter_->GetActorLocation().Y, myCharacter_->GetActorLocation().Z));
+	}
+}
+
+//¶Ù±â ¸ð¼Ç
+void AWarPlayerController::RunSprintStart()
+{
+	sprintBtn_ = true;
+	GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = SPRINT_SPEED;
+
+	if (myCharacter_ != nullptr)
+	{
+		ABLOG(Warning, TEXT("It's Run Sprint Start!!! %f"), myCharacter_->GetActorLocation().X);
+	}
+}
+
+void AWarPlayerController::RunSprintReleased()
+{
+	sprintBtn_ = false;
+	GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+
+	if (myCharacter_ != nullptr)
+	{
+		ABLOG(Warning, TEXT("It's Run Sprint Released!!! %f"), myCharacter_->GetActorLocation().X);
 	}
 }

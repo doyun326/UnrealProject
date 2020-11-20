@@ -28,11 +28,16 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	void	ViewChange();
 	void	ZoomInStarted();
 	void	ZoomInReleased();
 	void	DiveJump();
+	void	RunSprintStart();
+	void	RunSprintReleased();
 
-	bool	zoomInBtn_;
+	bool		zoomInBtn_;
+	bool		sprintBtn_;
 
 	APlayerCharacter*	myCharacter_;
+	ViewMode			currentView_;
 };

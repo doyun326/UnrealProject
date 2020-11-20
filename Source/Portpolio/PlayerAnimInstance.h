@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "Portpolio.h"
 #include "Animation/AnimInstance.h"
 #include "PlayerAnimInstance.generated.h"
 
@@ -25,6 +25,6 @@ public:
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Character, meta = (AllowPrivateAccess = true))
 		float			currentChrSpeed_;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
-		UAnimMontage*	attackMontage_;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
+		UAnimMontage*	diveMontage_;
 };
