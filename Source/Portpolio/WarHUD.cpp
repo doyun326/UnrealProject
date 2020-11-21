@@ -27,7 +27,7 @@ void AWarHUD::DrawHUD()
 	Super::DrawHUD();
 
 	const FVector2D Center(Canvas->ClipX * 0.5f, Canvas->ClipY * 0.5f);
-	const FVector2D CrosshairDrawPosition(	(Center.X - 70.0f), 
+	const FVector2D CrosshairDrawPosition(	(Center.X - 40.0f), 
 											(Center.Y - 35.0f));
 
 	FCanvasTileItem TileItem(CrosshairDrawPosition, crossHair_->Resource, FLinearColor::White);

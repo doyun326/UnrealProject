@@ -2,6 +2,7 @@
 
 #include "PlayerCharacter.h"
 #include "WarWeapon.h"
+#include "DrawDebugHelpers.h"
 
 #define ZOOMIN_FIELDVIEW 70.0f
 #define COMMON_FIELDVIEW 90.0f
@@ -47,10 +48,14 @@ APlayerCharacter::APlayerCharacter()
 	//캐릭터 이동속도
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 
+	//공격 설정
+	isShoting_ = false;
+
 	/*Test View*/
 	armRotationTo_ = FRotator::ZeroRotator;
 	armRotationSpeed_ = 10.0f;
 	directionToMove_ = FVector::ZeroVector;
+
 
 	SetViewMode(ViewMode::COMMONVIEW);
 }
@@ -173,12 +178,57 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		camera_->FieldOfView = ZOOMIN_FIELDVIEW;
 		break;
 	}
-	default:
-	{
-		break;
-	}
 	}
 }
+
+//raycast를 이용한 탄환 발사
+void APlayerCharacter::OnFireSwitch(bool _firBtn)
+{
+	FHitResult OutHit;
+	FVector StartPoint = camera_->GetComponentLocation();
+	FVector ForwardVector = camera_->GetForwardVector();
+	FVector EndPoint = StartPoint + (ForwardVector * 5000.0f);
+	FCollisionQueryParams CollisionParams;
+
+	StartPoint = StartPoint + (ForwardVector * cameraArm_->TargetArmLength);
+	CollisionParams.AddIgnoredActor(this->GetOwner());
+
+	rayHit_ = GetWorld()->LineTraceSingleByChannel(OutHit, StartPoint, EndPoint, ECC_Visibility, CollisionParams);
+
+	if (_firBtn)
+	{
+		if (!isShoting_)
+		{
+			GetWorld()->GetTimerManager().SetTimer(shotDelayTimerHandle_, this, &APlayerCharacter::OnFire, 0.5f, true);
+			isShoting_ = true;
+		}
+	}
+	else
+	{
+		if (isShoting_)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(shotDelayTimerHandle_);
+			isShoting_ = false;
+		}	
+	}
+
+	/*Draw rayCast debug Line START*/
+	//DrawDebugLine(GetWorld(), StartPoint, EndPoint, FColor::Green, false, 1, 0, 1);
+	/*Draw rayCast debug Line END*/
+}
+
+void APlayerCharacter::OnFire()
+{
+	if (rayHit_)
+	{
+		ABLOG(Warning, TEXT("shot and Actor Hit"));
+	}
+	else
+	{
+		ABLOG(Warning, TEXT("shot and Actor Not Hit"));
+	}
+}
+
 
 ControlMode APlayerCharacter::GetCurrentControllMode()
 {

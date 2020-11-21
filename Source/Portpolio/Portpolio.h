@@ -11,7 +11,7 @@ DECLARE_LOG_CATEGORY_EXTERN(Portpolio, Log, All);
 #define ABLOG(Verbosity, Format, ...) UE_LOG(Portpolio, Verbosity, TEXT("%s %s"), *ABLOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
 #define ABCHECK(Expr, ...) { if (!(Expr)) { ABLOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__; } }
 
-#define SPRINT_SPEED 1000.0f
+#define SPRINT_SPEED 1200.0f
 #define WALK_SPEED 700.0f
 
 //컨트롤 종류

@@ -31,10 +31,13 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//virtual void ProcessPlaye
+
+	UFUNCTION()
+		void	OnFire();
 
 	void	SetControllMode(ControlMode _newMode);
 	void	SetViewMode(ViewMode _newMode);
+	void	OnFireSwitch(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 
 	ControlMode		GetCurrentControllMode();
 	ViewMode		GetCurrentViewMode();
@@ -51,4 +54,9 @@ public:
 	FRotator		armRotationTo_;
 	float			armRotationSpeed_;
 	FVector			directionToMove_;
+
+private:
+	bool	rayHit_;
+	bool	isShoting_;
+	FTimerHandle		shotDelayTimerHandle_;
 };

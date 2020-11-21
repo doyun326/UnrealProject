@@ -26,7 +26,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (::IsValid(Pawn))
 	{
 		currentChrSpeed_ = Pawn->GetVelocity().Size();
-		ABLOG(Warning, TEXT("Speed : %f"), currentChrSpeed_);
 	}
 }
 

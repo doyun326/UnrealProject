@@ -34,9 +34,12 @@ private:
 	void	DiveJump();
 	void	RunSprintStart();
 	void	RunSprintReleased();
+	void	OnFireStart();
+	void	OnFireReleased();
 
 	bool		zoomInBtn_;
 	bool		sprintBtn_;
+	bool		fireBtn_;
 
 	APlayerCharacter*	myCharacter_;
 	ViewMode			currentView_;
