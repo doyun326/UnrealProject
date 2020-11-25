@@ -116,17 +116,8 @@ void AWarPlayerController::ZoomInReleased()
 //구르기 모션
 void AWarPlayerController::DiveJump()
 {
-	auto AnimInstance = Cast<UPlayerAnimInstance>(GetCharacter()->GetMesh()->GetAnimInstance());
-
-	if (AnimInstance != nullptr)
-	{
-		AnimInstance->PlayDiveJumpMontage();
-	}
-
-	if (myCharacter_ != nullptr)
-	{
-		ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myCharacter_->GetActorLocation().X);
-	}
+	myCharacter_->PlayMontageDiveJump();
+	ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myCharacter_->GetActorLocation().X);
 }
 
 //뛰기 모션
@@ -151,4 +142,14 @@ void AWarPlayerController::OnFireStart()
 void AWarPlayerController::OnFireReleased()
 {
 	fireBtn_ = false;
+}
+
+bool AWarPlayerController::GetSprintBtn()
+{
+	return sprintBtn_;
+}
+
+bool AWarPlayerController::GetFireBtn()
+{
+	return fireBtn_;
 }

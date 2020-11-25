@@ -2,6 +2,7 @@
 
 
 #include "BaseCharacter.h"
+#include "PlayerCharacter.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -23,6 +24,15 @@ void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!isRight_ && !isFoward_)
+	{
+		isWalk_ = false;
+	}
+	else
+	{
+		isWalk_ = true;
+	}
+
 }
 
 // Called to bind functionality to input
@@ -39,13 +49,31 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 //이동(앞, 뒤)
 void ABaseCharacter::MoveForward(float _newAxisValue)
 {
+	if (_newAxisValue == -1 || _newAxisValue == 1)
+	{
+		isFoward_ = true;
+	}
+	else
+	{
+		isFoward_ = false;
+	}
 	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), _newAxisValue);
+	//ABLOG(Warning, TEXT("Forward new AxixValue: %d"), isWalk_);
 }
 
 //이동(좌, 우)
 void ABaseCharacter::MoveRight(float _newAxisValue)
 {
+	if (_newAxisValue == -1 || _newAxisValue == 1)
+	{
+		isRight_ = true;
+	}
+	else
+	{
+		isRight_ = false;
+	}
 	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), _newAxisValue);
+	//ABLOG(Warning, TEXT("Forward new AxixValue: %d"), isWalk_);
 }
 
 void ABaseCharacter::LookUp(float _newAxisValue)

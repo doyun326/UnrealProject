@@ -23,6 +23,9 @@ public:
 	virtual void OnPossess(APawn* aPawn) override;
 	virtual void ProcessPlayerInput(const float DeltaTime, const bool bGamePaused) override;
 
+	bool	GetSprintBtn();
+	bool	GetFireBtn();
+
 protected:
 	virtual void SetupInputComponent() override;
 	virtual void BeginPlay() override;

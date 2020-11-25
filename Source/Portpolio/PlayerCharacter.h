@@ -38,7 +38,10 @@ public:
 	void	SetControllMode(ControlMode _newMode);
 	void	SetViewMode(ViewMode _newMode);
 	void	OnFireSwitch(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
+	void	PlayMontageDiveJump();
+	void	ChangeGripSocket();
 
+	bool			GetIsShooting();
 	ControlMode		GetCurrentControllMode();
 	ViewMode		GetCurrentViewMode();
 
@@ -51,12 +54,19 @@ public:
 	float			armLengthTo_;
 
 	//TestView
-	FRotator		armRotationTo_;
 	float			armRotationSpeed_;
+	FRotator		armRotationTo_;
 	FVector			directionToMove_;
 
 private:
 	bool	rayHit_;
-	bool	isShoting_;
+	bool	isShooting_;
+	FVector socketLocation_;
+
 	FTimerHandle		shotDelayTimerHandle_;
+
+	UPROPERTY()
+		class AWarWeapon*			weapon_;
+	UPROPERTY()
+		class AWarPlayerController*	playerController_;
 };

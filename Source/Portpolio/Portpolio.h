@@ -14,6 +14,12 @@ DECLARE_LOG_CATEGORY_EXTERN(Portpolio, Log, All);
 #define SPRINT_SPEED 1200.0f
 #define WALK_SPEED 700.0f
 
+//그립 종류
+#define REST_GRIPSOCKET		"RestGripPoint"
+#define FIRE_GRIPSOCKET		"FireGripPoint"
+#define SPRINT_GRIPSOCKET	"SprintGripPoint"
+#define WALK_GRIPSOCKET		"WalkGripPoint"
+
 //컨트롤 종류
 enum class ControlMode
 {

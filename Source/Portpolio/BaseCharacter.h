@@ -15,6 +15,13 @@ public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
 
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
 
 	// Called when the game starts or when spawned
@@ -26,11 +33,10 @@ protected:
 	void	LookUp(float _newAxisValue);
 	void	Turn(float _newAxisValue);
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	bool	isWalk_;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+private:
+	bool	isFoward_;
+	bool	isRight_;
 
 };

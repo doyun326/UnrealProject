@@ -20,11 +20,16 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 	void	PlayDiveJumpMontage();
+	void	PlayFireGunMontage();
 
 public:
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Character, meta = (AllowPrivateAccess = true))
 		float			currentChrSpeed_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Character, meta = (AllowPrivateAccess = true))
+		bool			isFire_;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
 		UAnimMontage*	diveMontage_;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
+		UAnimMontage*	fireMontage_;
 };

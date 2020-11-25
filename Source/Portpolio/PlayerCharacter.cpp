@@ -3,6 +3,9 @@
 #include "PlayerCharacter.h"
 #include "WarWeapon.h"
 #include "DrawDebugHelpers.h"
+#include "PlayerAnimInstance.h"
+#include "WarPlayerController.h"
+#include "Components/SkeletalMeshComponent.h"
 
 #define ZOOMIN_FIELDVIEW 70.0f
 #define COMMON_FIELDVIEW 90.0f
@@ -29,7 +32,7 @@ APlayerCharacter::APlayerCharacter()
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 
 	//Animation ¼³Á¤
-	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Player/AlienAnim_BP.AlienAnim_BP_C"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Alien_BP.Alien_BP_C"));
 
 	if (Alien_Anim.Succeeded())
 	{
@@ -49,7 +52,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 
 	//°ø°Ý ¼³Á¤
-	isShoting_ = false;
+	isShooting_ = false;
 
 	/*Test View*/
 	armRotationTo_ = FRotator::ZeroRotator;
@@ -65,13 +68,16 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Defalut weapon ÀåÂø
-	FName WeaponSocket(TEXT("GripPoint"));
-	auto curWeapon = GetWorld()->SpawnActor<AWarWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	playerController_ = Cast<AWarPlayerController>(GetController());
 
-	if (curWeapon != nullptr)
+	//Defalut weapon ÀåÂø
+	FName WeaponSocket(TEXT("RestGripPoint"));
+	weapon_ = GetWorld()->SpawnActor<AWarWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+
+	if (weapon_ != nullptr)
 	{
-		curWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
 	}
 }
 
@@ -101,6 +107,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 	default:
 		break;
 	}
+
+	ChangeGripSocket();
+	ABLOG(Warning, TEXT("is walk : %d"), isWalk_);
 }
 
 // Called to bind functionality to input
@@ -197,18 +206,18 @@ void APlayerCharacter::OnFireSwitch(bool _firBtn)
 
 	if (_firBtn)
 	{
-		if (!isShoting_)
+		if (!isShooting_)
 		{
-			GetWorld()->GetTimerManager().SetTimer(shotDelayTimerHandle_, this, &APlayerCharacter::OnFire, 0.5f, true);
-			isShoting_ = true;
+			isShooting_ = true;
+			GetWorld()->GetTimerManager().SetTimer(shotDelayTimerHandle_, this, &APlayerCharacter::OnFire, 0.3f, true);
 		}
 	}
 	else
 	{
-		if (isShoting_)
+		if (isShooting_)
 		{
+			isShooting_ = false;
 			GetWorld()->GetTimerManager().ClearTimer(shotDelayTimerHandle_);
-			isShoting_ = false;
 		}	
 	}
 
@@ -229,6 +238,51 @@ void APlayerCharacter::OnFire()
 	}
 }
 
+void APlayerCharacter::PlayMontageDiveJump()
+{
+	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (AnimInstance != nullptr)
+	{
+		AnimInstance->PlayDiveJumpMontage();
+	}
+}
+
+void APlayerCharacter::ChangeGripSocket()
+{
+	FName WeaponSocket;
+
+	if (isWalk_) //°È±â Áß ¸ð¼Ç
+	{
+		if (playerController_->GetFireBtn())
+		{
+			WeaponSocket = FIRE_GRIPSOCKET;
+		}
+		else
+		{
+			WeaponSocket = WALK_GRIPSOCKET;
+		}
+	}
+	else		 //°È´Â ÁßÀÌ ¾Æ´Ò¶§
+	{
+		if (playerController_->GetFireBtn())
+		{
+			WeaponSocket = FIRE_GRIPSOCKET;
+			socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
+		}
+		else
+		{
+			WeaponSocket = REST_GRIPSOCKET;
+		}
+	}
+	//WeaponSocket = REST_GRIPSOCKET;
+
+	if (weapon_ != nullptr)
+	{
+		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
+	}
+}
 
 ControlMode APlayerCharacter::GetCurrentControllMode()
 {
@@ -238,4 +292,9 @@ ControlMode APlayerCharacter::GetCurrentControllMode()
 ViewMode APlayerCharacter::GetCurrentViewMode()
 {
 	return currentViewMode_;
+}
+
+bool APlayerCharacter::GetIsShooting()
+{
+	return isShooting_;
 }
