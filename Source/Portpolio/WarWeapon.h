@@ -26,6 +26,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, Category = Weapon)
+	UPROPERTY(EditAnywhere, Category = "Weapon")
 		USkeletalMeshComponent*		weapon_;
+
+	UPROPERTY(EditDefaultsOnly, Category = "WeaponEffect")
+		UParticleSystem*			fireParticle_;
 };

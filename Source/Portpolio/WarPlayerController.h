@@ -23,7 +23,6 @@ public:
 	virtual void OnPossess(APawn* aPawn) override;
 	virtual void ProcessPlayerInput(const float DeltaTime, const bool bGamePaused) override;
 
-	bool	GetSprintBtn();
 	bool	GetFireBtn();
 
 protected:
@@ -43,6 +42,12 @@ private:
 	bool		zoomInBtn_;
 	bool		sprintBtn_;
 	bool		fireBtn_;
+
+	//Test
+	void	OnTestMotionStart();
+	void	OnTestMotionReleased();
+
+	bool	testBtn_;
 
 	APlayerCharacter*	myCharacter_;
 	ViewMode			currentView_;

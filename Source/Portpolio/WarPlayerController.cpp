@@ -10,6 +10,7 @@ AWarPlayerController::AWarPlayerController()
 	zoomInBtn_ = false;
 	sprintBtn_ = false;
 	fireBtn_ = false;
+	testBtn_ = false;
 }
 
 void AWarPlayerController::PostInitializeComponents()
@@ -26,6 +27,9 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 {
 	bool zoomInBtn_old = zoomInBtn_;
 	bool fireBtn_old = fireBtn_;
+	bool sprintBtn_old = sprintBtn_;
+
+	bool testBtn_old = testBtn_;
 
 	Super::ProcessPlayerInput(DeltaTime, bGamePaused);
 
@@ -44,7 +48,7 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 		myCharacter_->SetViewMode(ViewMode::COMMONVIEW);
 	}
 
-	//RayCast Hit
+	//RayCast Hit and fire
 	if (fireBtn_old && (fireBtn_old == fireBtn_))
 	{
 		myCharacter_->OnFireSwitch(true);
@@ -53,6 +57,28 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 	{
 		myCharacter_->OnFireSwitch(false);
 	}
+
+	//sprint
+	if (sprintBtn_old && (sprintBtn_old == sprintBtn_))
+	{
+		myCharacter_->SetSprintBtn(true);
+		GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = SPRINT_SPEED;
+	}
+	else
+	{
+		myCharacter_->SetSprintBtn(false);
+		GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+	}
+
+	//Test
+	/*if (testBtn_old && (testBtn_old == testBtn_))
+	{
+		myCharacter_->PlayTestMotion(true);
+	}
+	else
+	{
+		myCharacter_->PlayTestMotion(false);
+	}*/
 }
 
 void AWarPlayerController::SetupInputComponent()
@@ -70,6 +96,10 @@ void AWarPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnFireStart);
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Released, this, &AWarPlayerController::OnFireReleased);
+
+	//Test
+	InputComponent->BindAction(TEXT("walk"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnTestMotionStart);
+	InputComponent->BindAction(TEXT("walk"), EInputEvent::IE_Released, this, &AWarPlayerController::OnTestMotionReleased);
 }
 
 void AWarPlayerController::BeginPlay()
@@ -124,13 +154,22 @@ void AWarPlayerController::DiveJump()
 void AWarPlayerController::RunSprintStart()
 {
 	sprintBtn_ = true;
-	GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = SPRINT_SPEED;
 }
 
 void AWarPlayerController::RunSprintReleased()
 {
 	sprintBtn_ = false;
-	GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+}
+
+//Test
+void AWarPlayerController::OnTestMotionStart()
+{
+	testBtn_ = true;
+}
+
+void AWarPlayerController::OnTestMotionReleased()
+{
+	testBtn_ = false;
 }
 
 //АјАн(RayCast)
@@ -142,11 +181,6 @@ void AWarPlayerController::OnFireStart()
 void AWarPlayerController::OnFireReleased()
 {
 	fireBtn_ = false;
-}
-
-bool AWarPlayerController::GetSprintBtn()
-{
-	return sprintBtn_;
 }
 
 bool AWarPlayerController::GetFireBtn()

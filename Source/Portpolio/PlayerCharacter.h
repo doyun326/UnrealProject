@@ -26,11 +26,9 @@ protected:
 	ViewMode	currentViewMode_;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void PostInitializeComponents() override;
 
 	UFUNCTION()
 		void	OnFire();
@@ -40,8 +38,16 @@ public:
 	void	OnFireSwitch(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 	void	PlayMontageDiveJump();
 	void	ChangeGripSocket();
+	void	WalkSocket(FString _name);
+
+	class AWarWeapon* GetCurrentWeapon();
+	void SetWeaponLoc(FVector _newLoc);
 
 	bool			GetIsShooting();
+
+	bool			GetSprintBtn();
+	void			SetSprintBtn(bool _newState);
+
 	ControlMode		GetCurrentControllMode();
 	ViewMode		GetCurrentViewMode();
 
@@ -53,20 +59,24 @@ public:
 
 	float			armLengthTo_;
 
-	//TestView
+	//Test
+	//void	PlayTestMotion(bool _test);
+
 	float			armRotationSpeed_;
 	FRotator		armRotationTo_;
 	FVector			directionToMove_;
 
 private:
-	bool	rayHit_;
-	bool	isShooting_;
-	FVector socketLocation_;
-
-	FTimerHandle		shotDelayTimerHandle_;
-
 	UPROPERTY()
 		class AWarWeapon*			weapon_;
 	UPROPERTY()
 		class AWarPlayerController*	playerController_;
+	UPROPERTY()
+		class UPlayerAnimInstance*	playerAnim_;
+
+	bool	rayHit_;
+	bool	isShooting_;
+	bool	isSprint_;
+	FVector socketLocation_;
+	FTimerHandle		shotDelayTimerHandle_;
 };

@@ -53,6 +53,8 @@ APlayerCharacter::APlayerCharacter()
 
 	//공격 설정
 	isShooting_ = false;
+	//Sprint 설정
+	isSprint_ = false;
 
 	/*Test View*/
 	armRotationTo_ = FRotator::ZeroRotator;
@@ -78,6 +80,14 @@ void APlayerCharacter::BeginPlay()
 	{
 		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
+	}
+
+	playerAnim_ = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (playerAnim_ != nullptr)
+	{
+		//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
+		//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
 	}
 }
 
@@ -107,16 +117,19 @@ void APlayerCharacter::Tick(float DeltaTime)
 	default:
 		break;
 	}
-
-	ChangeGripSocket();
-	ABLOG(Warning, TEXT("is walk : %d"), isWalk_);
 }
 
 // Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
 
+void APlayerCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	
 }
 
 void APlayerCharacter::SetControllMode(ControlMode _newMode)
@@ -248,40 +261,14 @@ void APlayerCharacter::PlayMontageDiveJump()
 	}
 }
 
-void APlayerCharacter::ChangeGripSocket()
+AWarWeapon* APlayerCharacter::GetCurrentWeapon()
 {
-	FName WeaponSocket;
+	return weapon_;
+}
 
-	if (isWalk_) //걷기 중 모션
-	{
-		if (playerController_->GetFireBtn())
-		{
-			WeaponSocket = FIRE_GRIPSOCKET;
-		}
-		else
-		{
-			WeaponSocket = WALK_GRIPSOCKET;
-		}
-	}
-	else		 //걷는 중이 아닐때
-	{
-		if (playerController_->GetFireBtn())
-		{
-			WeaponSocket = FIRE_GRIPSOCKET;
-			socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
-		}
-		else
-		{
-			WeaponSocket = REST_GRIPSOCKET;
-		}
-	}
-	//WeaponSocket = REST_GRIPSOCKET;
-
-	if (weapon_ != nullptr)
-	{
-		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
-	}
+void APlayerCharacter::SetWeaponLoc(FVector _newLoc)
+{
+	socketLocation_ = _newLoc;
 }
 
 ControlMode APlayerCharacter::GetCurrentControllMode()
@@ -298,3 +285,26 @@ bool APlayerCharacter::GetIsShooting()
 {
 	return isShooting_;
 }
+
+bool APlayerCharacter::GetSprintBtn()
+{
+	return isSprint_;
+}
+
+void APlayerCharacter::SetSprintBtn(bool _newState)
+{
+	isSprint_ = _newState;
+}
+
+//void APlayerCharacter::PlayTestMotion(bool _test)
+//{
+//	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+//
+//	if (AnimInstance != nullptr)
+//	{
+//		if (_test)
+//		{
+//			AnimInstance->PlayTestMontage();
+//		}
+//	}
+//}
