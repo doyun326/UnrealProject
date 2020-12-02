@@ -80,6 +80,7 @@ void APlayerCharacter::BeginPlay()
 	{
 		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
+
 	}
 
 	playerAnim_ = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
@@ -128,8 +129,6 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void APlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
-	
 }
 
 void APlayerCharacter::SetControllMode(ControlMode _newMode)
@@ -222,6 +221,7 @@ void APlayerCharacter::OnFireSwitch(bool _firBtn)
 		if (!isShooting_)
 		{
 			isShooting_ = true;
+			ABLOG(Warning, TEXT("%f    %f   %f"), OutHit.Location.X, OutHit.Location.Y, OutHit.Location.Z);
 			GetWorld()->GetTimerManager().SetTimer(shotDelayTimerHandle_, this, &APlayerCharacter::OnFire, 0.3f, true);
 		}
 	}
@@ -230,6 +230,8 @@ void APlayerCharacter::OnFireSwitch(bool _firBtn)
 		if (isShooting_)
 		{
 			isShooting_ = false;
+			weapon_->PlayFireEffect(false);
+			ABLOG(Warning, TEXT("%f    %f   %f"), OutHit.Location.X, OutHit.Location.Y, OutHit.Location.Z);
 			GetWorld()->GetTimerManager().ClearTimer(shotDelayTimerHandle_);
 		}	
 	}
@@ -241,6 +243,8 @@ void APlayerCharacter::OnFireSwitch(bool _firBtn)
 
 void APlayerCharacter::OnFire()
 {
+	weapon_->PlayFireEffect(true);
+
 	if (rayHit_)
 	{
 		ABLOG(Warning, TEXT("shot and Actor Hit"));
@@ -295,16 +299,3 @@ void APlayerCharacter::SetSprintBtn(bool _newState)
 {
 	isSprint_ = _newState;
 }
-
-//void APlayerCharacter::PlayTestMotion(bool _test)
-//{
-//	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-//
-//	if (AnimInstance != nullptr)
-//	{
-//		if (_test)
-//		{
-//			AnimInstance->PlayTestMontage();
-//		}
-//	}
-//}

@@ -90,7 +90,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			ChanageWeaponSocket(FIRE_GRIPSOCKET);
 		}
 	}
-
 	//ABLOG(Warning, TEXT("Walk Speed : %f"), currentChrSpeed_);
 }
 

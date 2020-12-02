@@ -37,8 +37,6 @@ public:
 	void	SetViewMode(ViewMode _newMode);
 	void	OnFireSwitch(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 	void	PlayMontageDiveJump();
-	void	ChangeGripSocket();
-	void	WalkSocket(FString _name);
 
 	class AWarWeapon* GetCurrentWeapon();
 	void SetWeaponLoc(FVector _newLoc);

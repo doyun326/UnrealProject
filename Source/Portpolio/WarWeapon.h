@@ -4,6 +4,7 @@
 
 #include "Portpolio.h"
 #include "GameFramework/Actor.h"
+#include "NiagaraComponent.h"
 #include "WarWeapon.generated.h"
 
 /*
@@ -26,9 +27,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, Category = "Weapon")
+	void	PlayFireEffect(bool _newState);
+	void	PlayShootEffect();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 		USkeletalMeshComponent*		weapon_;
 
-	UPROPERTY(EditDefaultsOnly, Category = "WeaponEffect")
-		UParticleSystem*			fireParticle_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem* fireEffect_;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem* shootEffect_;
+
+private:
+	FVector		muzzleLocation_;
+	FRotator	muzzleRotation_;
+	bool		fireStateOld_;
+	UNiagaraComponent* onEffect_;
 };

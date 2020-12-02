@@ -4,6 +4,7 @@
 
 #include "Portpolio.h"
 #include "Animation/AnimInstance.h"
+#include "NiagaraComponent.h"
 #include "PlayerAnimInstance.generated.h"
 
 DECLARE_DELEGATE_OneParam(FOnChangeSocketDele, FString);
@@ -43,6 +44,8 @@ private:
 		bool			isRest_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character, meta = (AllowPrivateAccess = true))
 		bool			isInAir_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Character, meta = (AllowPrivateAccess = true))
+		USkeletalMeshComponent* test;
 
 
 
@@ -56,6 +59,5 @@ private:
 		UAnimMontage*	restMontage_;
 
 	class APlayerCharacter* Character_;
-	FTimerHandle			weaponChangeTimerHandle_;
 	FName					CurrentWeaponName;
 };
