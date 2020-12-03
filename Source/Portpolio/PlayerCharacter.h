@@ -30,32 +30,30 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 
-	UFUNCTION()
-		void	OnFire();
-
-	void	SetControllMode(ControlMode _newMode);
 	void	SetViewMode(ViewMode _newMode);
 	void	OnFireSwitch(bool _firBtn); //탄알 발사(RayCast)
 	void	PlayMontageDiveJump();
 
-	class AWarWeapon* GetCurrentWeapon();
+	class AGunWeapon* GetCurrentWeapon();
 	void SetWeaponLoc(FVector _newLoc);
 
-	bool			GetIsShooting();
+	bool			GetIsFire();
 
 	bool			GetSprintBtn();
 	void			SetSprintBtn(bool _newState);
 
 	ControlMode		GetCurrentControllMode();
 	ViewMode		GetCurrentViewMode();
+	FVector			GetPlayerLocation();
+	FRotator		GetPlayerRotator();
 
 	//카메라 설정
 	UPROPERTY(EditAnywhere, Category = Camera)
-		UCameraComponent* camera_;
+		UCameraComponent*		camera_;
 	UPROPERTY(EditAnywhere, Category = Camera)
-		USpringArmComponent* cameraArm_;
+		USpringArmComponent*	cameraArm_;
 
-	float			armLengthTo_;
+	float		armLengthTo_;
 
 	//Test
 	//void	PlayTestMotion(bool _test);
@@ -66,15 +64,18 @@ public:
 
 private:
 	UPROPERTY()
-		class AWarWeapon*			weapon_;
+		class AGunWeapon*			weapon_;
 	UPROPERTY()
 		class AWarPlayerController*	playerController_;
 	UPROPERTY()
 		class UPlayerAnimInstance*	playerAnim_;
 
-	bool	rayHit_;
-	bool	isShooting_;
-	bool	isSprint_;
-	FVector socketLocation_;
-	FTimerHandle		shotDelayTimerHandle_;
+	bool		isFire_;
+	bool		isSprint_;
+	FVector		socketLocation_;
+	FVector		PlayerLocation_;
+	FRotator	PlayerRotator_;
+
+
+	FVector test;
 };

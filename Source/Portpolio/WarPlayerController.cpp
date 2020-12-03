@@ -85,7 +85,6 @@ void AWarPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ViewChange);
 	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
 
 	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ZoomInStarted);
@@ -111,25 +110,6 @@ void AWarPlayerController::BeginPlay()
 	if (myCharacter_ == nullptr)
 	{
 		ABLOG(Error, TEXT("My Character Object nullptr!"));
-	}
-}
-
-void AWarPlayerController::ViewChange()
-{
-	currentView_ = myCharacter_->GetCurrentViewMode();
-	switch (currentView_)
-	{
-	case ViewMode::TESTVIEW:
-		//SetControlRotation(GetCharacter()->GetCharGetActorRotation());
-		myCharacter_->SetViewMode(ViewMode::COMMONVIEW);
-		break;
-
-	case ViewMode::COMMONVIEW:
-		//GetController()->SetControlRotation(springArm_->GetRelativeRotation());
-		myCharacter_->SetViewMode(ViewMode::TESTVIEW);
-		break;
-	default:
-		break;
 	}
 }
 

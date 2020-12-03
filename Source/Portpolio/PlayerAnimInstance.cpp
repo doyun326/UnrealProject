@@ -2,7 +2,7 @@
 
 
 #include "PlayerAnimInstance.h"
-#include "WarWeapon.h"
+#include "GunWeapon.h"
 #include "WarPlayerController.h"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
@@ -57,7 +57,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		if (Character_)
 		{
-			isFire_ = Character_->GetIsShooting();
+			isFire_ = Character_->GetIsFire();
 			isSprint_ = Character_->GetSprintBtn();
 			isInAir_ = Character_->GetMovementComponent()->IsFalling();
 		}
@@ -108,7 +108,7 @@ void UPlayerAnimInstance::PlayFireGunMontage()
 void UPlayerAnimInstance::ChanageWeaponSocket(FName _name)
 {
 	FName WeaponSocket(_name);
-	AWarWeapon* Weapon = Cast<AWarWeapon>(Character_->GetCurrentWeapon());
+	AGunWeapon* Weapon = Cast<AGunWeapon>(Character_->GetCurrentWeapon());
 
 	if (Weapon != nullptr)
 	{

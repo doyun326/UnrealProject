@@ -1,17 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PlayerCharacter.h"
-#include "WarWeapon.h"
+#include "GunWeapon.h"
 #include "DrawDebugHelpers.h"
 #include "PlayerAnimInstance.h"
 #include "WarPlayerController.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #define ZOOMIN_FIELDVIEW 70.0f
 #define COMMON_FIELDVIEW 90.0f
 #define ZOOMIN_ARMLENGTH 100.0f
 #define COMMON_ARMLENGTH 200.0f
 #define CHANGEVIEW_SPEED 7.0f		//카메라봉 변환 속도
+#define SHOOTTURN_SPEED 20.0f
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -51,9 +53,7 @@ APlayerCharacter::APlayerCharacter()
 	//캐릭터 이동속도
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 
-	//공격 설정
-	isShooting_ = false;
-	//Sprint 설정
+	isFire_ = false;
 	isSprint_ = false;
 
 	/*Test View*/
@@ -74,7 +74,7 @@ void APlayerCharacter::BeginPlay()
 
 	//Defalut weapon 장착
 	FName WeaponSocket(TEXT("RestGripPoint"));
-	weapon_ = GetWorld()->SpawnActor<AWarWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	weapon_ = GetWorld()->SpawnActor<AGunWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
 
 	if (weapon_ != nullptr)
 	{
@@ -100,24 +100,21 @@ void APlayerCharacter::Tick(float DeltaTime)
 	//시점 변환 보간 작업
 	cameraArm_->TargetArmLength = FMath::FInterpTo(cameraArm_->TargetArmLength, armLengthTo_, DeltaTime, CHANGEVIEW_SPEED);
 
-	switch (currentViewMode_)
+	//Location, Rotation 저장
+	PlayerLocation_ = GetActorLocation();
+	PlayerRotator_ = GetActorRotation();
+
+	if (isFire_)
 	{
-	case ViewMode::COMMONVIEW:
-		break;
-
-	case ViewMode::TESTVIEW:
-		cameraArm_->GetRelativeRotation() = FMath::RInterpTo(cameraArm_->GetRelativeRotation(), armRotationTo_, DeltaTime, armRotationSpeed_);
-
-		if (directionToMove_.SizeSquared() > 0.0f)
+		if (weapon_ != nullptr)
 		{
-			//FRoationMatrix는 회전된 좌표계를 저장하는 행렬
-			GetController()->SetControlRotation(FRotationMatrix::MakeFromX(directionToMove_).Rotator());
-			AddMovementInput(directionToMove_);
+			FRotator NewRot = FMath::RInterpTo(PlayerRotator_, weapon_->GetShootRot(), DeltaTime, SHOOTTURN_SPEED);
+			SetActorRotation(NewRot);
 		}
-		break;
-	default:
-		break;
 	}
+	
+	//테스트 확인용
+	//ABLOG(Warning, TEXT("%f		%f		%f"), PlayerRotator_.Pitch, PlayerRotator_.Roll, PlayerRotator_.Yaw);
 }
 
 // Called to bind functionality to input
@@ -131,47 +128,12 @@ void APlayerCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
-void APlayerCharacter::SetControllMode(ControlMode _newMode)
-{
-	currentControlMode_ = _newMode;
-
-	switch (currentControlMode_)
-	{
-		case ControlMode::PLAYER:
-		{
-		}
-	
-	default:
-		break;
-	}
-}
-
 void APlayerCharacter::SetViewMode(ViewMode _newMode)
 {
 	currentViewMode_ = _newMode;
 
 	switch (currentViewMode_)
 	{
-	case ViewMode::TESTVIEW:
-	{
-		armLengthTo_ = 800.0f;
-
-		cameraArm_->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
-
-		cameraArm_->bUsePawnControlRotation = false;
-		cameraArm_->bInheritPitch = false;
-		cameraArm_->bInheritRoll = false;
-		cameraArm_->bInheritYaw = false;
-		cameraArm_->bDoCollisionTest = false;
-		bUseControllerRotationYaw = true;
-
-		bUseControllerRotationYaw = false;
-		GetCharacterMovement()->bOrientRotationToMovement = false;
-		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-		break;
-	}
-
 	case ViewMode::COMMONVIEW:
 	{
 		camera_->FieldOfView = COMMON_FIELDVIEW;
@@ -186,7 +148,7 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		bUseControllerRotationYaw = false;
 
 		GetCharacterMovement()->bOrientRotationToMovement = true;
-		GetCharacterMovement()->bUseControllerDesiredRotation = false;
+		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 
 		break;
@@ -205,54 +167,9 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 //raycast를 이용한 탄환 발사
 void APlayerCharacter::OnFireSwitch(bool _firBtn)
 {
-	FHitResult OutHit;
-	FVector StartPoint = camera_->GetComponentLocation();
-	FVector ForwardVector = camera_->GetForwardVector();
-	FVector EndPoint = StartPoint + (ForwardVector * 5000.0f);
-	FCollisionQueryParams CollisionParams;
-
-	StartPoint = StartPoint + (ForwardVector * cameraArm_->TargetArmLength);
-	CollisionParams.AddIgnoredActor(this->GetOwner());
-
-	rayHit_ = GetWorld()->LineTraceSingleByChannel(OutHit, StartPoint, EndPoint, ECC_Visibility, CollisionParams);
-
-	if (_firBtn)
-	{
-		if (!isShooting_)
-		{
-			isShooting_ = true;
-			ABLOG(Warning, TEXT("%f    %f   %f"), OutHit.Location.X, OutHit.Location.Y, OutHit.Location.Z);
-			GetWorld()->GetTimerManager().SetTimer(shotDelayTimerHandle_, this, &APlayerCharacter::OnFire, 0.3f, true);
-		}
-	}
-	else
-	{
-		if (isShooting_)
-		{
-			isShooting_ = false;
-			weapon_->PlayFireEffect(false);
-			ABLOG(Warning, TEXT("%f    %f   %f"), OutHit.Location.X, OutHit.Location.Y, OutHit.Location.Z);
-			GetWorld()->GetTimerManager().ClearTimer(shotDelayTimerHandle_);
-		}	
-	}
-
-	/*Draw rayCast debug Line START*/
-	//DrawDebugLine(GetWorld(), StartPoint, EndPoint, FColor::Green, false, 1, 0, 1);
-	/*Draw rayCast debug Line END*/
-}
-
-void APlayerCharacter::OnFire()
-{
-	weapon_->PlayFireEffect(true);
-
-	if (rayHit_)
-	{
-		ABLOG(Warning, TEXT("shot and Actor Hit"));
-	}
-	else
-	{
-		ABLOG(Warning, TEXT("shot and Actor Not Hit"));
-	}
+	isFire_ = _firBtn;
+	weapon_->SetPlayerCamInfo(camera_->GetComponentLocation(), camera_->GetForwardVector(), PlayerLocation_, cameraArm_->TargetArmLength);
+	weapon_->OnFire(_firBtn);
 }
 
 void APlayerCharacter::PlayMontageDiveJump()
@@ -265,7 +182,7 @@ void APlayerCharacter::PlayMontageDiveJump()
 	}
 }
 
-AWarWeapon* APlayerCharacter::GetCurrentWeapon()
+AGunWeapon* APlayerCharacter::GetCurrentWeapon()
 {
 	return weapon_;
 }
@@ -285,9 +202,19 @@ ViewMode APlayerCharacter::GetCurrentViewMode()
 	return currentViewMode_;
 }
 
-bool APlayerCharacter::GetIsShooting()
+FVector APlayerCharacter::GetPlayerLocation()
 {
-	return isShooting_;
+	return PlayerLocation_;
+}
+
+FRotator APlayerCharacter::GetPlayerRotator()
+{
+	return PlayerRotator_;
+}
+
+bool APlayerCharacter::GetIsFire()
+{
+	return isFire_;
 }
 
 bool APlayerCharacter::GetSprintBtn()

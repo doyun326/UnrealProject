@@ -30,7 +30,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	void	ViewChange();
 	void	ZoomInStarted();
 	void	ZoomInReleased();
 	void	DiveJump();
