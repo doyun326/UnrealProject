@@ -7,9 +7,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Math/UnrealMathUtility.h"
 
 #define GUN_MESH_PATH "/Game/My/Asset/Weapon/TestWeapon/Mesh/SK_FPGun.SK_FPGun"
-#define FIRE_EFFECT_PATH "/Game/My/Asset/Weapon/WeaponParticle/NS_AR_Muzzleflash_1_INFINITE.NS_AR_Muzzleflash_1_INFINITE"
+#define FIRE_EFFECT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_INFINITE.NS_AR_Muzzleflash_1_INFINITE"
 #define SHOOT_EFFECT_PATH "/Game/sA_ShootingVfxPack/FX/NiagaraSystems/NS_AR_Muzzleflash_2_INFINITE.NS_AR_Muzzleflash_2_INFINITE"
 
 // Sets default values
@@ -76,10 +77,10 @@ void AGunWeapon::OnFire(bool _fire)
 
 	if (_fire)
 	{
+		shootRot_ = UKismetMathLibrary::FindLookAtRotation(playerLoc_, OutHit.Location);
 		if (!isShooting_)
 		{
 			isShooting_ = true;
-			shootRot_ = UKismetMathLibrary::FindLookAtRotation(playerLoc_, OutHit.Location);
 			GetWorld()->GetTimerManager().SetTimer(shootDelayTimerHandle_, this, &AGunWeapon::RayCastHit, 0.3f, true);
 		}
 	}
@@ -105,7 +106,7 @@ void AGunWeapon::RayCastHit()
 	if (rayHit_)
 	{
 		ABLOG(Warning, TEXT("shot and Actor Hit"));
-		//weapon_->PlayShootEffect(test);
+		//PlayShootEffect(test);
 	}
 	else
 	{

@@ -109,12 +109,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 		if (weapon_ != nullptr)
 		{
 			FRotator NewRot = FMath::RInterpTo(PlayerRotator_, weapon_->GetShootRot(), DeltaTime, SHOOTTURN_SPEED);
-			SetActorRotation(NewRot);
+			//SetActorRotation(NewRot);
+			lookPitch_ = FMath::Clamp(NewRot.Pitch, -90.0f, 90.0f);
+			//ABLOG(Warning, TEXT("Roll : %f		Pitch : %f		Yaw : %f"), NewRot.Roll, NewRot.Pitch, NewRot.Yaw);
 		}
 	}
 	
 	//테스트 확인용
-	//ABLOG(Warning, TEXT("%f		%f		%f"), PlayerRotator_.Pitch, PlayerRotator_.Roll, PlayerRotator_.Yaw);
+	//ABLOG(Warning, TEXT("%f		%f		%f"), weapon_->GetShootRot().Pitch, weapon_->GetShootRot().Roll, weapon_->GetShootRot().Yaw);
 }
 
 // Called to bind functionality to input
@@ -197,11 +199,6 @@ ControlMode APlayerCharacter::GetCurrentControllMode()
 	return currentControlMode_;
 }
 
-ViewMode APlayerCharacter::GetCurrentViewMode()
-{
-	return currentViewMode_;
-}
-
 FVector APlayerCharacter::GetPlayerLocation()
 {
 	return PlayerLocation_;
@@ -225,4 +222,14 @@ bool APlayerCharacter::GetSprintBtn()
 void APlayerCharacter::SetSprintBtn(bool _newState)
 {
 	isSprint_ = _newState;
+}
+
+float APlayerCharacter::GetLookClampPitch()
+{
+	return lookPitch_;
+}
+
+USkeletalMeshComponent* APlayerCharacter::GetSkelMesh()
+{
+	return GetMesh();
 }

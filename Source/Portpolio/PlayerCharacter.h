@@ -30,22 +30,20 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 
-	void	SetViewMode(ViewMode _newMode);
-	void	OnFireSwitch(bool _firBtn); //탄알 발사(RayCast)
-	void	PlayMontageDiveJump();
-
-	class AGunWeapon* GetCurrentWeapon();
-	void SetWeaponLoc(FVector _newLoc);
-
+	void			PlayMontageDiveJump();
 	bool			GetIsFire();
-
 	bool			GetSprintBtn();
-	void			SetSprintBtn(bool _newState);
-
 	ControlMode		GetCurrentControllMode();
-	ViewMode		GetCurrentViewMode();
 	FVector			GetPlayerLocation();
 	FRotator		GetPlayerRotator();
+	float			GetLookClampPitch();
+	void			SetSprintBtn(bool _newState);
+	void			SetWeaponLoc(FVector _newLoc);
+	void			SetViewMode(ViewMode _newMode);
+	void			OnFireSwitch(bool _firBtn); //탄알 발사(RayCast)
+
+	class AGunWeapon* GetCurrentWeapon();
+	class USkeletalMeshComponent* GetSkelMesh();
 
 	//카메라 설정
 	UPROPERTY(EditAnywhere, Category = Camera)
@@ -72,6 +70,7 @@ private:
 
 	bool		isFire_;
 	bool		isSprint_;
+	float		lookPitch_;
 	FVector		socketLocation_;
 	FVector		PlayerLocation_;
 	FRotator	PlayerRotator_;

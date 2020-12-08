@@ -4,6 +4,9 @@
 #include "PlayerAnimInstance.h"
 #include "GunWeapon.h"
 #include "WarPlayerController.h"
+#include "Niagara/Public/NiagaraFunctionLibrary.h"
+
+#define FLASH_EFFECT_PATH "/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {	
@@ -24,6 +27,9 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	//Test
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> WALK_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/BlendPose/Walk_BLEND_MT.Walk_BLEND_MT"));
 
+	//Flash Effect
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_EFFECT(TEXT(FLASH_EFFECT_PATH));
+
 	if (JUMP_MONTAGE.Succeeded())
 	{
 		diveMontage_ = JUMP_MONTAGE.Object;
@@ -43,6 +49,11 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	{
 		walkMontage_ = WALK_MONTAGE.Object;
 	}
+
+	if (FLASH_EFFECT.Succeeded())
+	{
+		flashEffect_ = FLASH_EFFECT.Object;
+	}
 }
 
 //Pawn Speed 사용
@@ -60,6 +71,9 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isFire_ = Character_->GetIsFire();
 			isSprint_ = Character_->GetSprintBtn();
 			isInAir_ = Character_->GetMovementComponent()->IsFalling();
+			lookPitch_ = Character_->GetLookClampPitch();
+			characterMesh_ = Character_->GetSkelMesh();
+			//ABLOG(Warning, TEXT("%f"), lookPitch_);
 		}
 
 		currentChrSpeed_ = Pawn->GetVelocity().Size();
@@ -69,6 +83,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			isWalk_ = false;
 			ChanageWeaponSocket(SPRINT_GRIPSOCKET);
+			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, flashEffect_, Character_->GetActorLocation(), Character_->GetActorRotation());
+			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached()
 		}
 
 		//걷는 모션
