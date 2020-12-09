@@ -7,6 +7,7 @@
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 
 #define FLASH_EFFECT_PATH "/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
+#define FLASH_SYSTEM_PATH "/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {	
@@ -30,6 +31,9 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	//Flash Effect
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_EFFECT(TEXT(FLASH_EFFECT_PATH));
 
+	//Flahs System
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_SYSTEM(TEXT(FLASH_SYSTEM_PATH));
+
 	if (JUMP_MONTAGE.Succeeded())
 	{
 		diveMontage_ = JUMP_MONTAGE.Object;
@@ -50,9 +54,10 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 		walkMontage_ = WALK_MONTAGE.Object;
 	}
 
-	if (FLASH_EFFECT.Succeeded())
+	if (FLASH_EFFECT.Succeeded() && FLASH_SYSTEM.Succeeded())
 	{
 		flashEffect_ = FLASH_EFFECT.Object;
+		flashSystem_ = FLASH_SYSTEM.Object;
 	}
 }
 
@@ -83,8 +88,10 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			isWalk_ = false;
 			ChanageWeaponSocket(SPRINT_GRIPSOCKET);
-			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, flashEffect_, Character_->GetActorLocation(), Character_->GetActorRotation());
-			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached()
+			
+			//NiagaraSystem C++코드화, 추후 적당한 위치로 옮겨놈
+			//FName NoneName("none");
+			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashSystem_, characterMesh_, test, characterMesh_->GetRelativeLocation(), characterMesh_->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
 		}
 
 		//걷는 모션
