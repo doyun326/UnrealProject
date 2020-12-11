@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WarGameMode.h"
-#include "PlayerCharacter.h"
-#include "WarPlayerController.h"
-#include "WarHUD.h"
+#include "GameSetting/WarGameMode.h"
+#include "Character/Player/PlayerCharacter.h"
+#include "Character/Player/WarPlayerController.h"
+#include "UI/WarHUD.h"
 
 
 AWarGameMode::AWarGameMode()

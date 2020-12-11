@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "../Public/UI/WarHUD.h"
 
-#include "WarHUD.h"
 #include "Engine/Canvas.h"
 #include "Engine/Texture2D.h"
 #include "TextureResource.h"

@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "PortpolioGameMode.h"
-#include "PortpolioCharacter.h"
+#include "../Public/GameSetting/PortpolioGameMode.h"
+#include "../Public/Character/PortpolioCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 APortpolioGameMode::APortpolioGameMode()

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameSetting/Portpolio.h"
 #include "GameFramework/GameModeBase.h"
 #include "WarGameMode.generated.h"
 

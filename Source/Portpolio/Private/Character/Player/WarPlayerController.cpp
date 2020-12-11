@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WarPlayerController.h"
-#include "PlayerAnimInstance.h"
+#include "../Public/Character/Player/WarPlayerController.h"
+#include "../Public/Character/Player/PlayerAnimInstance.h"
+
 #include "Engine/Engine.h"
 
 AWarPlayerController::AWarPlayerController()

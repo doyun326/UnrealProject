@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Portpolio.h"
+#include "GameSetting/Portpolio.h"
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 

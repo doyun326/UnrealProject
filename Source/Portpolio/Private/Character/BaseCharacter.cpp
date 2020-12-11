@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BaseCharacter.h"
-#include "PlayerCharacter.h"
+//#include "BaseCharacter.h"
+#include "../Public/Character/BaseCharacter.h"
+//#include "PlayerCharacter.h"
 
 #define JUMP_POWER		 600.0f		//점프 파워 설정
 

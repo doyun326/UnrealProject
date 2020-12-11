@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "PlayerCharacter.h"
-#include "GunWeapon.h"
-#include "DrawDebugHelpers.h"
-#include "PlayerAnimInstance.h"
-#include "WarPlayerController.h"
+#include "../Public/Character/Player/PlayerCharacter.h"
+#include "../Public/Character/Player/PlayerAnimInstance.h"
+#include "../Public/Character/Player/WarPlayerController.h"
+#include "../public/Weapon/GunWeapon.h"
+
 #include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #define ZOOMIN_FIELDVIEW 70.0f
@@ -27,7 +28,6 @@ APlayerCharacter::APlayerCharacter()
 	if (War_Alien.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(War_Alien.Object);
-		ABLOG(Warning, TEXT("Complate!"))
 	}
 
 	//Mesh위치 설정

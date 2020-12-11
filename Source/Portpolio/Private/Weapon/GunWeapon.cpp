@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GunWeapon.h"
+#include "../public/Weapon/GunWeapon.h"
+
 #include "NiagaraFunctionLibrary.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Portpolio.h"
+#include "GameSetting/Portpolio.h"
 #include "GameFramework/Actor.h"
 #include "NiagaraComponent.h"
 #include "GunWeapon.generated.h"

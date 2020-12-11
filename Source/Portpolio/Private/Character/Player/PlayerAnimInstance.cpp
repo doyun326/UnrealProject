@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "../Public/Character/Player/PlayerAnimInstance.h"
+#include "../Public/Character/Player/WarPlayerController.h"
+#include "../public/Weapon/GunWeapon.h"
 
-#include "PlayerAnimInstance.h"
-#include "GunWeapon.h"
-#include "WarPlayerController.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 
 #define FLASH_EFFECT_PATH "/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"

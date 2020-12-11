@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include "Portpolio.h"
+#include "GameSetting/Portpolio.h"
 #include "Animation/AnimInstance.h"
+
 #include "NiagaraComponent.h"
 #include "PlayerAnimInstance.generated.h"
 

@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include "Portpolio.h"
-#include "BaseCharacter.h"
+#include "GameSetting/Portpolio.h"
+#include "Character/BaseCharacter.h"
+
 #include "PlayerCharacter.generated.h"
 
 /**
@@ -74,7 +75,4 @@ private:
 	FVector		socketLocation_;
 	FVector		PlayerLocation_;
 	FRotator	PlayerRotator_;
-
-
-	FVector test;
 };

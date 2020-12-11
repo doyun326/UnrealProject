@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Portpolio.h"
-#include "PlayerCharacter.h"
+#include "GameSetting/Portpolio.h"
+#include "Character/Player/PlayerCharacter.h"
 #include "GameFramework/PlayerController.h"
 #include "WarPlayerController.generated.h"
 
