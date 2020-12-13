@@ -18,11 +18,21 @@ public:
 	AADAIController();
 
 	virtual void OnPossess(APawn* InPawn) override;
-	virtual void OnUnPossess() override;
+
+	static const FName	homePosKey_;
+	static const FName	patrolPosKey_;
+	static const FName	targetKey_;
 
 private:
-	void	OnRepeatTimer();
+	UPROPERTY()
+		class UBehaviorTree*	assetBT_;
+	UPROPERTY()
+		class UBlackboardData*	assetBB_;
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		class UBehaviorTreeComponent*	behaviorTree_;
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
+		class UBehaviorTree*			bTree_;
 
-	FTimerHandle	repeatTimerHandle_;
-	float			repeatInterval_;
+	class UBlackboardComponent*		blackboard_;
+	class UAISenseConfig_Sight*		sightConfig_;
 };

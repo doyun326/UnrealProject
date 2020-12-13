@@ -2,8 +2,10 @@
 
 #include "../Public/Character/Enemy/ADEnemyCharacter.h"
 #include "../Public/Character/Enemy/ADAIController.h"
+#include "../Public/Character/Enemy/ADAnimInstance.h"
 
 #define TEST_ENEMYMESH_PATH "/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
+#define ADANIM_PATH	"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
 
 AADEnemyCharacter::AADEnemyCharacter()
 {
@@ -14,6 +16,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 	//AI컨트롤러에 자동배치
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	//EnemyMesh
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> AD_ENEMY(TEXT(TEST_ENEMYMESH_PATH));
 
 	if (AD_ENEMY.Succeeded())
@@ -22,12 +25,24 @@ AADEnemyCharacter::AADEnemyCharacter()
 	}
 
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
+
+	//Animation 설정
+	static ConstructorHelpers::FClassFinder<UADAnimInstance> AD_ANIM(TEXT(ADANIM_PATH));
+
+	if (AD_ANIM.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(AD_ANIM.Class);
+	}
 }
 
 void AADEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
 }
 
 void AADEnemyCharacter::Tick(float DeltaTime)
@@ -46,5 +61,11 @@ void AADEnemyCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+}
 
+void AADEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 }

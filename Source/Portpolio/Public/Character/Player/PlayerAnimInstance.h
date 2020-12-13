@@ -28,7 +28,6 @@ public:
 	void	ChanageWeaponSocket(FName _name);
 	
 	//Test
-	void	PlayTestMontage();
 	FOnChangeSocketDele		OnChangeWalkSocket;
 	FOnChangeSocketDele		OnChangeRestSocket;
 

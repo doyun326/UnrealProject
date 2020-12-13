@@ -139,9 +139,3 @@ void UPlayerAnimInstance::ChanageWeaponSocket(FName _name)
 		Character_->SetWeaponLoc(Character_->GetMesh()->GetSocketLocation(WeaponSocket));
 	}
 }
-
-//Tesst Montage
-void UPlayerAnimInstance::PlayTestMontage()
-{
-
-}

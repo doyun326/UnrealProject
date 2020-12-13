@@ -3,49 +3,47 @@
 
 #include "../Public/Character/Enemy/ADAIController.h"
 
-#include "NavigationSystem.h"
-#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardData.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
+const FName AADAIController::homePosKey_(TEXT("HomePos"));
+const FName AADAIController::patrolPosKey_(TEXT("PatrolPos"));
+const FName AADAIController::targetKey_(TEXT("Target"));
+
+#define BLACKBOARD_PATH "/Game/My/AI/ADEnemy_BB.ADEnemy_BB"
+#define BEHAVIORTREE_PATH "/Game/My/AI/ADEnemy_BT.ADEnemy_BT"
 
 AADAIController::AADAIController()
 {
-	repeatInterval_ = 3.0f;
+	//BlackBoard가져오기
+	static ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT(BLACKBOARD_PATH));
+
+	if (BBObject.Succeeded())
+	{
+		assetBB_ = BBObject.Object;
+	}
+
+	//BehaviorTree 가져오기
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT(BEHAVIORTREE_PATH));
+
+	if (BTObject.Succeeded())
+	{
+		assetBT_ = BTObject.Object;
+	}
 }
 
 void AADAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	GetWorld()->GetTimerManager().SetTimer(repeatTimerHandle_, this, &AADAIController::OnRepeatTimer, repeatInterval_, true);
-}
-
-void AADAIController::OnUnPossess()
-{
-	Super::OnUnPossess();
-
-	GetWorld()->GetTimerManager().ClearTimer(repeatTimerHandle_);
-}
-
-void AADAIController::OnRepeatTimer()
-{
-	auto CurrentPawn = GetPawn();
-
-	if (CurrentPawn == nullptr)
+	if (UseBlackboard(assetBB_, Blackboard))
 	{
-		return;
-	}
+		Blackboard->SetValueAsVector(homePosKey_, InPawn->GetActorLocation());
 
-	UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
-
-	if (NavSystem == nullptr)
-	{
-		return;
-	}
-
-	FNavLocation NextLocation;
-
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.0f, NextLocation))
-	{
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, NextLocation.Location);
-		ABLOG(Warning, TEXT("Next Location : %s"), *NextLocation.Location.ToString());
+		if (!RunBehaviorTree(assetBT_))
+		{
+			ABLOG(Warning, TEXT("AIController couldn't BehaviorTree!"));
+		}
 	}
 }
