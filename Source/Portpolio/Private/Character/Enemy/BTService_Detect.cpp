@@ -41,12 +41,12 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		OverlapResults,
 		Center,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel2,
+		ECollisionChannel::ECC_GameTraceChannel1,
 		FCollisionShape::MakeSphere(DetectRadius),
 		CollisionQueryParam
 	);
 
-	if (bResult)
+	if (bResult) 
 	{
 		for (auto OverlapResult : OverlapResults)
 		{
@@ -58,6 +58,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 				DrawDebugPoint(World, Player->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
 				DrawDebugLine(World, ControllingPawn->GetActorLocation(), Player->GetActorLocation(), FColor::Blue, false, 0.2f);
+				ABLOG(Warning, TEXT("SIval"));
 				return;
 			}
 		}
@@ -65,7 +66,8 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	else
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsObject(AADAIController::targetKey_, nullptr);
-	}
-
+		ABLOG(Warning, TEXT("gaaaa SIval"));
+	} 
+	ABLOG(Warning, TEXT("%d"), bResult);
 	DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
 }
