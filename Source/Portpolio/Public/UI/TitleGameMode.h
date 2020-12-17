@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameSetting/Portpolio.h"
+
 #include "GameFramework/GameModeBase.h"
 #include "TitleGameMode.generated.h"
 
@@ -14,4 +15,8 @@ class PORTPOLIO_API ATitleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	ATitleGameMode();
+
+private:
 };
