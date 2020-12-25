@@ -17,6 +17,8 @@ class PORTPOLIO_API AWarGameMode : public AGameModeBase
 public:
 	AWarGameMode();
 
+protected:
+
 public:
 
 	virtual void PostInitializeComponents() override;

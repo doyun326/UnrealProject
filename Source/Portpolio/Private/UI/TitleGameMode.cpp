@@ -5,7 +5,7 @@
 
 ATitleGameMode::ATitleGameMode()
 {
-	PlayerControllerClass = AUIController::StaticClass();
 	DefaultPawnClass = APawn::StaticClass();
-
+	PlayerControllerClass = AUIController::StaticClass();
+	//DefaultPawnClass = APlayerCharacter::StaticClass();
 }

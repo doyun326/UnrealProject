@@ -4,6 +4,8 @@
 #include "../Public/Character/Enemy/ADAIController.h"
 #include "../Public/Character/Enemy/ADAnimInstance.h"
 
+#include "Components/WidgetComponent.h"
+
 #define TEST_ENEMYMESH_PATH "/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
 #define ADANIM_PATH	"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
 
@@ -24,14 +26,29 @@ AADEnemyCharacter::AADEnemyCharacter()
 		GetMesh()->SetSkeletalMesh((AD_ENEMY.Object));
 	}
 
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
-
 	//Animation 설정
 	static ConstructorHelpers::FClassFinder<UADAnimInstance> AD_ANIM(TEXT(ADANIM_PATH));
 
 	if (AD_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(AD_ANIM.Class);
+	}
+
+	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
+
+	//HPBar설정
+	HPBarWidget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBAR"));
+	HPBarWidget_->SetupAttachment(GetMesh());
+
+	HPBarWidget_->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
+	HPBarWidget_->SetWidgetSpace(EWidgetSpace::Screen);
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/My/Asset/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"));
+
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget_->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
 	}
 }
 

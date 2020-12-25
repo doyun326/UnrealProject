@@ -27,5 +27,8 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void PossessedBy(AController* NewController) override;
 
+	UPROPERTY(VisibleAnywhere, Category = UI)
+		class UWidgetComponent*	HPBarWidget_;
+
 private:
 };

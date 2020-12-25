@@ -17,11 +17,15 @@ AWarPlayerController::AWarPlayerController()
 void AWarPlayerController::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	ABLOG(Warning, TEXT("Bind PlayerController"));
 }
 
 void AWarPlayerController::OnPossess(APawn* aPawn)
 {
 	Super::OnPossess(aPawn);
+
+	ABLOG(Warning, TEXT("Siiibal"));
 }
 
 void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool bGamePaused)
@@ -85,12 +89,13 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 void AWarPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
+	ABLOG(Warning, TEXT("Please...."));
 
 	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
 
 	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ZoomInStarted);
 	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Released, this, &AWarPlayerController::ZoomInReleased);
-
+	
 	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Pressed, this, &AWarPlayerController::RunSprintStart);
 	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Released, this, &AWarPlayerController::RunSprintReleased);
 
@@ -112,6 +117,9 @@ void AWarPlayerController::BeginPlay()
 	{
 		ABLOG(Error, TEXT("My Character Object nullptr!"));
 	}
+
+	//Player Input Mode에 연결 (까먹지 말기)
+	SetInputMode(FInputModeGameOnly());
 }
 
 void AWarPlayerController::ZoomInStarted()

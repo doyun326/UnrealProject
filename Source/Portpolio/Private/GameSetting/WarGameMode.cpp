@@ -12,6 +12,11 @@ AWarGameMode::AWarGameMode()
 	//여기서 주의할 점은 ABPawn액터를 생성하고 이를 지정하는 것이 아닌, 클래스 정보를 지정. (멀티 게임 대비)
 	DefaultPawnClass = APlayerCharacter::StaticClass();
 	PlayerControllerClass = AWarPlayerController::StaticClass();
+
+	if (PlayerControllerClass != nullptr)
+	{
+		ABLOG(Warning, TEXT("PlayerControllerClass Not Empty!!!"));
+	}
 	HUDClass = AWarHUD::StaticClass();
 	//PlayerStateClass = AABPlayerState::StaticClass();
 	//GameStateClass = AABGameState::StaticClass();
@@ -20,7 +25,14 @@ AWarGameMode::AWarGameMode()
 void AWarGameMode::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	DefaultPawnClass = APlayerCharacter::StaticClass();
+	PlayerControllerClass = AWarPlayerController::StaticClass();
+	HUDClass = AWarHUD::StaticClass();
+
+	ABLOG(Warning, TEXT("asdasdasdasda"));
 }
+
 
 void AWarGameMode::PostLogin(APlayerController* NewPlayer)
 {
