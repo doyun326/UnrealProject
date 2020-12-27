@@ -2,16 +2,56 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameSetting/Portpolio.h"
+
+#include "Engine/DataTable.h"
 #include "Engine/GameInstance.h"
 #include "WarGameInstance.generated.h"
 
+/*
+* ADEnemyData
+*/
+USTRUCT(BlueprintType)
+struct FADEnemyData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	FADEnemyData() :
+		Level(1)
+		, MaxHP(100.0f)
+		, Damage(100.0f)
+		, DropExp(10)
+		, NextExp(30)
+	{}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+		int32	Level;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+		float	MaxHP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+		float	Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+		int32	DropExp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+		int32	NextExp;
+};
+
 /**
  * 
- */
+ */ 
 UCLASS()
 class PORTPOLIO_API UWarGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+public:
+	UWarGameInstance();
+
+	virtual void	Init() override;
 	
+	FADEnemyData* GetADEnemyData(int32 _level);
+
+private:
+	UPROPERTY()
+		class UDataTable* adEnemyTable_;
 };

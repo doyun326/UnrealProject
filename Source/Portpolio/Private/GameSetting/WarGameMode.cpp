@@ -29,8 +29,6 @@ void AWarGameMode::PostInitializeComponents()
 	DefaultPawnClass = APlayerCharacter::StaticClass();
 	PlayerControllerClass = AWarPlayerController::StaticClass();
 	HUDClass = AWarHUD::StaticClass();
-
-	ABLOG(Warning, TEXT("asdasdasdasda"));
 }
 
 

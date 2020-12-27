@@ -25,7 +25,6 @@ void AWarPlayerController::OnPossess(APawn* aPawn)
 {
 	Super::OnPossess(aPawn);
 
-	ABLOG(Warning, TEXT("Siiibal"));
 }
 
 void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool bGamePaused)
@@ -89,7 +88,6 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 void AWarPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	ABLOG(Warning, TEXT("Please...."));
 
 	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
 

@@ -3,6 +3,7 @@
 #include "../Public/Character/Enemy/ADEnemyCharacter.h"
 #include "../Public/Character/Enemy/ADAIController.h"
 #include "../Public/Character/Enemy/ADAnimInstance.h"
+#include "../Public/Character/Enemy/ADEnemyStatComponent.h"
 
 #include "Components/WidgetComponent.h"
 
@@ -49,6 +50,14 @@ AADEnemyCharacter::AADEnemyCharacter()
 	{
 		HPBarWidget_->SetWidgetClass(UI_HUD.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
+	}
+
+	//EnemyStat ¼³Á¤
+	enemyStat_ = CreateDefaultSubobject<UADEnemyStatComponent>(TEXT("ADENEMYSTAT"));
+
+	if (enemyStat_ ==  nullptr)
+	{
+		ABLOG(Warning, TEXT("EnemyStat Error"));
 	}
 }
 

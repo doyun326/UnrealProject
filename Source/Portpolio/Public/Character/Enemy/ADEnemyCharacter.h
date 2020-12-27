@@ -29,6 +29,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
 		class UWidgetComponent*	HPBarWidget_;
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		class UADEnemyStatComponent* enemyStat_;
 
 private:
 };
