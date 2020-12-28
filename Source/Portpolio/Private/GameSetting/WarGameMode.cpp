@@ -15,11 +15,10 @@ AWarGameMode::AWarGameMode()
 
 	if (PlayerControllerClass != nullptr)
 	{
-		ABLOG(Warning, TEXT("PlayerControllerClass Not Empty!!!"));
+		ABLOG(Warning, TEXT("PlayerControllerClass is not nullptr"));
 	}
+
 	HUDClass = AWarHUD::StaticClass();
-	//PlayerStateClass = AABPlayerState::StaticClass();
-	//GameStateClass = AABGameState::StaticClass();
 }
 
 void AWarGameMode::PostInitializeComponents()

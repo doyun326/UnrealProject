@@ -39,6 +39,7 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 
 	if (myCharacter_ == nullptr)
 	{
+		ABLOG(Warning, TEXT("myCharacter is nullptr"));
 		return;
 	}
 

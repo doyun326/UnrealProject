@@ -18,6 +18,7 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 
 	if (ControllingPawn == nullptr)
 	{
+		ABLOG(Warning, TEXT("Controlling Pawn is nullptr"));
 		return EBTNodeResult::Failed;
 	}
 
@@ -25,6 +26,7 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 
 	if (NavSystem == nullptr)
 	{
+		ABLOG(Warning, TEXT("NavSystem is nullptr"));
 		return EBTNodeResult::Failed;
 	}
 

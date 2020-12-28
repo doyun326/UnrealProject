@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "ADEnemyStatComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnHpChangeDelegate);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PORTPOLIO_API UADEnemyStatComponent : public UActorComponent
@@ -19,7 +21,11 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetNewLevel(int32 _newLevel);
+	void	SetNewLevel(int32 _newLevel);
+	void	SetHp(float _newHp);
+	float	GetHpRatio();
+
+	FOnHpChangeDelegate onHpChanged_;
 
 protected:
 	// Called when the game starts
@@ -27,7 +33,7 @@ protected:
 	virtual void InitializeComponent() override;
 
 private:
-	struct FADEnemyData* currentStatData = nullptr;
+	struct FADEnemyData* currentStatData_ = nullptr;
 
 	UPROPERTY(EditInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 level_;

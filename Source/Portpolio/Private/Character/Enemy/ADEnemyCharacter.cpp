@@ -4,11 +4,12 @@
 #include "../Public/Character/Enemy/ADAIController.h"
 #include "../Public/Character/Enemy/ADAnimInstance.h"
 #include "../Public/Character/Enemy/ADEnemyStatComponent.h"
+#include "../Public/UI/EnemyHPWidget.h"
 
 #include "Components/WidgetComponent.h"
 
-#define TEST_ENEMYMESH_PATH "/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
-#define ADANIM_PATH	"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
+#define TEST_ENEMYMESH_PATH	"/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
+#define ADANIM_PATH			"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
 
 AADEnemyCharacter::AADEnemyCharacter()
 {
@@ -87,6 +88,17 @@ void AADEnemyCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	//HPBar ¿¬°á
+	auto EnemyHpWidget = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
+
+	if (EnemyHpWidget != nullptr)
+	{
+		EnemyHpWidget->BindCharacterStat(enemyStat_);
+	}
+	else
+	{
+		ABLOG(Warning, TEXT("EnemyWidget is nullptr"));
+	}
 }
 
 void AADEnemyCharacter::PossessedBy(AController* NewController)

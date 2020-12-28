@@ -13,6 +13,7 @@ UWarGameInstance::UWarGameInstance()
 	if (ADENEMY_DT.Succeeded())
 	{
 		adEnemyTable_ = ADENEMY_DT.Object;
+		ABLOG(Warning, TEXT("ADEnemyTable is not nullptr"));
 	}
 }
 

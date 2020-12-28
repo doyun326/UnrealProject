@@ -24,7 +24,7 @@ void AUIController::BeginPlay()
 
 	if (UIWidgetClass_ == nullptr || UIWidgetInstance_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("UI Widget Error!"));
+		ABLOG(Warning, TEXT("UIWidget or UIWidgetInstance is nullptr"));
 		return;
 	}
 
