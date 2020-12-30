@@ -27,10 +27,12 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void PossessedBy(AController* NewController) override;
 
-	UPROPERTY(VisibleAnywhere, Category = UI)
+	UPROPERTY(EditAnywhere, Category = UI)
 		class UWidgetComponent*	HPBarWidget_;
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 		class UADEnemyStatComponent* enemyStat_;
+
+	class UWorld* test;
 
 private:
 };

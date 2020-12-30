@@ -8,7 +8,6 @@ public class Portpolio : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "Niagara", "NavigationSystem", 
-			"AIModule", "GameplayTasks", "UMG"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "HeadMountedDisplay", "Niagara", "NavigationSystem", "AIModule", "GameplayTasks"});
 	}
 }

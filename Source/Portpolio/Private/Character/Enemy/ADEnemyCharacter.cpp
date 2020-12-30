@@ -38,21 +38,6 @@ AADEnemyCharacter::AADEnemyCharacter()
 
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 
-	//HPBar설정
-	HPBarWidget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBAR"));
-	HPBarWidget_->SetupAttachment(GetMesh());
-
-	HPBarWidget_->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
-	HPBarWidget_->SetWidgetSpace(EWidgetSpace::Screen);
-
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/My/Asset/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"));
-
-	if (UI_HUD.Succeeded())
-	{
-		HPBarWidget_->SetWidgetClass(UI_HUD.Class);
-		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
-	}
-
 	//EnemyStat 설정
 	enemyStat_ = CreateDefaultSubobject<UADEnemyStatComponent>(TEXT("ADENEMYSTAT"));
 
@@ -60,12 +45,37 @@ AADEnemyCharacter::AADEnemyCharacter()
 	{
 		ABLOG(Warning, TEXT("EnemyStat Error"));
 	}
-}
+
+	//HPBar설정
+	HPBarWidget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
+	HPBarWidget_->SetupAttachment(GetMesh());
+	HPBarWidget_->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
+	HPBarWidget_->SetWidgetSpace(EWidgetSpace::Screen);
+
+	test = HPBarWidget_->GetWorld();
+
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_ENEMYHP(TEXT("/Game/My/Asset/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"));
+
+	if (UI_ENEMYHP.Succeeded())
+	{
+		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
+		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
+		ABLOG(Warning, TEXT("UI_ENEMY is not nullptr"));
+	}
+} 
 
 void AADEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.
+	auto EnemyHpWidget = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
+
+	if (EnemyHpWidget != nullptr)
+	{
+		EnemyHpWidget->BindCharacterStat(enemyStat_);
+	}
+	
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
@@ -88,17 +98,6 @@ void AADEnemyCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	//HPBar 연결
-	auto EnemyHpWidget = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
-
-	if (EnemyHpWidget != nullptr)
-	{
-		EnemyHpWidget->BindCharacterStat(enemyStat_);
-	}
-	else
-	{
-		ABLOG(Warning, TEXT("EnemyWidget is nullptr"));
-	}
 }
 
 void AADEnemyCharacter::PossessedBy(AController* NewController)
