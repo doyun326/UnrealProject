@@ -52,8 +52,6 @@ AADEnemyCharacter::AADEnemyCharacter()
 	HPBarWidget_->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
 	HPBarWidget_->SetWidgetSpace(EWidgetSpace::Screen);
 
-	test = HPBarWidget_->GetWorld();
-
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_ENEMYHP(TEXT("/Game/My/Asset/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"));
 
 	if (UI_ENEMYHP.Succeeded())
@@ -68,7 +66,7 @@ void AADEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.
+	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
 	auto EnemyHpWidget = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
 
 	if (EnemyHpWidget != nullptr)

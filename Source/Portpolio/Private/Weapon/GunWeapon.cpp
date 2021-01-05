@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../public/Weapon/GunWeapon.h"
+#include "../Public/Weapon/GunWeapon.h"
+#include "../Public/Weapon/Bullet.h"
 
+#include "GameFramework/Controller.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -29,6 +31,7 @@ AGunWeapon::AGunWeapon()
 	if (DEFAULT_GUN.Succeeded())
 	{
 		weapon_->SetSkeletalMesh(DEFAULT_GUN.Object);
+		ABLOG(Warning, TEXT("Success : DEFAULT_GUN"));
 	}
 	weapon_->SetCollisionProfileName(TEXT("No Collison"));
 
@@ -38,6 +41,7 @@ AGunWeapon::AGunWeapon()
 	if (FIRE_EFFECT.Succeeded())
 	{
 		fireEffect_ = FIRE_EFFECT.Object;
+		ABLOG(Warning, TEXT("Success : FIRE_EFFECT"));
 	}
 
 	//총 발사 했을때 튕기는 이미지
@@ -46,6 +50,16 @@ AGunWeapon::AGunWeapon()
 	if (SHOOT_EFFECT.Succeeded())
 	{
 		shootEffect_ = SHOOT_EFFECT.Object;
+		ABLOG(Warning, TEXT("Success : SHOOT_EFFECT"));
+	}
+
+	//Bullet
+	static ConstructorHelpers::FObjectFinder<UClass> BULLET_OBJECT(TEXT("/Game/My/Asset/Weapon/Bullet_BP.Bullet_BP_C"));
+
+	if (BULLET_OBJECT.Succeeded())
+	{
+		bullet_ = BULLET_OBJECT.Object;
+		ABLOG(Warning, TEXT("Success : BULLET_OBJECT"));
 	}
 
 	onEffect_ = nullptr;
@@ -67,22 +81,20 @@ void AGunWeapon::Tick(float DeltaTime)
 //실제 공격
 void AGunWeapon::OnFire(bool _fire)
 {
-	FHitResult OutHit;
-	endPoint_ = startPoint_ + (forwardVector_ * 5000.0f);	//RayCast 범위(무기 사정거리)
-	startPoint_ = startPoint_ + (forwardVector_ * camArmLength_);
+	UWorld* const World = GetWorld();
 
-	FCollisionQueryParams CollisionParams;
-	CollisionParams.AddIgnoredActor(this->GetOwner());
-
-	rayHit_ = GetWorld()->LineTraceSingleByChannel(OutHit, startPoint_, endPoint_, ECC_Visibility, CollisionParams);
+	if (World == nullptr)
+	{
+		ABLOG(Error, TEXT("NULLPTR: World"));
+		return;
+	}
 
 	if (_fire)
 	{
-		shootRot_ = UKismetMathLibrary::FindLookAtRotation(playerLoc_, OutHit.Location);
 		if (!isShooting_)
 		{
 			isShooting_ = true;
-			GetWorld()->GetTimerManager().SetTimer(shootDelayTimerHandle_, this, &AGunWeapon::RayCastHit, 0.3f, true);
+			World->GetTimerManager().SetTimer(shootDelayTimerHandle_, this, &AGunWeapon::ShootBullet, 0.08f, true);
 		}
 	}
 	else
@@ -100,21 +112,32 @@ void AGunWeapon::OnFire(bool _fire)
 	/*Draw rayCast debug Line END*/
 }
 
-void AGunWeapon::RayCastHit()
-{	
-	PlayFireEffect(true);
-
-	if (rayHit_)
+void AGunWeapon::ShootBullet()
+{
+	if (bullet_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("shot and Actor Hit"));
-		//PlayShootEffect(test);
+		ABLOG(Error, TEXT("NULLPTR : weaponBullet"));
 	}
 	else
 	{
-		ABLOG(Warning, TEXT("shot and Actor Not Hit"));
+		FName MuzzleSocket("Muzzle");
+		FVector SpawnLocation = weapon_->GetSocketLocation(MuzzleSocket);
+		FRotator SpawnRotation = weapon_->GetSocketRotation(MuzzleSocket);
+
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
+
+		ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(bullet_, SpawnLocation, SpawnRotation, ActorSpawnParams);
+		Bullet->SetFormation();
+		FVector NewVelocity = GetActorRightVector() * 5000.0f;
+		Bullet->Velocity = FVector(NewVelocity);
+		ABLOG(Warning, TEXT("Spawn Bullet"));
 	}
+
+	PlayFireEffect(true);
 }
 
+//소염기 이펙트
 void AGunWeapon::PlayFireEffect(bool _newState)
 {
 	if (_newState && fireStateOld_)
@@ -122,6 +145,7 @@ void AGunWeapon::PlayFireEffect(bool _newState)
 		FName MuzzleSocket("Muzzle");
 		muzzleLocation_ = weapon_->GetSocketLocation(MuzzleSocket);
 		muzzleRotation_ = weapon_->GetSocketRotation(MuzzleSocket);
+		muzzleRotation_.Pitch = muzzleRotation_.Pitch * 90.0f;
 		onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, muzzleLocation_, muzzleRotation_);
 		fireStateOld_ = false;
 	}
@@ -136,6 +160,7 @@ void AGunWeapon::PlayFireEffect(bool _newState)
 	}
 }
 
+//탄알 벽에 충돌 시 이펙트
 void AGunWeapon::PlayShootEffect(FVector _newLocation)
 {
 	muzzleRotation_.Pitch = muzzleRotation_.Pitch * 90.0f;

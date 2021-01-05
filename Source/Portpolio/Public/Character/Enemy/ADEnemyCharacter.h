@@ -17,10 +17,6 @@ class PORTPOLIO_API AADEnemyCharacter : public ABaseCharacter
 public:
 	AADEnemyCharacter();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -32,7 +28,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 		class UADEnemyStatComponent* enemyStat_;
 
-	class UWorld* test;
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 private:
 };

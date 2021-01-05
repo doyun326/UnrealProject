@@ -28,7 +28,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		void	RayCastHit();
+		void	ShootBullet();
 
 	void	OnFire(bool _fire);
 	void	PlayFireEffect(bool _newState);
@@ -37,13 +37,13 @@ public:
 	FRotator	GetShootRot();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
-		USkeletalMeshComponent* weapon_;
-
+		USkeletalMeshComponent*	weapon_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem* fireEffect_;
-
+		class UNiagaraSystem*	fireEffect_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem* shootEffect_;
+		class UNiagaraSystem*	shootEffect_;
+	UPROPERTY(EditDefaultsOnly, Category = Bullet)
+		TSubclassOf<class ABullet>	bullet_;
 
 private:
 	FVector		startPoint_;

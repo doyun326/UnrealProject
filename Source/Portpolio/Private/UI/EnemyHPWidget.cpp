@@ -33,25 +33,17 @@ void UEnemyHPWidget::NativeConstruct()
 
 	if (hpProgressBar_ != nullptr)
 	{
-		ABLOG(Warning, TEXT("adsasdas1"));
+		ABLOG(Warning, TEXT("Success : hpProgressBar"));
 		UpdateHpWidget();
-	}
-	else
-	{
-
-		ABLOG(Warning, TEXT("adsasdas2"));
 	}
 }
 
 void UEnemyHPWidget::UpdateHpWidget()
 {
-	ABLOG(Warning, TEXT("adsasdas3"));
 	if (currentCharacterStat_.IsValid())
 	{
-		ABLOG(Warning, TEXT("adsasdas4"));
 		if (hpProgressBar_ != nullptr)
 		{
-			ABLOG(Warning, TEXT("adsasdas5"));
 			hpProgressBar_->SetPercent(currentCharacterStat_->GetHpRatio());
 		}
 	}

@@ -9,12 +9,12 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#define ZOOMIN_FIELDVIEW 70.0f
-#define COMMON_FIELDVIEW 90.0f
-#define ZOOMIN_ARMLENGTH 100.0f
-#define COMMON_ARMLENGTH 200.0f
-#define CHANGEVIEW_SPEED 7.0f		//카메라봉 변환 속도
-#define SHOOTTURN_SPEED 20.0f
+#define ZOOMIN_FIELDVIEW	70.0f
+#define COMMON_FIELDVIEW	90.0f
+#define ZOOMIN_ARMLENGTH	100.0f
+#define COMMON_ARMLENGTH	200.0f
+#define CHANGEVIEW_SPEED	7.0f		//카메라봉 변환 속도
+#define SHOOTTURN_SPEED		20.0f
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
