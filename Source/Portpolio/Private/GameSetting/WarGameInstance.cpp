@@ -3,17 +3,27 @@
 
 #include "../Public/GameSetting/WarGameInstance.h"
 
-#define ADENEMY_PATH "/Game/My/GameData/ADEnemyData.ADEnemyData"
+#define ADENEMYDT_PATH "/Game/My/GameData/ADEnemyData.ADEnemyData"
+#define PLAYERDT_PATH "/Game/My/GameData/PlayerData.PlayerData"
 
 UWarGameInstance::UWarGameInstance()
 {
 	//ADEnemyData
-	static ConstructorHelpers::FObjectFinder<UDataTable> ADENEMY_DT(TEXT(ADENEMY_PATH));
+	static ConstructorHelpers::FObjectFinder<UDataTable> ADENEMY_DT(TEXT(ADENEMYDT_PATH));
 	
 	if (ADENEMY_DT.Succeeded())
 	{
 		adEnemyTable_ = ADENEMY_DT.Object;
-		ABLOG(Warning, TEXT("ADEnemyTable is not nullptr"));
+		ABLOG(Warning, TEXT("Success : ADEnemyTable"));
+	}
+
+	//PlayerData
+	static ConstructorHelpers::FObjectFinder<UDataTable> PLAYER_DT(TEXT(PLAYERDT_PATH));
+
+	if (PLAYER_DT.Succeeded())
+	{
+		playerTable_ = ADENEMY_DT.Object;
+		ABLOG(Warning, TEXT("Success : PlayerTable"));
 	}
 }
 
@@ -27,4 +37,9 @@ void UWarGameInstance::Init()
 FADEnemyData* UWarGameInstance::GetADEnemyData(int32 _level)
 {
 	return adEnemyTable_->FindRow<FADEnemyData>(*FString::FromInt(_level), TEXT(""));
+}
+
+FPlayerData* UWarGameInstance::GetPlayerData(int32 _level)
+{
+	return playerTable_->FindRow<FPlayerData>(*FString::FromInt(_level), TEXT(""));
 }

@@ -9,6 +9,32 @@
 #include "WarGameInstance.generated.h"
 
 /*
+* PlayerData
+*/
+USTRUCT(BlueprintType)
+struct FPlayerData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	FPlayerData() :
+		Level(1)
+		, MaxHP(300.0f)
+		, Damage(25.0f)
+		, NextExp(30)
+	{}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+		int32	Level;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+		float	MaxHP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+		float	Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+		int32	NextExp;
+};
+
+/*
 * ADEnemyData
 */
 USTRUCT(BlueprintType)
@@ -50,8 +76,11 @@ public:
 	virtual void	Init() override;
 	
 	FADEnemyData* GetADEnemyData(int32 _level);
+	FPlayerData* GetPlayerData(int32 _level);
 
 private:
 	UPROPERTY()
 		class UDataTable* adEnemyTable_;
+	UPROPERTY()
+		class UDataTable* playerTable_;
 };

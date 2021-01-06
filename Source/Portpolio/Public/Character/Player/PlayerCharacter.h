@@ -50,7 +50,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = Camera)
 		UCameraComponent*		camera_;
 	UPROPERTY(EditAnywhere, Category = Camera)
-		USpringArmComponent*	cameraArm_;
+		USpringArmComponent*	cameraArm_;\
+
+	//캐릭터 스텟 설정
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		class UPlayerStatComponent* playerStat_;
 
 	float		armLengthTo_;
 

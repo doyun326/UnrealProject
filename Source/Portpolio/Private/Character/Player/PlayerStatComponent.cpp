@@ -1,46 +1,51 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "../Public/Character/Enemy/ADEnemyStatComponent.h"
+#include "../Public/Character/Player/PlayerStatComponent.h"
 #include "../Public/GameSetting/WarGameInstance.h"
 
 // Sets default values for this component's properties
-UADEnemyStatComponent::UADEnemyStatComponent()
+UPlayerStatComponent::UPlayerStatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	bWantsInitializeComponent = true;
 
-	level_ = 1;
+	currentLevel_ = 1;
 }
 
+
 // Called when the game starts
-void UADEnemyStatComponent::BeginPlay()
+void UPlayerStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// ...
 	
 }
 
-void UADEnemyStatComponent::InitializeComponent()
+void UPlayerStatComponent::InitializeComponent()
 {
 	Super::InitializeComponent();
 
-	SetNewLevel(level_);
+	SetNewLevel(currentLevel_);
+
 }
 
+
 // Called every frame
-void UADEnemyStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UPlayerStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// ...
 }
 
-void UADEnemyStatComponent::SetNewLevel(int32 _newLevel)
+void UPlayerStatComponent::SetNewLevel(int32 _newLevel)
 {
 	auto WarGameInstance = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	if (WarGameInstance == nullptr)
 	{
-		ABLOG(Warning, TEXT("Nullptr : WarGameInstance"));
+		ABLOG(Error, TEXT("Nullptr : WarGameInstance"));
 		return;
 	}
 
@@ -48,17 +53,17 @@ void UADEnemyStatComponent::SetNewLevel(int32 _newLevel)
 
 	if (currentStatData_ != nullptr)
 	{
-		level_ = _newLevel;
+		currentLevel_ = _newLevel;
 		SetHp(currentStatData_->MaxHP);
 		currentHP_ = currentStatData_->MaxHP;
 	}
 	else
 	{
-		ABLOG(Error, TEXT("Level : %d data dosn't exit"));
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
 	}
 }
 
-void UADEnemyStatComponent::SetHp(float _newHp)
+void UPlayerStatComponent::SetHp(float _newHp)
 {
 	currentHP_ = _newHp;
 	onHpChanged_.Broadcast();
@@ -66,15 +71,14 @@ void UADEnemyStatComponent::SetHp(float _newHp)
 	if (currentHP_ < KINDA_SMALL_NUMBER)
 	{
 		currentHP_ = 0.0f;
-		//onHpChanged_
 	}
 }
 
-float UADEnemyStatComponent::GetHpRatio()
+float UPlayerStatComponent::GetHpRatio()
 {
 	if (currentStatData_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("currentStatData is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
 		return 0.0f;
 	}
 	return (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP);

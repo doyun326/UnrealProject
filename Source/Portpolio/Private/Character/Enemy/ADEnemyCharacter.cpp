@@ -25,6 +25,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 
 	if (AD_ENEMY.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : AD_ENEMY"));
 		GetMesh()->SetSkeletalMesh((AD_ENEMY.Object));
 	}
 
@@ -33,6 +34,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 
 	if (AD_ANIM.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : AD_ANIM"));
 		GetMesh()->SetAnimInstanceClass(AD_ANIM.Class);
 	}
 
@@ -43,7 +45,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 
 	if (enemyStat_ ==  nullptr)
 	{
-		ABLOG(Warning, TEXT("EnemyStat Error"));
+		ABLOG(Error, TEXT("Nullptr : enemtStat"));
 	}
 
 	//HPBar¼³Á¤
@@ -58,7 +60,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 	{
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
-		ABLOG(Warning, TEXT("UI_ENEMY is not nullptr"));
+		ABLOG(Warning, TEXT("Success : UI_ENEMYHP"));
 	}
 } 
 
@@ -103,4 +105,13 @@ void AADEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+}
+
+float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	ABLOG(Warning, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+
+	return FinalDamage;
 }

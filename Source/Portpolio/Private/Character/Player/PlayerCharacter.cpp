@@ -3,6 +3,7 @@
 #include "../Public/Character/Player/PlayerCharacter.h"
 #include "../Public/Character/Player/PlayerAnimInstance.h"
 #include "../Public/Character/Player/WarPlayerController.h"
+#include "../Public/Character/Player/PlayerStatComponent.h"
 #include "../public/Weapon/GunWeapon.h"
 
 #include "Components/SkeletalMeshComponent.h"
@@ -27,6 +28,7 @@ APlayerCharacter::APlayerCharacter()
 
 	if (War_Alien.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : War_Alien"));
 		GetMesh()->SetSkeletalMesh(War_Alien.Object);
 	}
 
@@ -38,6 +40,7 @@ APlayerCharacter::APlayerCharacter()
 
 	if (Alien_Anim.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : Alien_Anim"));
 		GetMesh()->SetAnimInstanceClass(Alien_Anim.Class);
 	}
 
@@ -52,6 +55,14 @@ APlayerCharacter::APlayerCharacter()
 
 	//캐릭터 이동속도
 	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+
+	//PlayerStat 설정
+	playerStat_ = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("PLAYERSTAT"));
+
+	if (playerStat_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerStat"));
+	}
 
 	isFire_ = false;
 	isSprint_ = false;
@@ -80,7 +91,10 @@ void APlayerCharacter::BeginPlay()
 	{
 		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
-
+	}
+	else
+	{
+		ABLOG(Error, TEXT("Nullptr : weapon_"));
 	}
 
 	playerAnim_ = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
