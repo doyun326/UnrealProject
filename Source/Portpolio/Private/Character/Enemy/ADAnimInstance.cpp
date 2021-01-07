@@ -5,6 +5,7 @@
 UADAnimInstance::UADAnimInstance()
 {
 	curSpeed_ = 0.0f;
+	isDead_ = false;
 }
 
 void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -18,4 +19,9 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		curSpeed_ = Pawn->GetVelocity().Size();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 	}
+}
+
+void UADAnimInstance::SetDeadAnim()
+{
+	isDead_ = true;
 }

@@ -7,7 +7,7 @@
 #include "ADEnemyStatComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnHpChangeDelegate);
-
+DECLARE_MULTICAST_DELEGATE(FOnHpZeroDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PORTPOLIO_API UADEnemyStatComponent : public UActorComponent
@@ -23,9 +23,12 @@ public:
 
 	void	SetNewLevel(int32 _newLevel);
 	void	SetHp(float _newHp);
+	void	SetDamage(float _newDamage);
+	float	GetDamage();
 	float	GetHpRatio();
 
 	FOnHpChangeDelegate onHpChanged_;
+	FOnHpZeroDelegate	onHpZero_;
 
 protected:
 	// Called when the game starts

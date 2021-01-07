@@ -9,7 +9,7 @@ void UEnemyHPWidget::BindCharacterStat(class UADEnemyStatComponent* _newCharacte
 {
 	if (_newCharacterStat == nullptr)
 	{
-		ABLOG(Warning, TEXT("newCharacterStat is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : newCharacterStat"));
 		return;
 	}
 

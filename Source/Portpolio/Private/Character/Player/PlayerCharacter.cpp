@@ -101,6 +101,7 @@ void APlayerCharacter::BeginPlay()
 
 	if (playerAnim_ != nullptr)
 	{
+		ABLOG(Warning, TEXT("Success : PlayerAnim"));
 		//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
 		//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
 	}

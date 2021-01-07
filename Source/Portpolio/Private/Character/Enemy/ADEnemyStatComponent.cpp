@@ -66,16 +66,40 @@ void UADEnemyStatComponent::SetHp(float _newHp)
 	if (currentHP_ < KINDA_SMALL_NUMBER)
 	{
 		currentHP_ = 0.0f;
-		//onHpChanged_
+		onHpZero_.Broadcast();
+		ABLOG(Warning, TEXT("Character is Die"));
 	}
+}
+
+void UADEnemyStatComponent::SetDamage(float _newDamage)
+{
+	if (currentStatData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
+		return;
+	}
+	SetHp(FMath::Clamp<float>(currentHP_ - _newDamage, 0.0f, currentStatData_->MaxHP));
+}
+
+float UADEnemyStatComponent::GetDamage()
+{
+	if (currentStatData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
+		return 0.0f;
+	}
+
+	return currentStatData_->Damage;
 }
 
 float UADEnemyStatComponent::GetHpRatio()
 {
 	if (currentStatData_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("currentStatData is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
 		return 0.0f;
 	}
+
+	ABLOG(Warning, TEXT("%f"), (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP));
 	return (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP);
 }

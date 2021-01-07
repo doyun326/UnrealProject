@@ -34,4 +34,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY()
+		class UADAnimInstance* ADAnim_;
 };

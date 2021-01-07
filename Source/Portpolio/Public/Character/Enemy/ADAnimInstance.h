@@ -19,8 +19,11 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
-		float curSpeed_;
+	void	SetDeadAnim();
 
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AIStat, meta = (AllowPrivateAccess = true))
+		float	curSpeed_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AIStat, meta = (AllowPrivateAccess = true))
+		bool	isDead_;
 };

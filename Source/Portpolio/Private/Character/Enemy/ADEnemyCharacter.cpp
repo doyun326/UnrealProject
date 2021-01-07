@@ -68,6 +68,13 @@ void AADEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ADAnim_ = Cast<UADAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (ADAnim_ != nullptr)
+	{
+		ABLOG(Warning, TEXT("Success : ADEnemyAnim"));
+	}
+
 	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
 	auto EnemyHpWidget = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
 
@@ -98,6 +105,21 @@ void AADEnemyCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	if (enemyStat_ != nullptr)
+	{
+		enemyStat_->onHpZero_.AddLambda([this]()->void 
+			{
+				ABLOG(Warning, TEXT("Character Die"));
+				ADAnim_->SetDeadAnim();
+				SetActorEnableCollision(false);
+			});
+	}
+	else
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyStat"));
+		return;
+	}
+
 }
 
 void AADEnemyCharacter::PossessedBy(AController* NewController)
@@ -112,6 +134,7 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	ABLOG(Warning, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
-
+	
+	enemyStat_->SetDamage(FinalDamage);
 	return FinalDamage;
 }
