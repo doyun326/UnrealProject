@@ -27,6 +27,8 @@ public:
 	 
 	UPROPERTY(EditAnywhere)
 		FVector Velocity = FVector(100.0f);
+	UPROPERTY()
+		class AWarPlayerController* playerController_;
 
 	USceneComponent* RootComp;
 	float bulletExpiry_ = 0.0f;

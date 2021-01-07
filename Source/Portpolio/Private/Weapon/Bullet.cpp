@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Weapon/Bullet.h"
+#include "../Public/Character/Player/WarPlayerController.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -37,8 +38,14 @@ void ABullet::Tick(float DeltaTime)
 		if (HitResult.GetActor())
 		{
 			DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
+			auto PlayerController = Cast<AWarPlayerController>(playerController_);
+			if (PlayerController != nullptr)
+			{
+				ABLOG(Warning, TEXT("Adsasdasdasdadasd"));
+			}
+			FDamageEvent DamageEvent;
+			HitResult.Actor->TakeDamage(50.0f, DamageEvent, PlayerController, this);
 		}
-		ABLOG(Warning, TEXT("shot and Actor Hit"));
 		Destroy();
 	}
 	else
@@ -50,7 +57,7 @@ void ABullet::Tick(float DeltaTime)
 		Velocity += FVector(0.f, 0.0f, -200.0f) * DeltaTime;
 	}
 
-	if (bulletExpiry_ > 0.1)
+	if (bulletExpiry_ > 0.3)
 	{
 		Destroy();
 	}

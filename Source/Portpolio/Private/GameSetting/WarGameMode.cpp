@@ -15,7 +15,7 @@ AWarGameMode::AWarGameMode()
 
 	if (PlayerControllerClass != nullptr)
 	{
-		ABLOG(Warning, TEXT("PlayerControllerClass is not nullptr"));
+		ABLOG(Warning, TEXT("Success : PlayerControllerClass"));
 	}
 
 	HUDClass = AWarHUD::StaticClass();

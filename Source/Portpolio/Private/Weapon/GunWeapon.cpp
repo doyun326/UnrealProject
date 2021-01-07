@@ -85,7 +85,7 @@ void AGunWeapon::OnFire(bool _fire)
 
 	if (World == nullptr)
 	{
-		ABLOG(Error, TEXT("NULLPTR: World"));
+		ABLOG(Error, TEXT("Nullptr: World"));
 		return;
 	}
 
@@ -116,7 +116,7 @@ void AGunWeapon::ShootBullet()
 {
 	if (bullet_ == nullptr)
 	{
-		ABLOG(Error, TEXT("NULLPTR : weaponBullet"));
+		ABLOG(Error, TEXT("Nullptr : weaponBullet"));
 	}
 	else
 	{
@@ -131,7 +131,6 @@ void AGunWeapon::ShootBullet()
 		Bullet->SetFormation();
 		FVector NewVelocity = GetActorRightVector() * 5000.0f;
 		Bullet->Velocity = FVector(NewVelocity);
-		ABLOG(Warning, TEXT("Spawn Bullet"));
 	}
 
 	PlayFireEffect(true);
