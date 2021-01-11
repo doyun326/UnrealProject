@@ -11,7 +11,6 @@ AWarPlayerController::AWarPlayerController()
 	zoomInBtn_ = false;
 	sprintBtn_ = false;
 	fireBtn_ = false;
-	testBtn_ = false;
 }
 
 void AWarPlayerController::PostInitializeComponents()
@@ -33,13 +32,11 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 	bool fireBtn_old = fireBtn_;
 	bool sprintBtn_old = sprintBtn_;
 
-	bool testBtn_old = testBtn_;
-
 	Super::ProcessPlayerInput(DeltaTime, bGamePaused);
 
 	if (myCharacter_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("myCharacter is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : myCharacter"));
 		return;
 	}
 
@@ -56,11 +53,11 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 	//RayCast Hit and fire
 	if (fireBtn_old && (fireBtn_old == fireBtn_))
 	{
-		myCharacter_->OnFireSwitch(true);
+		myCharacter_->OnFire(true);
 	}
 	else
 	{
-		myCharacter_->OnFireSwitch(false);
+		myCharacter_->OnFire(false);
 	}
 
 	//sprint
@@ -74,16 +71,6 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 		myCharacter_->SetSprintBtn(false);
 		GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 	}
-
-	//Test
-	/*if (testBtn_old && (testBtn_old == testBtn_))
-	{
-		myCharacter_->PlayTestMotion(true);
-	}
-	else
-	{
-		myCharacter_->PlayTestMotion(false);
-	}*/
 }
 
 void AWarPlayerController::SetupInputComponent()
@@ -100,10 +87,6 @@ void AWarPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnFireStart);
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Released, this, &AWarPlayerController::OnFireReleased);
-
-	//Test
-	InputComponent->BindAction(TEXT("walk"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnTestMotionStart);
-	InputComponent->BindAction(TEXT("walk"), EInputEvent::IE_Released, this, &AWarPlayerController::OnTestMotionReleased);
 }
 
 void AWarPlayerController::BeginPlay()
@@ -114,7 +97,7 @@ void AWarPlayerController::BeginPlay()
 
 	if (myCharacter_ == nullptr)
 	{
-		ABLOG(Error, TEXT("My Character Object nullptr!"));
+		ABLOG(Error, TEXT("Nullptr : myCharacter"));
 	}
 
 	//Player Input Mode에 연결 (까먹지 말기)
@@ -147,17 +130,6 @@ void AWarPlayerController::RunSprintStart()
 void AWarPlayerController::RunSprintReleased()
 {
 	sprintBtn_ = false;
-}
-
-//Test
-void AWarPlayerController::OnTestMotionStart()
-{
-	testBtn_ = true;
-}
-
-void AWarPlayerController::OnTestMotionReleased()
-{
-	testBtn_ = false;
 }
 
 //공격(RayCast)

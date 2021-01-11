@@ -106,10 +106,6 @@ void AGunWeapon::OnFire(bool _fire)
 			GetWorld()->GetTimerManager().ClearTimer(shootDelayTimerHandle_);
 		}
 	}
-
-	/*Draw rayCast debug Line START*/
-	//DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 1, 0, 1);
-	/*Draw rayCast debug Line END*/
 }
 
 void AGunWeapon::ShootBullet()
@@ -128,7 +124,7 @@ void AGunWeapon::ShootBullet()
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
 
 		ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(bullet_, SpawnLocation, SpawnRotation, ActorSpawnParams);
-		Bullet->SetFormation();
+		Bullet->SetFormation(playerAimVector_);
 		FVector NewVelocity = GetActorRightVector() * 5000.0f;
 		Bullet->Velocity = FVector(NewVelocity);
 	}
@@ -172,15 +168,12 @@ void AGunWeapon::PlayShootEffect(FVector _newLocation)
 	spawnShootEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, shootEffect_, _newLocation, test1);
 }
 
-void AGunWeapon::SetPlayerCamInfo(FVector _cameraLoc, FVector _forwardVec, FVector _playerLoc, float _armLength)
+void AGunWeapon::SetAimVector(FVector _aimVector)
 {
-	startPoint_ = _cameraLoc;
-	forwardVector_ = _forwardVec;
-	camArmLength_ = _armLength;
-	playerLoc_ = _playerLoc;
+	playerAimVector_ = _aimVector;
 }
 
-FRotator AGunWeapon::GetShootRot()
+FVector AGunWeapon::GetAimVector()
 {
-	return shootRot_;
+	return playerAimVector_;
 }

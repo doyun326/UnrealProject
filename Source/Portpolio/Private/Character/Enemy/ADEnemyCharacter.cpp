@@ -138,3 +138,8 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	enemyStat_->SetDamage(FinalDamage);
 	return FinalDamage;
 }
+
+void AADEnemyCharacter::EnemyDestroy()
+{
+	Destroy();
+}

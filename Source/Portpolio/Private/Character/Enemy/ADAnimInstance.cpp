@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Character/Enemy/ADAnimInstance.h"
+#include "../Public/Character/Enemy/ADEnemyCharacter.h"
 
 UADAnimInstance::UADAnimInstance()
 {
@@ -24,4 +25,15 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 void UADAnimInstance::SetDeadAnim()
 {
 	isDead_ = true;
+}
+
+void UADAnimInstance::AnimNotify_DieEnd()
+{
+	auto Pawn = TryGetPawnOwner();
+	auto Character = Cast<AADEnemyCharacter>(Pawn);
+
+	if (::IsValid(Pawn) && Character != nullptr)
+	{
+		Character->EnemyDestroy();
+	}
 }

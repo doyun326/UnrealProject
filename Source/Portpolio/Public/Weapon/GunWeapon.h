@@ -33,8 +33,8 @@ public:
 	void	OnFire(bool _fire);
 	void	PlayFireEffect(bool _newState);
 	void	PlayShootEffect(FVector _newLocation);
-	void	SetPlayerCamInfo(FVector _cameraLoc, FVector _forwardVec, FVector _playerLoc, float _armLength);
-	FRotator	GetShootRot();
+	void	SetAimVector(FVector _aimVector);
+	FVector	GetAimVector();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 		USkeletalMeshComponent*	weapon_;
@@ -42,17 +42,12 @@ public:
 		class UNiagaraSystem*	fireEffect_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
 		class UNiagaraSystem*	shootEffect_;
-	UPROPERTY(EditDefaultsOnly, Category = Bullet)
+	UPROPERTY(EditDefaultsOnly, Category = "Bulle")
 		TSubclassOf<class ABullet>	bullet_;
 
 private:
-	FVector		startPoint_;
-	FVector		forwardVector_;
-	FVector		endPoint_;
-	FRotator	shootRot_;
-	FVector		playerLoc_;
+	FVector		playerAimVector_;
 
-	float		camArmLength_;
 	bool		rayHit_;
 	bool		isShooting_;
 

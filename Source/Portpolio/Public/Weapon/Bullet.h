@@ -23,7 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void SetFormation();
+	void SetFormation(FVector _ShootVec);
 	 
 	UPROPERTY(EditAnywhere)
 		FVector Velocity = FVector(100.0f);
@@ -32,4 +32,10 @@ public:
 
 	USceneComponent* RootComp;
 	float bulletExpiry_ = 0.0f;
+
+private:
+	FVector bulletEndVector_;
+	
+	UPROPERTY()
+	class AGunWeapon* weapon_;
 };

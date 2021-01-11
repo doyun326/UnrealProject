@@ -15,6 +15,8 @@
 #define ZOOMIN_ARMLENGTH	100.0f
 #define COMMON_ARMLENGTH	200.0f
 #define CHANGEVIEW_SPEED	7.0f		//카메라봉 변환 속도
+
+//Test 탄알 발사시 탄알 발사한 방향으로 회전
 #define SHOOTTURN_SPEED		20.0f
 
 // Sets default values
@@ -67,12 +69,6 @@ APlayerCharacter::APlayerCharacter()
 	isFire_ = false;
 	isSprint_ = false;
 
-	/*Test View*/
-	armRotationTo_ = FRotator::ZeroRotator;
-	armRotationSpeed_ = 10.0f;
-	directionToMove_ = FVector::ZeroVector;
-
-
 	SetViewMode(ViewMode::COMMONVIEW);
 }
 
@@ -119,19 +115,70 @@ void APlayerCharacter::Tick(float DeltaTime)
 	PlayerLocation_ = GetActorLocation();
 	PlayerRotator_ = GetActorRotation();
 
-	if (isFire_)
-	{
-		if (weapon_ != nullptr)
-		{
-			FRotator NewRot = FMath::RInterpTo(PlayerRotator_, weapon_->GetShootRot(), DeltaTime, SHOOTTURN_SPEED);
-			//SetActorRotation(NewRot);
-			lookPitch_ = FMath::Clamp(NewRot.Pitch, -90.0f, 90.0f);
-			//ABLOG(Warning, TEXT("Roll : %f		Pitch : %f		Yaw : %f"), NewRot.Roll, NewRot.Pitch, NewRot.Yaw);
-		}
-	}
+	/////////////////////////////////////Test/////////////////////////////////////
+	startPoint_ = camera_->GetComponentLocation();
+	camArmLength_ = cameraArm_->TargetArmLength;
+	forwardVector_ = camera_->GetForwardVector();
+	cameraLoc_ = camera_->GetComponentRotation();
+
+	FVector charStart = GetActorLocation();
+	FVector charForwardVector = GetActorForwardVector();
+
+
 	
-	//테스트 확인용
-	//ABLOG(Warning, TEXT("%f		%f		%f"), weapon_->GetShootRot().Pitch, weapon_->GetShootRot().Roll, weapon_->GetShootRot().Yaw);
+	FHitResult chrhit;
+	FVector charEnd = charStart + charForwardVector * 5000.0f;
+	charStart = charStart + (charForwardVector * 100.0f);
+	FCollisionQueryParams CharParams;
+	CharParams.AddIgnoredActor(this);
+
+	DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);;
+
+	//ABLOG(Warning, TEXT("CAM LOT : %f, %f, %f"), cameraLoc_.Roll, cameraLoc_.Pitch, cameraLoc_.Yaw);
+
+	FHitResult Outhit;
+	endPoint_ = startPoint_ + (forwardVector_ * 5000.0f);
+	startPoint_ = startPoint_ + (forwardVector_ * camArmLength_);
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(this->GetOwner());
+
+	bool RayHit = GetWorld()->LineTraceSingleByChannel(Outhit, startPoint_, endPoint_, ECC_Visibility, CollisionParams);
+
+	/*Draw rayCast debug Line START*/
+	DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 0.5, 0, 1);
+	/*Draw rayCast debug Line END*/
+	/////////////////////////////////////Test/////////////////////////////////////
+
+	SmoothRotator = this->GetActorRotation();
+
+	//Set PlayerAimVector
+	weapon_->SetAimVector(endPoint_);
+
+	//SmoothRotator = FMath::RInterpTo(SmoothRotator, cameraLoc_, DeltaTime, 20.0f);
+	//SetActorRotation(SmoothRotator);
+
+	if (RayHit)
+	{
+		//ABLOG(Warning, TEXT("%s"), *(Outhit.GetActor()->GetName()));
+		//ABLOG(Warning, TEXT("Hit Actor Location : %f, %f, %f"), (Outhit.GetActor()->GetActorLocation()).X, (Outhit.GetActor()->GetActorLocation()).Y, (Outhit.GetActor()->GetActorLocation()).Z);
+
+		FVector test;
+		test.X = Outhit.Location.X;
+		test.Y = Outhit.Location.Y;
+		test.Z = Outhit.Location.Z;
+
+		FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), test);
+		SmoothRotator = FMath::RInterpTo(SmoothRotator, TargetRoatator, DeltaTime, 20.0f);
+		//ABLOG(Warning, TEXT("OutHit Location : %f, %f, %f"), Outhit.Location.X, Outhit.Location.Y, Outhit.Location.Z);
+		//weap
+		SetActorRotation(SmoothRotator);
+		//ABLOG(Warning, TEXT("SmoothRotator : %f, %f, %f"), Outhit.Location.X, Outhit.Location.Y, Outhit.Location.Z);
+		//ABLOG(Warning, TEXT("After Character Rotator : %f, %f, %f"), this->GetActorRotation().Roll, this->GetActorRotation().Pitch, this->GetActorRotation().Yaw);
+	}
+	else
+	{
+		ABLOG(Warning, TEXT("Not Hit!"));
+	}
 }
 
 // Called to bind functionality to input
@@ -181,11 +228,9 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 	}
 }
 
-//raycast를 이용한 탄환 발사
-void APlayerCharacter::OnFireSwitch(bool _firBtn)
+void APlayerCharacter::OnFire(bool _firBtn)
 {
 	isFire_ = _firBtn;
-	weapon_->SetPlayerCamInfo(camera_->GetComponentLocation(), camera_->GetForwardVector(), PlayerLocation_, cameraArm_->TargetArmLength);
 	weapon_->OnFire(_firBtn);
 }
 

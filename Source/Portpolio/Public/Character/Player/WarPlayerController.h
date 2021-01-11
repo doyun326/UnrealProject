@@ -42,12 +42,6 @@ private:
 	bool		sprintBtn_;
 	bool		fireBtn_;
 
-	//Test
-	void	OnTestMotionStart();
-	void	OnTestMotionReleased();
-
-	bool	testBtn_;
-
 	APlayerCharacter*	myCharacter_;
 	ViewMode			currentView_;
 };

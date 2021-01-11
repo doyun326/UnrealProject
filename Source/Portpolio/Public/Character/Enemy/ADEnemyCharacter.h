@@ -24,6 +24,8 @@ public:
 	virtual void	PossessedBy(AController* NewController) override;
 	virtual float	TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void	EnemyDestroy();
+
 	UPROPERTY(EditAnywhere, Category = UI)
 		class UWidgetComponent*	HPBarWidget_;
 	UPROPERTY(VisibleAnywhere, Category = Stat)

@@ -41,7 +41,7 @@ public:
 	void			SetSprintBtn(bool _newState);
 	void			SetWeaponLoc(FVector _newLoc);
 	void			SetViewMode(ViewMode _newMode);
-	void			OnFireSwitch(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
+	void			OnFire(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 
 	class AGunWeapon* GetCurrentWeapon();
 	class USkeletalMeshComponent* GetSkelMesh();
@@ -50,20 +50,13 @@ public:
 	UPROPERTY(EditAnywhere, Category = Camera)
 		UCameraComponent*		camera_;
 	UPROPERTY(EditAnywhere, Category = Camera)
-		USpringArmComponent*	cameraArm_;\
+		USpringArmComponent*	cameraArm_;
 
 	//Ä³¸¯ÅÍ ½ºÅÝ ¼³Á¤
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 		class UPlayerStatComponent* playerStat_;
 
 	float		armLengthTo_;
-
-	//Test
-	//void	PlayTestMotion(bool _test);
-
-	float			armRotationSpeed_;
-	FRotator		armRotationTo_;
-	FVector			directionToMove_;
 
 private:
 	UPROPERTY()
@@ -79,4 +72,17 @@ private:
 	FVector		socketLocation_;
 	FVector		PlayerLocation_;
 	FRotator	PlayerRotator_;
+
+
+
+	//Test
+	FVector startPoint_;
+	FVector endPoint_;
+	FVector forwardVector_;
+	FRotator shootRot_;
+	FRotator playerLoc_;
+	FRotator	cameraLoc_;
+	FRotator SmoothRotator;
+
+	float camArmLength_;
 };
