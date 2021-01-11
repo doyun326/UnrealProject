@@ -125,14 +125,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 	FVector charForwardVector = GetActorForwardVector();
 
 
-	
 	FHitResult chrhit;
 	FVector charEnd = charStart + charForwardVector * 5000.0f;
 	charStart = charStart + (charForwardVector * 100.0f);
 	FCollisionQueryParams CharParams;
 	CharParams.AddIgnoredActor(this);
 
-	DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);;
+	DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);
+
 
 	//ABLOG(Warning, TEXT("CAM LOT : %f, %f, %f"), cameraLoc_.Roll, cameraLoc_.Pitch, cameraLoc_.Yaw);
 
@@ -151,8 +151,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	SmoothRotator = this->GetActorRotation();
 
-	//Set PlayerAimVector
-	weapon_->SetAimVector(endPoint_);
 
 	//SmoothRotator = FMath::RInterpTo(SmoothRotator, cameraLoc_, DeltaTime, 20.0f);
 	//SetActorRotation(SmoothRotator);
@@ -170,8 +168,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 		FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), test);
 		SmoothRotator = FMath::RInterpTo(SmoothRotator, TargetRoatator, DeltaTime, 20.0f);
 		//ABLOG(Warning, TEXT("OutHit Location : %f, %f, %f"), Outhit.Location.X, Outhit.Location.Y, Outhit.Location.Z);
-		//weap
+		
 		SetActorRotation(SmoothRotator);
+
+		//Set PlayerAimVector
+		weapon_->SetAimVector(test);
+
 		//ABLOG(Warning, TEXT("SmoothRotator : %f, %f, %f"), Outhit.Location.X, Outhit.Location.Y, Outhit.Location.Z);
 		//ABLOG(Warning, TEXT("After Character Rotator : %f, %f, %f"), this->GetActorRotation().Roll, this->GetActorRotation().Pitch, this->GetActorRotation().Yaw);
 	}

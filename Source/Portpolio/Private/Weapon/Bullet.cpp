@@ -6,30 +6,20 @@
 
 #include "DrawDebugHelpers.h"
 
-// Sets default values
 ABullet::ABullet()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
-// Called every frame
 void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	auto Weapon = Cast<AGunWeapon>(weapon_);
-
-	if (Weapon != nullptr)
-	{
-		bulletEndVector_ = Weapon->GetAimVector();
-	}
 
 	FHitResult HitResult;
 	FVector StartTrace = this->GetActorLocation();
@@ -52,11 +42,14 @@ void ABullet::Tick(float DeltaTime)
 		if (HitResult.GetActor())
 		{
 			DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
+
 			auto PlayerController = Cast<AWarPlayerController>(playerController_);
+
 			if (PlayerController != nullptr)
 			{
 				ABLOG(Warning, TEXT("Success : PlayerController"));
 			}
+
 			FDamageEvent DamageEvent;
 			HitResult.Actor->TakeDamage(50.0f, DamageEvent, PlayerController, this);
 			//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red);
@@ -78,7 +71,7 @@ void ABullet::Tick(float DeltaTime)
 	}
 }
 
-void ABullet::SetFormation(FVector _ShootVec)
+void ABullet::SetFormation(FVector _playerAimVector)
 {
-	bulletEndVector_ = _ShootVec;
+	bulletEndVector_ = _playerAimVector;
 }

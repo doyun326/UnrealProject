@@ -23,7 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void SetFormation(FVector _ShootVec);
+	void SetFormation(FVector _playerAimVector);
 	 
 	UPROPERTY(EditAnywhere)
 		FVector Velocity = FVector(100.0f);
