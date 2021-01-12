@@ -135,17 +135,30 @@ void APlayerCharacter::Tick(float DeltaTime)
 	/*Draw rayCast debug Line END*/
 
 	//공격시 캐릭터 회전
-	if(isFire_)
+	if (isFire_)
 	{
-		FVector RayEndVec = Outhit.Location;
+		if (RayHit)
+		{
+			FVector RayEndVec = Outhit.Location;
 
-		FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), RayEndVec);
-		playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
+			FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), RayEndVec);
+			playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
 
-		SetActorRotation(playerRotator_);
+			SetActorRotation(playerRotator_);
 
-		//Set PlayerAimVector
-		weapon_->SetAimVector(RayEndVec);
+			//Set PlayerAimVector
+			weapon_->SetAimVector(RayEndVec);
+		}
+		else
+		{
+			FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), endPoint_);
+			playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
+
+			SetActorRotation(playerRotator_);
+
+			//Set PlayerAimVector
+			weapon_->SetAimVector(endPoint_);
+		}
 	}
 
 
