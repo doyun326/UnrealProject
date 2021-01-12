@@ -112,31 +112,17 @@ void APlayerCharacter::Tick(float DeltaTime)
 	cameraArm_->TargetArmLength = FMath::FInterpTo(cameraArm_->TargetArmLength, armLengthTo_, DeltaTime, CHANGEVIEW_SPEED);
 
 	//Location, Rotation 저장
-	PlayerLocation_ = GetActorLocation();
-	PlayerRotator_ = GetActorRotation();
+	playerLocation_ = this->GetActorLocation();
+	playerRotator_ = this->GetActorRotation();
 
-	/////////////////////////////////////Test/////////////////////////////////////
 	startPoint_ = camera_->GetComponentLocation();
 	camArmLength_ = cameraArm_->TargetArmLength;
 	forwardVector_ = camera_->GetForwardVector();
 	cameraLoc_ = camera_->GetComponentRotation();
 
-	FVector charStart = GetActorLocation();
-	FVector charForwardVector = GetActorForwardVector();
-
-
-	FHitResult chrhit;
-	FVector charEnd = charStart + charForwardVector * 5000.0f;
-	charStart = charStart + (charForwardVector * 100.0f);
-	FCollisionQueryParams CharParams;
-	CharParams.AddIgnoredActor(this);
-
-	DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);
-
-
-	//ABLOG(Warning, TEXT("CAM LOT : %f, %f, %f"), cameraLoc_.Roll, cameraLoc_.Pitch, cameraLoc_.Yaw);
-
+	//RayCast
 	FHitResult Outhit;
+
 	endPoint_ = startPoint_ + (forwardVector_ * 5000.0f);
 	startPoint_ = startPoint_ + (forwardVector_ * camArmLength_);
 	FCollisionQueryParams CollisionParams;
@@ -145,42 +131,42 @@ void APlayerCharacter::Tick(float DeltaTime)
 	bool RayHit = GetWorld()->LineTraceSingleByChannel(Outhit, startPoint_, endPoint_, ECC_Visibility, CollisionParams);
 
 	/*Draw rayCast debug Line START*/
-	DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 0.5, 0, 1);
+	//DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 0.5, 0, 1);
 	/*Draw rayCast debug Line END*/
-	/////////////////////////////////////Test/////////////////////////////////////
 
-	SmoothRotator = this->GetActorRotation();
-
-
-	//SmoothRotator = FMath::RInterpTo(SmoothRotator, cameraLoc_, DeltaTime, 20.0f);
-	//SetActorRotation(SmoothRotator);
-
-	if (RayHit)
+	//공격시 캐릭터 회전
+	if(isFire_)
 	{
-		//ABLOG(Warning, TEXT("%s"), *(Outhit.GetActor()->GetName()));
-		//ABLOG(Warning, TEXT("Hit Actor Location : %f, %f, %f"), (Outhit.GetActor()->GetActorLocation()).X, (Outhit.GetActor()->GetActorLocation()).Y, (Outhit.GetActor()->GetActorLocation()).Z);
+		FVector RayEndVec = Outhit.Location;
 
-		FVector test;
-		test.X = Outhit.Location.X;
-		test.Y = Outhit.Location.Y;
-		test.Z = Outhit.Location.Z;
+		FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), RayEndVec);
+		playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
 
-		FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), test);
-		SmoothRotator = FMath::RInterpTo(SmoothRotator, TargetRoatator, DeltaTime, 20.0f);
-		//ABLOG(Warning, TEXT("OutHit Location : %f, %f, %f"), Outhit.Location.X, Outhit.Location.Y, Outhit.Location.Z);
-		
-		SetActorRotation(SmoothRotator);
+		SetActorRotation(playerRotator_);
 
 		//Set PlayerAimVector
-		weapon_->SetAimVector(test);
+		weapon_->SetAimVector(RayEndVec);
+	}
 
-		//ABLOG(Warning, TEXT("SmoothRotator : %f, %f, %f"), Outhit.Location.X, Outhit.Location.Y, Outhit.Location.Z);
-		//ABLOG(Warning, TEXT("After Character Rotator : %f, %f, %f"), this->GetActorRotation().Roll, this->GetActorRotation().Pitch, this->GetActorRotation().Yaw);
-	}
-	else
-	{
-		ABLOG(Warning, TEXT("Not Hit!"));
-	}
+
+
+
+
+
+	/////////////////////////////////////Test/////////////////////////////////////
+	FVector charStart = GetActorLocation();
+	FVector charForwardVector = GetActorForwardVector();
+
+	FHitResult chrhit;
+	FVector charEnd = charStart + charForwardVector * 5000.0f;
+	charStart = charStart + (charForwardVector * 100.0f);
+	FCollisionQueryParams CharParams;
+	CharParams.AddIgnoredActor(this);
+
+	/*Draw rayCast debug Line START*/
+	//DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);
+	/*Draw rayCast debug Line START*/
+	/////////////////////////////////////Test/////////////////////////////////////
 }
 
 // Called to bind functionality to input
@@ -263,12 +249,12 @@ ControlMode APlayerCharacter::GetCurrentControllMode()
 
 FVector APlayerCharacter::GetPlayerLocation()
 {
-	return PlayerLocation_;
+	return playerLocation_;
 }
 
 FRotator APlayerCharacter::GetPlayerRotator()
 {
-	return PlayerRotator_;
+	return playerRotator_;
 }
 
 bool APlayerCharacter::GetIsFire()

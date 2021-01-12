@@ -70,8 +70,8 @@ private:
 	bool		isSprint_;
 	float		lookPitch_;
 	FVector		socketLocation_;
-	FVector		PlayerLocation_;
-	FRotator	PlayerRotator_;
+	FVector		playerLocation_;
+	FRotator	playerRotator_;
 
 
 
@@ -80,9 +80,7 @@ private:
 	FVector endPoint_;
 	FVector forwardVector_;
 	FRotator shootRot_;
-	FRotator playerLoc_;
 	FRotator	cameraLoc_;
-	FRotator SmoothRotator;
 
 	float camArmLength_;
 };
