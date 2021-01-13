@@ -42,6 +42,7 @@ public:
 	void			SetWeaponLoc(FVector _newLoc);
 	void			SetViewMode(ViewMode _newMode);
 	void			OnFire(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
+	bool			GetIsWalking();
 
 	class AGunWeapon* GetCurrentWeapon();
 	class USkeletalMeshComponent* GetSkelMesh();
@@ -69,18 +70,12 @@ private:
 	bool		isFire_;
 	bool		isSprint_;
 	float		lookPitch_;
+	float		camArmLength_;
 	FVector		socketLocation_;
 	FVector		playerLocation_;
 	FRotator	playerRotator_;
+	FVector		startPoint_;
+	FVector		endPoint_;
+	FVector		forwardVector_;
 
-
-
-	//Test
-	FVector startPoint_;
-	FVector endPoint_;
-	FVector forwardVector_;
-	FRotator shootRot_;
-	FRotator	cameraLoc_;
-
-	float camArmLength_;
 };

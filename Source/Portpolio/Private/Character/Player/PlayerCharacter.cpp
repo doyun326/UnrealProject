@@ -118,7 +118,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 	startPoint_ = camera_->GetComponentLocation();
 	camArmLength_ = cameraArm_->TargetArmLength;
 	forwardVector_ = camera_->GetForwardVector();
-	cameraLoc_ = camera_->GetComponentRotation();
 
 	//RayCast
 	FHitResult Outhit;
@@ -293,4 +292,9 @@ float APlayerCharacter::GetLookClampPitch()
 USkeletalMeshComponent* APlayerCharacter::GetSkelMesh()
 {
 	return GetMesh();
+}
+
+bool APlayerCharacter::GetIsWalking()
+{
+	return isWalk_;
 }

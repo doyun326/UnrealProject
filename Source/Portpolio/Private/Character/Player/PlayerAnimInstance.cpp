@@ -13,7 +13,7 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 {	
 	currentChrSpeed_ = 0.0f;
 	isFire_ = false;
-	isWalk_ = false;
+	//isWalk_ = false;
 	isInAir_ = false;
 
 	//구르기 모션 가져오기
@@ -78,6 +78,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isInAir_ = Character_->GetMovementComponent()->IsFalling();
 			lookPitch_ = Character_->GetLookClampPitch();
 			characterMesh_ = Character_->GetSkelMesh();
+			isWalk_ = Character_->GetIsWalking();
 			//ABLOG(Warning, TEXT("%f"), lookPitch_);
 		}
 
@@ -103,16 +104,17 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		//서있는 모션
 		if (isRest_)
 		{
-			isWalk_ = false;
 			ChanageWeaponSocket(FIRE_GRIPSOCKET);
 		}
 
 		//발사 모션
 		if (isFire_)
 		{
+			//ABLOG(Warning, TEXT("Firing: %d"), isWalk_);
 			ChanageWeaponSocket(FIRE_GRIPSOCKET);
 		}
 	}
+	//ABLOG(Warning, TEXT("Walking: %d"), isWalk_);
 	//ABLOG(Warning, TEXT("Walk Speed : %f"), currentChrSpeed_);
 }
 
