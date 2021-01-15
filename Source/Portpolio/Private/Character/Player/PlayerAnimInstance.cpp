@@ -68,12 +68,9 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isFire_ = Character_->GetIsFire();
 			isSprint_ = Character_->GetSprintBtn();
 			isInAir_ = Character_->GetMovementComponent()->IsFalling();
-			lookPitch_ = Character_->GetLookClampPitch();
 			characterMesh_ = Character_->GetSkelMesh();
 			isWalk_ = Character_->GetIsWalking();
-			testCharRotator = Character_->GetControlRotation();
-			testCharRotatorPitch = testCharRotator.Pitch;
-			//ABLOG(Warning, TEXT("%f"), lookPitch_);
+			lookPitch_ = Character_->GetLookPitch();
 		}
 
 		currentChrSpeed_ = Pawn->GetVelocity().Size();

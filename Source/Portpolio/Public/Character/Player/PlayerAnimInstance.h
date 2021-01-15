@@ -60,12 +60,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
 		class UNiagaraSystem* flashSystem_;
 
-	//LookAtRotator
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		FRotator		testCharRotator;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		float		testCharRotatorPitch;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (AllowPrivateAccess = true))
 		class USkeletalMeshComponent* characterMesh_;
 

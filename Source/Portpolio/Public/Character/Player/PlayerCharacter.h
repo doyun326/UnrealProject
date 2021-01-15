@@ -37,7 +37,7 @@ public:
 	ControlMode		GetCurrentControllMode();
 	FVector			GetPlayerLocation();
 	FRotator		GetPlayerRotator();
-	float			GetLookClampPitch();
+	float			GetLookPitch();
 	void			SetSprintBtn(bool _newState);
 	void			SetWeaponLoc(FVector _newLoc);
 	void			SetViewMode(ViewMode _newMode);

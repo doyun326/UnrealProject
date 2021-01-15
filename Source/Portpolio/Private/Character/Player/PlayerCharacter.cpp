@@ -152,11 +152,10 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 			fireLookPosition_ = endPoint_;
 		}
+		lookPitch_ = playerRotator_.Pitch;
 		playerRotator_.Pitch = 0.0f;
-		//Set PlayerLookRotator
-		SetActorRotation(playerRotator_);
-		//Set PlayerAimVector
-		weapon_->SetAimVector(fireLookPosition_);
+		SetActorRotation(playerRotator_);	//Set PlayerLookRotator
+		weapon_->SetAimVector(fireLookPosition_);	//Set PlayerAimVector
 	}
 
 
@@ -283,7 +282,7 @@ void APlayerCharacter::SetSprintBtn(bool _newState)
 	isSprint_ = _newState;
 }
 
-float APlayerCharacter::GetLookClampPitch()
+float APlayerCharacter::GetLookPitch()
 {
 	return lookPitch_;
 }
