@@ -65,7 +65,6 @@ void ABaseCharacter::MoveForward(float _newAxisValue)
 		isFoward_ = false;
 	}
 	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), _newAxisValue);
-	//ABLOG(Warning, TEXT("Forward new AxixValue: %d"), isWalk_);
 }
 
 //ÀÌµ¿(ÁÂ, ¿ì)
@@ -80,7 +79,6 @@ void ABaseCharacter::MoveRight(float _newAxisValue)
 		isRight_ = false;
 	}
 	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), _newAxisValue);
-	//ABLOG(Warning, TEXT("Forward new AxixValue: %d"), isWalk_);
 }
 
 void ABaseCharacter::LookUp(float _newAxisValue)

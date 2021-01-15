@@ -74,6 +74,7 @@ private:
 	FVector		socketLocation_;
 	FVector		playerLocation_;
 	FRotator	playerRotator_;
+	FVector		fireLookPosition_;
 	FVector		startPoint_;
 	FVector		endPoint_;
 	FVector		forwardVector_;

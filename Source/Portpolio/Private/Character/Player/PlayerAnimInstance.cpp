@@ -19,9 +19,6 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	//구르기 모션 가져오기
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> JUMP_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/DiveJump_MT.DiveJump_MT"));
 
-	//Fire Montage
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> FIRE_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/Fire_MT.Fire_MT"));
-
 	//RestMontage
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> REST_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/BlendPose/Rest_IDLE_MT.Rest_IDLE_MT"));
 
@@ -37,11 +34,6 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	if (JUMP_MONTAGE.Succeeded())
 	{
 		diveMontage_ = JUMP_MONTAGE.Object;
-	}
-
-	if (FIRE_MONTAGE.Succeeded())
-	{
-		fireMontage_ = FIRE_MONTAGE.Object;
 	}
 
 	if (REST_MONTAGE.Succeeded())
@@ -79,6 +71,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			lookPitch_ = Character_->GetLookClampPitch();
 			characterMesh_ = Character_->GetSkelMesh();
 			isWalk_ = Character_->GetIsWalking();
+			testCharRotator = Character_->GetControlRotation();
+			testCharRotatorPitch = testCharRotator.Pitch;
 			//ABLOG(Warning, TEXT("%f"), lookPitch_);
 		}
 

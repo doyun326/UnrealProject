@@ -143,21 +143,20 @@ void APlayerCharacter::Tick(float DeltaTime)
 			FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), RayEndVec);
 			playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
 
-			SetActorRotation(playerRotator_);
-
-			//Set PlayerAimVector
-			weapon_->SetAimVector(RayEndVec);
+			fireLookPosition_ = RayEndVec;
 		}
 		else
 		{
 			FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), endPoint_);
 			playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
 
-			SetActorRotation(playerRotator_);
-
-			//Set PlayerAimVector
-			weapon_->SetAimVector(endPoint_);
+			fireLookPosition_ = endPoint_;
 		}
+		playerRotator_.Pitch = 0.0f;
+		//Set PlayerLookRotator
+		SetActorRotation(playerRotator_);
+		//Set PlayerAimVector
+		weapon_->SetAimVector(fireLookPosition_);
 	}
 
 

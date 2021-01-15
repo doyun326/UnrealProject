@@ -32,28 +32,26 @@ public:
 	FOnChangeSocketDele		OnChangeRestSocket;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		float			currentChrSpeed_;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		bool			isFire_;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		bool			isSprint_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		bool			isWalk_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		bool			isRest_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		bool			isInAir_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = CharacterState, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		float			lookPitch_;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	diveMontage_;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
-		UAnimMontage*	fireMontage_;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	walkMontage_;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = ActionMotion, meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	restMontage_;
 
 	//NiagaraSystem
@@ -61,6 +59,12 @@ private:
 		class UNiagaraSystem* flashEffect_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
 		class UNiagaraSystem* flashSystem_;
+
+	//LookAtRotator
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		FRotator		testCharRotator;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		float		testCharRotatorPitch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh", meta = (AllowPrivateAccess = true))
 		class USkeletalMeshComponent* characterMesh_;
