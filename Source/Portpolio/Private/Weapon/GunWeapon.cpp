@@ -102,8 +102,9 @@ void AGunWeapon::OnFire(bool _fire)
 		if (isShooting_)
 		{
 			isShooting_ = false;
-			PlayFireEffect(false);
+			//PlayFireEffect(false);
 			GetWorld()->GetTimerManager().ClearTimer(shootDelayTimerHandle_);
+			GetWorld()->GetTimerManager().ClearTimer(shootEffectCulTime_);
 		}
 	}
 }
@@ -123,19 +124,26 @@ void AGunWeapon::ShootBullet()
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
 
+		//Bullet Spawn
 		ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(bullet_, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+		PlayFireEffect(true, SpawnLocation, SpawnRotation);
+
 		Bullet->SetFormation(playerAimVector_);
 		FVector NewVelocity = GetActorRightVector() * 5000.0f;
 		Bullet->Velocity = FVector(NewVelocity);
 	}
-
-	PlayFireEffect(true);
+	//PlayFireEffect(true);
 }
 
 //소염기 이펙트
-void AGunWeapon::PlayFireEffect(bool _newState)
+void AGunWeapon::PlayFireEffect(bool _isFire, FVector _spawnLoc, FRotator _spawnRot)
 {
-	if (_newState && fireStateOld_)
+	onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, _spawnLoc, _spawnRot);
+
+	GetWorld()->GetTimerManager().SetTimer(shootEffectCulTime_, this, &AGunWeapon::EffectDestroy, 0.08f, true);
+
+	/*if (_newState && fireStateOld_)
 	{
 		FName MuzzleSocket("Muzzle");
 		muzzleLocation_ = weapon_->GetSocketLocation(MuzzleSocket);
@@ -152,7 +160,12 @@ void AGunWeapon::PlayFireEffect(bool _newState)
 		{
 			onEffect_->Deactivate();
 		}
-	}
+	}*/
+}
+
+void AGunWeapon::EffectDestroy()
+{
+	onEffect_->Deactivate();
 }
 
 //탄알 벽에 충돌 시 이펙트
