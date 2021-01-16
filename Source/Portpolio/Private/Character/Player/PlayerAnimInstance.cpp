@@ -71,9 +71,10 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			characterMesh_ = Character_->GetSkelMesh();
 			isWalk_ = Character_->GetIsWalking();
 			lookPitch_ = Character_->GetLookPitch();
+			currentChrSpeed_ = Pawn->GetVelocity().Size();
 		}
 
-		currentChrSpeed_ = Pawn->GetVelocity().Size();
+		//state 형식으로 바꿀것,
 
 		//달리는 모션
 		if (isSprint_)
@@ -81,7 +82,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isWalk_ = false;
 			ChanageWeaponSocket(SPRINT_GRIPSOCKET);
 			
-			//NiagaraSystem C++코드화, 추후 적당한 위치로 옮겨놈
+			//NiagaraSystem C++코드화, 추후 적당한 위치로 옮겨놈(Flash Niagara)
 			//FName NoneName("none");
 			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashSystem_, characterMesh_, test, characterMesh_->GetRelativeLocation(), characterMesh_->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
 		}
@@ -101,7 +102,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		//발사 모션
 		if (isFire_)
 		{
-			//ABLOG(Warning, TEXT("Firing: %d"), isWalk_);
 			ChanageWeaponSocket(FIRE_GRIPSOCKET);
 		}
 	}

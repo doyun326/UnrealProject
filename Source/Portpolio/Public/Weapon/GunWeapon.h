@@ -31,10 +31,8 @@ public:
 		void	ShootBullet();
 
 	void	OnFire(bool _fire);
-	void	PlayFireEffect(bool _isFire, FVector _spawnLoc, FRotator _spawnRot);
 	void	PlayShootEffect(FVector _newLocation);
 	void	SetAimVector(FVector _aimVector);
-	void	EffectDestroy();
 	FVector	GetAimVector();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -56,7 +54,6 @@ private:
 	FVector		playerAimVector_;
 	
 	FTimerHandle		shootDelayTimerHandle_;
-	FTimerHandle		shootEffectCulTime_;
 
 	UNiagaraComponent* onEffect_;
 	UNiagaraComponent* spawnShootEffect_;

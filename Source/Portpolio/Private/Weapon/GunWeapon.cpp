@@ -13,7 +13,7 @@
 #include "Math/UnrealMathUtility.h"
 
 #define GUN_MESH_PATH "/Game/My/Asset/Weapon/TestWeapon/Mesh/SK_FPGun.SK_FPGun"
-#define FIRE_EFFECT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_INFINITE.NS_AR_Muzzleflash_1_INFINITE"
+#define FIRE_EFFECT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_ONCE.NS_AR_Muzzleflash_1_ONCE"
 #define SHOOT_EFFECT_PATH "/Game/sA_ShootingVfxPack/FX/NiagaraSystems/NS_AR_Muzzleflash_2_INFINITE.NS_AR_Muzzleflash_2_INFINITE"
 
 // Sets default values
@@ -102,9 +102,7 @@ void AGunWeapon::OnFire(bool _fire)
 		if (isShooting_)
 		{
 			isShooting_ = false;
-			//PlayFireEffect(false);
 			GetWorld()->GetTimerManager().ClearTimer(shootDelayTimerHandle_);
-			GetWorld()->GetTimerManager().ClearTimer(shootEffectCulTime_);
 		}
 	}
 }
@@ -114,58 +112,25 @@ void AGunWeapon::ShootBullet()
 	if (bullet_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : weaponBullet"));
-	}
-	else
-	{
-		FName MuzzleSocket("Muzzle");
-		FVector SpawnLocation = weapon_->GetSocketLocation(MuzzleSocket);
-		FRotator SpawnRotation = weapon_->GetSocketRotation(MuzzleSocket);
-
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
-
-		//Bullet Spawn
-		ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(bullet_, SpawnLocation, SpawnRotation, ActorSpawnParams);
-
-		PlayFireEffect(true, SpawnLocation, SpawnRotation);
-
-		Bullet->SetFormation(playerAimVector_);
-		FVector NewVelocity = GetActorRightVector() * 5000.0f;
-		Bullet->Velocity = FVector(NewVelocity);
-	}
-	//PlayFireEffect(true);
-}
-
-//소염기 이펙트
-void AGunWeapon::PlayFireEffect(bool _isFire, FVector _spawnLoc, FRotator _spawnRot)
-{
-	onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, _spawnLoc, _spawnRot);
-
-	GetWorld()->GetTimerManager().SetTimer(shootEffectCulTime_, this, &AGunWeapon::EffectDestroy, 0.08f, true);
-
-	/*if (_newState && fireStateOld_)
-	{
-		FName MuzzleSocket("Muzzle");
-		muzzleLocation_ = weapon_->GetSocketLocation(MuzzleSocket);
-		muzzleRotation_ = weapon_->GetSocketRotation(MuzzleSocket);
-		muzzleRotation_.Pitch = muzzleRotation_.Pitch * 90.0f;
-		onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, muzzleLocation_, muzzleRotation_);
-		fireStateOld_ = false;
+		return;
 	}
 
-	if (!_newState)
-	{
-		fireStateOld_ = true;
-		if (onEffect_ != nullptr)
-		{
-			onEffect_->Deactivate();
-		}
-	}*/
-}
+	FName MuzzleSocket("Muzzle");
+	FVector SpawnLocation = weapon_->GetSocketLocation(MuzzleSocket);
+	FRotator SpawnRotation = weapon_->GetSocketRotation(MuzzleSocket);
 
-void AGunWeapon::EffectDestroy()
-{
-	onEffect_->Deactivate();
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
+
+	//Bullet Spawn
+	ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(bullet_, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+	//소염기 이펙트
+	onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, SpawnLocation, SpawnRotation);
+
+	Bullet->SetFormation(playerAimVector_);
+	FVector NewVelocity = GetActorRightVector() * 5000.0f;
+	Bullet->Velocity = FVector(NewVelocity);
 }
 
 //탄알 벽에 충돌 시 이펙트
