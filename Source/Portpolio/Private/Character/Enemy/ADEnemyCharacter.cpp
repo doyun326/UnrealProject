@@ -8,8 +8,8 @@
 
 #include "Components/WidgetComponent.h"
 
-#define TEST_ENEMYMESH_PATH	"/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
-#define ADANIM_PATH			"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
+#define ENEMYMESH_PATH	"/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
+#define ADANIM_PATH		"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
 
 AADEnemyCharacter::AADEnemyCharacter()
 {
@@ -21,7 +21,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	//EnemyMesh
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> AD_ENEMY(TEXT(TEST_ENEMYMESH_PATH));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> AD_ENEMY(TEXT(ENEMYMESH_PATH));
 
 	if (AD_ENEMY.Succeeded())
 	{
@@ -36,9 +36,8 @@ AADEnemyCharacter::AADEnemyCharacter()
 	{
 		ABLOG(Warning, TEXT("Success : AD_ANIM"));
 		GetMesh()->SetAnimInstanceClass(AD_ANIM.Class);
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 	}
-
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 
 	//EnemyStat ¼³Á¤
 	enemyStat_ = CreateDefaultSubobject<UADEnemyStatComponent>(TEXT("ADENEMYSTAT"));

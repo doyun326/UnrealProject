@@ -17,7 +17,6 @@ class PORTPOLIO_API AADEnemyCharacter : public ABaseCharacter
 public:
 	AADEnemyCharacter();
 
-public:
 	virtual void	Tick(float DeltaTime) override;
 	virtual void	SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void	PostInitializeComponents() override;
