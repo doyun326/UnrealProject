@@ -211,7 +211,7 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
-		GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+		GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 
 		break;
 	}

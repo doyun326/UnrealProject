@@ -17,11 +17,8 @@ AWarHUD::AWarHUD()
 
 	if (CROSSHAIR_OBJ.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : CROSSHAIR_OBJ"))
 		crossHair_ = CROSSHAIR_OBJ.Object;
-	}
-	else
-	{
-		ABLOG(Warning, TEXT("HUD Finder Faild!"))
 	}
 }
 
