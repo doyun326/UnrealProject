@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "GameSetting/Portpolio.h"
-
+#include "CoreMinimal.h"
 #include "Character/BaseCharacter.h"
 #include "NpcOperator.generated.h"
 
@@ -29,4 +28,5 @@ protected:
 private:
 	UPROPERTY()
 		class UNpcOperatorAnimInstance* operAnim_;
+
 };

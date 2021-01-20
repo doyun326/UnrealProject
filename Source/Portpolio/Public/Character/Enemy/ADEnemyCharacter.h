@@ -13,7 +13,7 @@ UCLASS()
 class PORTPOLIO_API AADEnemyCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
-	
+
 public:
 	AADEnemyCharacter();
 

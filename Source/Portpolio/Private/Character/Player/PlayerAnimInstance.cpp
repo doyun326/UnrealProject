@@ -117,7 +117,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		isLoby_ = false;
 	}
-	ABLOG(Warning, TEXT("%d"), isLoby_);
+	//ABLOG(Warning, TEXT("%d"), isLoby_);
+	//ABLOG(Warning, TEXT("%d"), isFire_);
 }
 
 //DiveJump Montage
