@@ -33,6 +33,7 @@ public:
 	void	OnFire(bool _fire);
 	void	PlayShootEffect(FVector _newLocation);
 	void	SetAimVector(FVector _aimVector);
+	void	SetMuzzleSocketPosition(FVector _muzLoc, FRotator _muzRot);
 	FVector	GetAimVector();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")

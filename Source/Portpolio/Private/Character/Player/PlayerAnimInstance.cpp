@@ -48,11 +48,6 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 		restMontage_ = REST_MONTAGE.Object;
 	}
 
-	/*if (WALK_MONTAGE.Succeeded())
-	{
-		walkMontage_ = WALK_MONTAGE.Object;
-	}*/
-
 	if (FLASH_EFFECT.Succeeded() && FLASH_SYSTEM.Succeeded())
 	{
 		flashEffect_ = FLASH_EFFECT.Object;
@@ -88,7 +83,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			isWalk_ = false;
 			isFire_ = false;
-			ChanageWeaponSocket(SPRINT_GRIPSOCKET);
 			
 			//NiagaraSystem C++코드화, 추후 적당한 위치로 옮겨놈(Flash Niagara)
 			//FName NoneName("none");
@@ -98,19 +92,19 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		//걷는 모션
 		if (isWalk_)
 		{
-			ChanageWeaponSocket(FIRE_GRIPSOCKET);
+
 		}
 
 		//서있는 모션
 		if (isRest_)
 		{
-			ChanageWeaponSocket(FIRE_GRIPSOCKET);
+			
 		}
 
 		//발사 모션
 		if (isFire_)
 		{
-			ChanageWeaponSocket(FIRE_GRIPSOCKET);
+			
 		}
 	}
 	//ABLOG(Warning, TEXT("Walking: %d"), isWalk_);
@@ -139,16 +133,4 @@ void UPlayerAnimInstance::PlayDiveJumpMontage()
 void UPlayerAnimInstance::PlayFireMontage()
 {
 	Montage_Play(attackMT_, 1.0f);
-}
-
-void UPlayerAnimInstance::ChanageWeaponSocket(FName _name)
-{
-	FName WeaponSocket(_name);
-	AGunWeapon* Weapon = Cast<AGunWeapon>(Character_->GetCurrentWeapon());
-
-	if (Weapon != nullptr)
-	{
-		Weapon->AttachToComponent(Character_->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		Character_->SetWeaponLoc(Character_->GetMesh()->GetSocketLocation(WeaponSocket));
-	}
 }

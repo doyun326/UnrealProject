@@ -25,7 +25,6 @@ public:
 	
 	void	PlayDiveJumpMontage();
 	void	PlayFireMontage();
-	void	ChanageWeaponSocket(FName _name);
 	
 	//Test
 	FOnChangeSocketDele		OnChangeWalkSocket;

@@ -39,7 +39,6 @@ public:
 	FRotator		GetPlayerRotator();
 	float			GetLookPitch();
 	void			SetSprintBtn(bool _newState);
-	void			SetWeaponLoc(FVector _newLoc);
 	void			SetViewMode(ViewMode _newMode);
 	void			OnFire(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 	bool			GetIsWalking();
@@ -79,4 +78,6 @@ private:
 	FVector		endPoint_;
 	FVector		forwardVector_;
 
+
+	FName MuzzleSocket;
 };

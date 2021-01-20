@@ -12,7 +12,6 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Math/UnrealMathUtility.h"
 
-#define GUN_MESH_PATH "/Game/My/Asset/Weapon/TestWeapon/Mesh/SK_FPGun.SK_FPGun"
 #define FIRE_EFFECT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_ONCE.NS_AR_Muzzleflash_1_ONCE"
 #define SHOOT_EFFECT_PATH "/Game/sA_ShootingVfxPack/FX/NiagaraSystems/NS_AR_Muzzleflash_2_INFINITE.NS_AR_Muzzleflash_2_INFINITE"
 
@@ -24,16 +23,6 @@ AGunWeapon::AGunWeapon()
 
 	weapon_ = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
 	RootComponent = weapon_;
-
-	//무기 이미지
-	/*static ConstructorHelpers::FObjectFinder<USkeletalMesh> DEFAULT_GUN(TEXT(GUN_MESH_PATH));
-
-	if (DEFAULT_GUN.Succeeded())
-	{
-		weapon_->SetSkeletalMesh(DEFAULT_GUN.Object);
-		ABLOG(Warning, TEXT("Success : DEFAULT_GUN"));
-	}
-	weapon_->SetCollisionProfileName(TEXT("No Collison"));*/
 
 	//발사 이펙트
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FIRE_EFFECT(TEXT(FIRE_EFFECT_PATH));
@@ -70,6 +59,7 @@ AGunWeapon::AGunWeapon()
 void AGunWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame
@@ -111,14 +101,12 @@ void AGunWeapon::ShootBullet()
 {
 	if (bullet_ == nullptr)
 	{
-		ABLOG(Error, TEXT("Nullptr : weaponBullet"));
+		ABLOG(Error, TEXT("Nullptr : WeaponBullet"));
 		return;
 	}
 
-	//FName MuzzleSocket("Muzzle");
-	FName MuzzleSocket("Muzzle_01");
-	FVector SpawnLocation = weapon_->GetSocketLocation(MuzzleSocket);
-	FRotator SpawnRotation = weapon_->GetSocketRotation(MuzzleSocket);
+	FVector SpawnLocation = muzzleLocation_;
+	FRotator SpawnRotation = muzzleRotation_;
 
 	FActorSpawnParameters ActorSpawnParams;
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
@@ -155,4 +143,10 @@ void AGunWeapon::SetAimVector(FVector _aimVector)
 FVector AGunWeapon::GetAimVector()
 {
 	return playerAimVector_;
+}
+
+void AGunWeapon::SetMuzzleSocketPosition(FVector _muzLoc, FRotator _muzRot)
+{
+	muzzleLocation_ = _muzLoc;
+	muzzleRotation_ = _muzRot;
 }

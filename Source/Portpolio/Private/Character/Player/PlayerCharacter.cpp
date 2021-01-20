@@ -26,7 +26,6 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Character Mesh 설정
-	//static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/Alien.Alien"));
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"));
 
 	if (War_Alien.Succeeded())
@@ -85,8 +84,9 @@ void APlayerCharacter::BeginPlay()
 
 	if (weapon_ != nullptr)
 	{
+		MuzzleSocket = "Muzzle_01";
 		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		socketLocation_ = GetMesh()->GetSocketLocation(WeaponSocket);
+		weapon_->SetMuzzleSocketPosition(GetMesh()->GetSocketLocation(MuzzleSocket), GetMesh()->GetSocketRotation(MuzzleSocket));
 	}
 	else
 	{
@@ -115,6 +115,16 @@ void APlayerCharacter::Tick(float DeltaTime)
 	//Location, Rotation 저장
 	playerLocation_ = this->GetActorLocation();
 	playerRotator_ = this->GetActorRotation();
+
+	if (weapon_ != nullptr)
+	{
+		weapon_->SetMuzzleSocketPosition(GetMesh()->GetSocketLocation(MuzzleSocket), GetMesh()->GetSocketRotation(MuzzleSocket));
+	}
+	else
+	{
+		ABLOG(Error, TEXT("Nullptr : weapon"));
+	}
+	
 
 	startPoint_ = camera_->GetComponentLocation();
 	camArmLength_ = cameraArm_->TargetArmLength;
@@ -225,10 +235,6 @@ void APlayerCharacter::OnFire(bool _firBtn)
 {
 	isFire_ = _firBtn;
 	weapon_->OnFire(_firBtn);
-	
-	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-
-	AnimInstance->PlayFireMontage();
 }
 
 void APlayerCharacter::PlayMontageDiveJump()
@@ -244,11 +250,6 @@ void APlayerCharacter::PlayMontageDiveJump()
 AGunWeapon* APlayerCharacter::GetCurrentWeapon()
 {
 	return weapon_;
-}
-
-void APlayerCharacter::SetWeaponLoc(FVector _newLoc)
-{
-	socketLocation_ = _newLoc;
 }
 
 ControlMode APlayerCharacter::GetCurrentControllMode()
