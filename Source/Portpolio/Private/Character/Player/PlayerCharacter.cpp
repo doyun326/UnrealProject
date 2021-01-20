@@ -26,19 +26,19 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Character Mesh 설정
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/Alien.Alien"));
+	//static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/Alien.Alien"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"));
 
 	if (War_Alien.Succeeded())
 	{
 		ABLOG(Warning, TEXT("Success : War_Alien"));
 		GetMesh()->SetSkeletalMesh(War_Alien.Object);
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 	}
-
-	//Mesh위치 설정
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
-
+	
 	//Animation 설정
-	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Alien_BP.Alien_BP_C"));
+	//static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Alien_BP.Alien_BP_C"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"));
 
 	if (Alien_Anim.Succeeded())
 	{
@@ -101,6 +101,7 @@ void APlayerCharacter::BeginPlay()
 		//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
 		//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
 	}
+	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, GetWorld()->GetName());
 }
 
 // Called every frame

@@ -27,6 +27,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 	{
 		ABLOG(Warning, TEXT("Success : AD_ENEMY"));
 		GetMesh()->SetSkeletalMesh((AD_ENEMY.Object));
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 	}
 
 	//Animation 설정
@@ -36,7 +37,6 @@ AADEnemyCharacter::AADEnemyCharacter()
 	{
 		ABLOG(Warning, TEXT("Success : AD_ANIM"));
 		GetMesh()->SetAnimInstanceClass(AD_ANIM.Class);
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 	}
 
 	//EnemyStat 설정

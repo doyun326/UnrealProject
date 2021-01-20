@@ -46,6 +46,8 @@ private:
 		bool			isInAir_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		float			lookPitch_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MapInformation", meta = (AllowPrivateAccess = true))
+		bool			isLoby_;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	diveMontage_;

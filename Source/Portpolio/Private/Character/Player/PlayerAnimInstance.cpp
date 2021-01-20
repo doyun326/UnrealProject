@@ -15,6 +15,7 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	isFire_ = false;
 	//isWalk_ = false;
 	isInAir_ = false;
+	isLoby_ = false;
 
 	//구르기 모션 가져오기
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> JUMP_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/DiveJump_MT.DiveJump_MT"));
@@ -107,6 +108,16 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 	//ABLOG(Warning, TEXT("Walking: %d"), isWalk_);
 	//ABLOG(Warning, TEXT("Walk Speed : %f"), currentChrSpeed_);
+
+	if (GetWorld()->GetName() == "SpaceShip_Loby")
+	{
+		isLoby_ = true;
+	}
+	else
+	{
+		isLoby_ = false;
+	}
+	ABLOG(Warning, TEXT("%d"), isLoby_);
 }
 
 //DiveJump Montage
