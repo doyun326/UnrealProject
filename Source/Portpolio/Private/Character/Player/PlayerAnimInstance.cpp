@@ -23,8 +23,14 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	//RestMontage
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> REST_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/BlendPose/Rest_IDLE_MT.Rest_IDLE_MT"));
 
-	//Test
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> WALK_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/BlendPose/Walk_BLEND_MT.Walk_BLEND_MT"));
+	//Attack Montage
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> FIRE_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/Fire_MT.Fire_MT"));
+
+	if (FIRE_MONTAGE.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : FIRE_MONTAGE"));
+		attackMT_ = FIRE_MONTAGE.Object;
+	}
 
 	//Flash Effect
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_EFFECT(TEXT(FLASH_EFFECT_PATH));
@@ -42,10 +48,10 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 		restMontage_ = REST_MONTAGE.Object;
 	}
 
-	if (WALK_MONTAGE.Succeeded())
+	/*if (WALK_MONTAGE.Succeeded())
 	{
 		walkMontage_ = WALK_MONTAGE.Object;
-	}
+	}*/
 
 	if (FLASH_EFFECT.Succeeded() && FLASH_SYSTEM.Succeeded())
 	{
@@ -81,6 +87,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		if (isSprint_)
 		{
 			isWalk_ = false;
+			isFire_ = false;
 			ChanageWeaponSocket(SPRINT_GRIPSOCKET);
 			
 			//NiagaraSystem C++코드화, 추후 적당한 위치로 옮겨놈(Flash Niagara)
@@ -108,6 +115,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 	//ABLOG(Warning, TEXT("Walking: %d"), isWalk_);
 	//ABLOG(Warning, TEXT("Walk Speed : %f"), currentChrSpeed_);
+	//ABLOG(Warning, TEXT("Walk Speed : %f"), lookPitch_);
 
 	if (GetWorld()->GetName() == "SpaceShip_Loby")
 	{
@@ -128,9 +136,9 @@ void UPlayerAnimInstance::PlayDiveJumpMontage()
 }
 
 //Fire Gun Montage
-void UPlayerAnimInstance::PlayFireGunMontage()
+void UPlayerAnimInstance::PlayFireMontage()
 {
-
+	Montage_Play(attackMT_, 1.0f);
 }
 
 void UPlayerAnimInstance::ChanageWeaponSocket(FName _name)

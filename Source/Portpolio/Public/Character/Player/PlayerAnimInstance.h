@@ -24,7 +24,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
 	void	PlayDiveJumpMontage();
-	void	PlayFireGunMontage();
+	void	PlayFireMontage();
 	void	ChanageWeaponSocket(FName _name);
 	
 	//Test
@@ -55,6 +55,8 @@ private:
 		UAnimMontage*	walkMontage_;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	restMontage_;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Montage", meta = (AllowPrivateAccess = true))
+		UAnimMontage*	attackMT_;
 
 	//NiagaraSystem
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))

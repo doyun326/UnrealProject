@@ -134,35 +134,29 @@ void APlayerCharacter::Tick(float DeltaTime)
 	//DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 0.5, 0, 1);
 	/*Draw rayCast debug Line END*/
 
-	//공격시 캐릭터 회전
-	if (isFire_)
+	//공격, 줌인시 캐릭터 회전
+	if (isFire_ || currentViewMode_ == ViewMode::ZOOMIN)
 	{
+		FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), endPoint_);
+		playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
+
+		fireLookPosition_ = endPoint_;
+
 		if (RayHit)
 		{
 			FVector RayEndVec = Outhit.Location;
 
-			FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), RayEndVec);
+			TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), RayEndVec);
 			playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
 
 			fireLookPosition_ = RayEndVec;
 		}
-		else
-		{
-			FRotator TargetRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), endPoint_);
-			playerRotator_ = FMath::RInterpTo(playerRotator_, TargetRoatator, DeltaTime, 20.0f);
 
-			fireLookPosition_ = endPoint_;
-		}
 		lookPitch_ = playerRotator_.Pitch;
 		playerRotator_.Pitch = 0.0f;
 		SetActorRotation(playerRotator_);	//Set PlayerLookRotator
 		weapon_->SetAimVector(fireLookPosition_);	//Set PlayerAimVector
 	}
-
-
-
-
-
 
 	/////////////////////////////////////Test/////////////////////////////////////
 	FVector charStart = GetActorLocation();
@@ -231,6 +225,10 @@ void APlayerCharacter::OnFire(bool _firBtn)
 {
 	isFire_ = _firBtn;
 	weapon_->OnFire(_firBtn);
+	
+	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	AnimInstance->PlayFireMontage();
 }
 
 void APlayerCharacter::PlayMontageDiveJump()

@@ -26,14 +26,14 @@ AGunWeapon::AGunWeapon()
 	RootComponent = weapon_;
 
 	//무기 이미지
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> DEFAULT_GUN(TEXT(GUN_MESH_PATH));
+	/*static ConstructorHelpers::FObjectFinder<USkeletalMesh> DEFAULT_GUN(TEXT(GUN_MESH_PATH));
 
 	if (DEFAULT_GUN.Succeeded())
 	{
 		weapon_->SetSkeletalMesh(DEFAULT_GUN.Object);
 		ABLOG(Warning, TEXT("Success : DEFAULT_GUN"));
 	}
-	weapon_->SetCollisionProfileName(TEXT("No Collison"));
+	weapon_->SetCollisionProfileName(TEXT("No Collison"));*/
 
 	//발사 이펙트
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FIRE_EFFECT(TEXT(FIRE_EFFECT_PATH));
@@ -115,7 +115,8 @@ void AGunWeapon::ShootBullet()
 		return;
 	}
 
-	FName MuzzleSocket("Muzzle");
+	//FName MuzzleSocket("Muzzle");
+	FName MuzzleSocket("Muzzle_01");
 	FVector SpawnLocation = weapon_->GetSocketLocation(MuzzleSocket);
 	FRotator SpawnRotation = weapon_->GetSocketRotation(MuzzleSocket);
 
