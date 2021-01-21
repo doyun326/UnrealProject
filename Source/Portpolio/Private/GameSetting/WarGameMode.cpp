@@ -4,6 +4,8 @@
 #include "GameSetting/WarGameMode.h"
 #include "Character/Player/PlayerCharacter.h"
 #include "Character/Player/WarPlayerController.h"
+#include "../Public/Character/Player/WarPlayerState.h"
+
 #include "UI/WarHUD.h"
 
 
@@ -12,6 +14,7 @@ AWarGameMode::AWarGameMode()
 	//여기서 주의할 점은 ABPawn액터를 생성하고 이를 지정하는 것이 아닌, 클래스 정보를 지정. (멀티 게임 대비)
 	DefaultPawnClass = APlayerCharacter::StaticClass();
 	PlayerControllerClass = AWarPlayerController::StaticClass();
+	PlayerStateClass = AWarPlayerState::StaticClass();
 
 	if (PlayerControllerClass != nullptr)
 	{
@@ -34,4 +37,14 @@ void AWarGameMode::PostInitializeComponents()
 void AWarGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
+
+	auto PlayerState = Cast<AWarPlayerState>(NewPlayer->PlayerState);
+
+	if (PlayerState == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerState"));
+		return;
+	}
+
+	PlayerState->InitPlayerData();
 }
