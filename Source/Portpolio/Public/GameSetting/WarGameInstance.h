@@ -20,17 +20,20 @@ public:
 	FPlayerData() :
 		Level(1)
 		, MaxHP(300.0f)
+		, MaxMP(300.0f)
 		, Damage(25.0f)
 		, NextExp(30)
 	{}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
 		int32	Level;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
 		float	MaxHP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
+		float	MaxMP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
 		float	Damage;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerData")
 		int32	NextExp;
 };
 
@@ -51,15 +54,15 @@ public:
 		, NextExp(30)
 	{}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
 		int32	Level;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
 		float	MaxHP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
 		float	Damage;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
 		int32	DropExp;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = EnemyData)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
 		int32	NextExp;
 };
 

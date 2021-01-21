@@ -23,6 +23,7 @@ public:
 	virtual void ProcessPlayerInput(const float DeltaTime, const bool bGamePaused) override;
 
 	bool	GetFireBtn();
+
 	class UPlayerHudWidget* GetHudWidget() const;
 
 protected:
@@ -30,11 +31,15 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-		TSubclassOf<class UPlayerHudWidget>	hudWidgetClass;
+		TSubclassOf<class UPlayerHudWidget>	hudWidgetClass_;
 
 private:
 	UPROPERTY()
 		class UPlayerHudWidget* hudWidget_;
+	UPROPERTY()
+		class APlayerCharacter* myPlayer_;
+	UPROPERTY()
+		class AWarPlayerState*		myPlayerState_;
 
 	void	ZoomInStarted();
 	void	ZoomInReleased();
@@ -48,6 +53,5 @@ private:
 	bool	sprintBtn_;
 	bool	fireBtn_;
 
-	APlayerCharacter*	myCharacter_;
-	ViewMode			currentView_;
+	ViewMode	currentView_;
 };

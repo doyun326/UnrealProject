@@ -4,6 +4,7 @@
 #include "../Public/Character/Player/WarPlayerController.h"
 #include "../Public/Character/Player/PlayerAnimInstance.h"
 #include "../Public/UI//PlayerHudWidget.h"
+#include "../Public/Character/Player/WarPlayerState.h"
 
 #include "Engine/Engine.h"
 
@@ -17,7 +18,7 @@ AWarPlayerController::AWarPlayerController()
 	if (PLAYER_HUD.Succeeded())
 	{
 		ABLOG(Warning, TEXT("Success : UI_HUD"));
-		hudWidgetClass = PLAYER_HUD.Class;
+		hudWidgetClass_ = PLAYER_HUD.Class;
 	}
 
 	zoomInBtn_ = false;
@@ -46,7 +47,7 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 
 	Super::ProcessPlayerInput(DeltaTime, bGamePaused);
 
-	if (myCharacter_ == nullptr)
+	if (myPlayer_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : myCharacter"));
 		return;
@@ -55,32 +56,32 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 	//Mouse Zoom In/out
 	if (zoomInBtn_old && (zoomInBtn_old == zoomInBtn_))
 	{
-		myCharacter_->SetViewMode(ViewMode::ZOOMIN);
+		myPlayer_->SetViewMode(ViewMode::ZOOMIN);
 	}
 	else
 	{	
-		myCharacter_->SetViewMode(ViewMode::COMMONVIEW);
+		myPlayer_->SetViewMode(ViewMode::COMMONVIEW);
 	}
 
 	//RayCast Hit and fire
 	if (fireBtn_old && (fireBtn_old == fireBtn_))
 	{
-		myCharacter_->OnFire(true);
+		myPlayer_->OnFire(true);
 	}
 	else
 	{
-		myCharacter_->OnFire(false);
+		myPlayer_->OnFire(false);
 	}
 
 	//sprint
 	if (sprintBtn_old && (sprintBtn_old == sprintBtn_))
 	{
-		myCharacter_->SetSprintBtn(true);
+		myPlayer_->SetSprintBtn(true);
 		GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = SPRINT_SPEED;
 	}
 	else
 	{
-		myCharacter_->SetSprintBtn(false);
+		myPlayer_->SetSprintBtn(false);
 		GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
 	}
 }
@@ -105,9 +106,9 @@ void AWarPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	myCharacter_ = Cast<APlayerCharacter>(GetCharacter());
+	myPlayer_ = Cast<APlayerCharacter>(GetCharacter());
 
-	if (myCharacter_ == nullptr)
+	if (myPlayer_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : myCharacter"));
 	}
@@ -115,13 +116,29 @@ void AWarPlayerController::BeginPlay()
 	//Player Input Mode에 연결
 	SetInputMode(FInputModeGameOnly());
 
-	if (hudWidgetClass == nullptr)
+	if (hudWidgetClass_ == nullptr)
 	{
-		ABLOG(Error, TEXT("Nullptr : hudWidgetClass"))
+		ABLOG(Error, TEXT("Nullptr : hudWidgetClass_"))
 		return;
 	}
-	hudWidget_ = CreateWidget<UPlayerHudWidget>(this, hudWidgetClass);
+
+	hudWidget_ = CreateWidget<UPlayerHudWidget>(this, hudWidgetClass_);
 	hudWidget_->AddToViewport();
+
+	myPlayerState_ = Cast<AWarPlayerState>(myPlayer_->GetPlayerState());
+	
+	if (myPlayerState_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : myPlayerState"));
+		return;
+	}
+
+	hudWidget_->BindWarPlayerState(myPlayerState_);
+	myPlayerState_->onPlayerStateChange.Broadcast();
+
+
+
+
 }
 
 void AWarPlayerController::ZoomInStarted()
@@ -137,7 +154,7 @@ void AWarPlayerController::ZoomInReleased()
 //구르기 모션
 void AWarPlayerController::DiveJump()
 {
-	ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myCharacter_->GetActorLocation().X);
+	ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myPlayer_->GetActorLocation().X);
 }
 
 //뛰기 모션

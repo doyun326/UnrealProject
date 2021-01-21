@@ -38,13 +38,13 @@ void AWarGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	auto PlayerState = Cast<AWarPlayerState>(NewPlayer->PlayerState);
+	auto WarPlayerState = Cast<AWarPlayerState>(NewPlayer->PlayerState);
 
-	if (PlayerState == nullptr)
+	if (WarPlayerState == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : PlayerState"));
 		return;
 	}
 
-	PlayerState->InitPlayerData();
+	WarPlayerState->InitPlayerData();
 }

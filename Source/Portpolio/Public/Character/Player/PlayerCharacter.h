@@ -65,6 +65,8 @@ private:
 		class AWarPlayerController*	playerController_;
 	UPROPERTY()
 		class UPlayerAnimInstance*	playerAnim_;
+	UPROPERTY()
+		class AWarPlayerState*		warPlayerState_;
 
 	bool		isFire_;
 	bool		isSprint_;

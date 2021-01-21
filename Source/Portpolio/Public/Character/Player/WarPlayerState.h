@@ -3,8 +3,11 @@
 #pragma once
 
 #include "GameSetting/Portpolio.h"
+
 #include "GameFramework/PlayerState.h"
 #include "WarPlayerState.generated.h"
+
+DECLARE_MULTICAST_DELEGATE(FOnPlayerStateChangeDelegate);
 
 /**
  * 
@@ -20,6 +23,8 @@ public:
 	int32	GetGameScore() const;
 	int32	GetCharacterLevel() const;
 	void	InitPlayerData();
+
+	FOnPlayerStateChangeDelegate onPlayerStateChange;
 
 protected:
 	UPROPERTY(Transient)

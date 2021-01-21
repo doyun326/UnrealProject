@@ -4,7 +4,8 @@
 #include "../Public/Character/Player/PlayerAnimInstance.h"
 #include "../Public/Character/Player/WarPlayerController.h"
 #include "../Public/Character/Player/PlayerStatComponent.h"
-#include "../public/Weapon/GunWeapon.h"
+#include "../Public/Weapon/GunWeapon.h"
+#include "../Public/Character/Player/WarPlayerState.h"
 
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
@@ -22,7 +23,6 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Character Mesh 설정
@@ -36,7 +36,6 @@ APlayerCharacter::APlayerCharacter()
 	}
 	
 	//Animation 설정
-	//static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/Alien_BP.Alien_BP_C"));
 	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"));
 
 	if (Alien_Anim.Succeeded())
@@ -78,22 +77,37 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	playerController_ = Cast<AWarPlayerController>(GetController());
+	warPlayerState_ = Cast<AWarPlayerState>(GetPlayerState());
 
 	//Defalut weapon 장착
 	FName WeaponSocket(TEXT("RestGripPoint"));
 	weapon_ = GetWorld()->SpawnActor<AGunWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
 
-	if (weapon_ != nullptr)
+	if (playerController_ == nullptr)
 	{
-		MuzzleSocket = "Muzzle_01";
-		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
-		weapon_->SetMuzzleSocketPosition(GetMesh()->GetSocketLocation(MuzzleSocket), GetMesh()->GetSocketRotation(MuzzleSocket));
-		//weapon_->SetActorEnableCollision(false);
+		ABLOG(Error, TEXT("Nullptr : playerController_"));
+		return;
 	}
-	else
+
+	if (warPlayerState_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warPlayerState_"));
+		return;
+	}
+
+	if (weapon_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : weapon_"));
+		return;
 	}
+
+	MuzzleSocket = "Muzzle_01";
+	weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	weapon_->SetMuzzleSocketPosition(GetMesh()->GetSocketLocation(MuzzleSocket), GetMesh()->GetSocketRotation(MuzzleSocket));
+
+	playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
+
+	//characterSt
 
 	//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
 	//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
