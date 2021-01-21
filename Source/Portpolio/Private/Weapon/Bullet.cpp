@@ -41,7 +41,7 @@ void ABullet::Tick(float DeltaTime)
 	{
 		if (HitResult.GetActor())
 		{
-			//DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
+			DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
 
 			auto PlayerController = Cast<AWarPlayerController>(playerController_);
 

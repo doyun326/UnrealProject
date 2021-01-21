@@ -9,6 +9,7 @@
 #include "PlayerAnimInstance.generated.h"
 
 DECLARE_DELEGATE_OneParam(FOnChangeSocketDele, FString);
+DECLARE_MULTICAST_DELEGATE(FOnFireCheckDelegeate);
 
 /**
  * 局聪皋捞记 包府甫 困茄 AnimInstance积己
@@ -23,8 +24,12 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 	
-	void	PlayDiveJumpMontage();
+	UFUNCTION()
+		void	AnimNotify_FireBullet();
+
 	void	PlayFireMontage();
+
+	FOnFireCheckDelegeate onFireBulletCheck_;
 	
 	//Test
 	FOnChangeSocketDele		OnChangeWalkSocket;
@@ -45,6 +50,8 @@ private:
 		bool			isInAir_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterState", meta = (AllowPrivateAccess = true))
 		float			lookPitch_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterState", meta = (AllowPrivateAccess = true))
+		bool			isZoom_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "MapInformation", meta = (AllowPrivateAccess = true))
 		bool			isLoby_;
 

@@ -117,7 +117,6 @@ void AWarPlayerController::ZoomInReleased()
 //구르기 모션
 void AWarPlayerController::DiveJump()
 {
-	myCharacter_->PlayMontageDiveJump();
 	ABLOG(Warning, TEXT("It's Dive Jump!!! %f"), myCharacter_->GetActorLocation().X);
 }
 

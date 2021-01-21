@@ -31,7 +31,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 
-	void			PlayMontageDiveJump();
 	bool			GetIsFire();
 	bool			GetSprintBtn();
 	ControlMode		GetCurrentControllMode();
@@ -41,19 +40,20 @@ public:
 	void			SetSprintBtn(bool _newState);
 	void			SetViewMode(ViewMode _newMode);
 	void			OnFire(bool _firBtn); //탄알 발사(RayCast)
+	void			WeaponFire();
 	bool			GetIsWalking();
+	bool			GetIsZoom();
 
-	class AGunWeapon* GetCurrentWeapon();
-	class USkeletalMeshComponent* GetSkelMesh();
+	class USkeletalMeshComponent*	GetSkelMesh();
 
 	//카메라 설정
-	UPROPERTY(EditAnywhere, Category = Camera)
+	UPROPERTY(EditAnywhere, Category = "Camera")
 		UCameraComponent*		camera_;
-	UPROPERTY(EditAnywhere, Category = Camera)
+	UPROPERTY(EditAnywhere, Category = "Camera")
 		USpringArmComponent*	cameraArm_;
 
 	//캐릭터 스텟 설정
-	UPROPERTY(VisibleAnywhere, Category = Stat)
+	UPROPERTY(VisibleAnywhere, Category = "Stat")
 		class UPlayerStatComponent* playerStat_;
 
 	float		armLengthTo_;
@@ -68,16 +68,14 @@ private:
 
 	bool		isFire_;
 	bool		isSprint_;
+	bool		isZoomIn_;
 	float		lookPitch_;
 	float		camArmLength_;
-	FVector		socketLocation_;
 	FVector		playerLocation_;
 	FRotator	playerRotator_;
 	FVector		fireLookPosition_;
 	FVector		startPoint_;
 	FVector		endPoint_;
 	FVector		forwardVector_;
-
-
-	FName MuzzleSocket;
+	FName		MuzzleSocket;
 };

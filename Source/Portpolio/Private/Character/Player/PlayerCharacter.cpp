@@ -67,6 +67,7 @@ APlayerCharacter::APlayerCharacter()
 
 	isFire_ = false;
 	isSprint_ = false;
+	isZoomIn_ = false;
 
 	SetViewMode(ViewMode::COMMONVIEW);
 }
@@ -87,20 +88,15 @@ void APlayerCharacter::BeginPlay()
 		MuzzleSocket = "Muzzle_01";
 		weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 		weapon_->SetMuzzleSocketPosition(GetMesh()->GetSocketLocation(MuzzleSocket), GetMesh()->GetSocketRotation(MuzzleSocket));
+		//weapon_->SetActorEnableCollision(false);
 	}
 	else
 	{
 		ABLOG(Error, TEXT("Nullptr : weapon_"));
 	}
 
-	playerAnim_ = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (playerAnim_ != nullptr)
-	{
-		ABLOG(Warning, TEXT("Success : PlayerAnim"));
-		//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
-		//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
-	}
+	//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
+	//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, GetWorld()->GetName());
 }
 
@@ -124,7 +120,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		ABLOG(Error, TEXT("Nullptr : weapon"));
 	}
-	
 
 	startPoint_ = camera_->GetComponentLocation();
 	camArmLength_ = cameraArm_->TargetArmLength;
@@ -193,6 +188,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void APlayerCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	playerAnim_ = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (playerAnim_ != nullptr)
+	{
+		ABLOG(Warning, TEXT("Success : PlayerAnim"));
+		playerAnim_->onFireBulletCheck_.AddUObject(this, &APlayerCharacter::WeaponFire);
+	}
 }
 
 void APlayerCharacter::SetViewMode(ViewMode _newMode)
@@ -217,6 +220,7 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
+		isZoomIn_ = false;
 
 		break;
 	}
@@ -226,6 +230,7 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		GetCharacterMovement()->MaxWalkSpeed = 800.0f;
 		armLengthTo_ = ZOOMIN_ARMLENGTH;
 		camera_->FieldOfView = ZOOMIN_FIELDVIEW;
+		isZoomIn_ = true;
 		break;
 	}
 	}
@@ -234,22 +239,12 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 void APlayerCharacter::OnFire(bool _firBtn)
 {
 	isFire_ = _firBtn;
-	weapon_->OnFire(_firBtn);
 }
 
-void APlayerCharacter::PlayMontageDiveJump()
+void APlayerCharacter::WeaponFire()
 {
-	auto AnimInstance = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (AnimInstance != nullptr)
-	{
-		AnimInstance->PlayDiveJumpMontage();
-	}
-}
-
-AGunWeapon* APlayerCharacter::GetCurrentWeapon()
-{
-	return weapon_;
+	//weapon_->OnFire(isFire_);
+	weapon_->ShootBullet();
 }
 
 ControlMode APlayerCharacter::GetCurrentControllMode()
@@ -295,4 +290,9 @@ USkeletalMeshComponent* APlayerCharacter::GetSkelMesh()
 bool APlayerCharacter::GetIsWalking()
 {
 	return isWalk_;
+}
+
+bool	APlayerCharacter::GetIsZoom()
+{
+	return isZoomIn_;
 }

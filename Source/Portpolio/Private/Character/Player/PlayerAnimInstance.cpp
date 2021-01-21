@@ -16,6 +16,7 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	//isWalk_ = false;
 	isInAir_ = false;
 	isLoby_ = false;
+	isZoom_ = false;
 
 	//구르기 모션 가져오기
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> JUMP_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/DiveJump_MT.DiveJump_MT"));
@@ -74,6 +75,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isWalk_ = Character_->GetIsWalking();
 			lookPitch_ = Character_->GetLookPitch();
 			currentChrSpeed_ = Pawn->GetVelocity().Size();
+			isZoom_ = Character_->GetIsZoom();
 		}
 
 		//state 형식으로 바꿀것,
@@ -123,10 +125,9 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	//ABLOG(Warning, TEXT("%d"), isFire_);
 }
 
-//DiveJump Montage
-void UPlayerAnimInstance::PlayDiveJumpMontage()
+void UPlayerAnimInstance::AnimNotify_FireBullet()
 {
-	
+	onFireBulletCheck_.Broadcast();
 }
 
 //Fire Gun Montage

@@ -23,6 +23,7 @@ AGunWeapon::AGunWeapon()
 
 	weapon_ = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
 	RootComponent = weapon_;
+	weapon_->SetCollisionProfileName(TEXT("No Collison"));
 
 	//πﬂªÁ ¿Ã∆Â∆Æ
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FIRE_EFFECT(TEXT(FIRE_EFFECT_PATH));
@@ -95,6 +96,11 @@ void AGunWeapon::OnFire(bool _fire)
 			GetWorld()->GetTimerManager().ClearTimer(shootDelayTimerHandle_);
 		}
 	}
+}
+
+void AGunWeapon::FireShootGun()
+{
+
 }
 
 void AGunWeapon::ShootBullet()
