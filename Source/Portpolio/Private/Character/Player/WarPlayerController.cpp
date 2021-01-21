@@ -3,11 +3,23 @@
 
 #include "../Public/Character/Player/WarPlayerController.h"
 #include "../Public/Character/Player/PlayerAnimInstance.h"
+#include "../Public/UI//PlayerHudWidget.h"
 
 #include "Engine/Engine.h"
 
+#define PLAYERHUD_WIDGET "/Game/My/Asset/UI/PlayerStausBar_UI.PlayerStausBar_UI_C"
+
 AWarPlayerController::AWarPlayerController()
 {
+	//Player Widget
+	static ConstructorHelpers::FClassFinder<UPlayerHudWidget> PLAYER_HUD(TEXT(PLAYERHUD_WIDGET));
+
+	if (PLAYER_HUD.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : UI_HUD"));
+		hudWidgetClass = PLAYER_HUD.Class;
+	}
+
 	zoomInBtn_ = false;
 	sprintBtn_ = false;
 	fireBtn_ = false;
@@ -100,8 +112,16 @@ void AWarPlayerController::BeginPlay()
 		ABLOG(Error, TEXT("Nullptr : myCharacter"));
 	}
 
-	//Player Input Mode에 연결 (까먹지 말기)
+	//Player Input Mode에 연결
 	SetInputMode(FInputModeGameOnly());
+
+	if (hudWidgetClass == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : hudWidgetClass"))
+		return;
+	}
+	hudWidget_ = CreateWidget<UPlayerHudWidget>(this, hudWidgetClass);
+	hudWidget_->AddToViewport();
 }
 
 void AWarPlayerController::ZoomInStarted()
@@ -145,4 +165,9 @@ void AWarPlayerController::OnFireReleased()
 bool AWarPlayerController::GetFireBtn()
 {
 	return fireBtn_;
+}
+
+class UPlayerHudWidget* AWarPlayerController::GetHudWidget() const
+{
+	return hudWidget_;
 }

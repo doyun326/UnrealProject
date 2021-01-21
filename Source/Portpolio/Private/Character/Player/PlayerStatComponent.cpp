@@ -30,7 +30,6 @@ void UPlayerStatComponent::InitializeComponent()
 
 }
 
-
 // Called every frame
 void UPlayerStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

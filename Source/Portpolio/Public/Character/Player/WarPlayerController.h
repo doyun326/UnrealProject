@@ -18,18 +18,24 @@ class PORTPOLIO_API AWarPlayerController : public APlayerController
 public:
 	AWarPlayerController();
 
-public:
 	virtual void PostInitializeComponents() override;
 	virtual void OnPossess(APawn* aPawn) override;
 	virtual void ProcessPlayerInput(const float DeltaTime, const bool bGamePaused) override;
 
 	bool	GetFireBtn();
+	class UPlayerHudWidget* GetHudWidget() const;
 
 protected:
 	virtual void SetupInputComponent() override;
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+		TSubclassOf<class UPlayerHudWidget>	hudWidgetClass;
+
 private:
+	UPROPERTY()
+		class UPlayerHudWidget* hudWidget_;
+
 	void	ZoomInStarted();
 	void	ZoomInReleased();
 	void	DiveJump();

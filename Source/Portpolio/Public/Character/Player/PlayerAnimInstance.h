@@ -56,8 +56,6 @@ private:
 		bool			isLoby_;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
-		UAnimMontage*	diveMontage_;
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	walkMontage_;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "ActionMotion", meta = (AllowPrivateAccess = true))
 		UAnimMontage*	restMontage_;

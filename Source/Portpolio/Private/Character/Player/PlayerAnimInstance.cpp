@@ -11,16 +11,6 @@
 
 UPlayerAnimInstance::UPlayerAnimInstance()
 {	
-	currentChrSpeed_ = 0.0f;
-	isFire_ = false;
-	//isWalk_ = false;
-	isInAir_ = false;
-	isLoby_ = false;
-	isZoom_ = false;
-
-	//구르기 모션 가져오기
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> JUMP_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/DiveJump_MT.DiveJump_MT"));
-
 	//RestMontage
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> REST_MONTAGE(TEXT("/Game/My/Blueprints/Anim/Character/BlendPose/Rest_IDLE_MT.Rest_IDLE_MT"));
 
@@ -39,11 +29,6 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	//Flahs System
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_SYSTEM(TEXT(FLASH_SYSTEM_PATH));
 
-	if (JUMP_MONTAGE.Succeeded())
-	{
-		diveMontage_ = JUMP_MONTAGE.Object;
-	}
-
 	if (REST_MONTAGE.Succeeded())
 	{
 		restMontage_ = REST_MONTAGE.Object;
@@ -54,6 +39,13 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 		flashEffect_ = FLASH_EFFECT.Object;
 		flashSystem_ = FLASH_SYSTEM.Object;
 	}
+
+	currentChrSpeed_ = 0.0f;
+	isFire_ = false;
+	//isWalk_ = false;
+	isInAir_ = false;
+	isLoby_ = false;
+	isZoom_ = false;
 }
 
 //Pawn Speed 사용
