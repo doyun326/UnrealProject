@@ -22,7 +22,7 @@ UWarGameInstance::UWarGameInstance()
 
 	if (PLAYER_DT.Succeeded())
 	{
-		playerTable_ = ADENEMY_DT.Object;
+		playerTable_ = PLAYER_DT.Object;
 		ABLOG(Warning, TEXT("Success : PlayerTable"));
 	}
 }

@@ -46,16 +46,14 @@ void UADEnemyStatComponent::SetNewLevel(int32 _newLevel)
 
 	currentStatData_ = WarGameInstance->GetADEnemyData(_newLevel);
 
-	if (currentStatData_ != nullptr)
+	if (currentStatData_ == nullptr)
 	{
-		level_ = _newLevel;
-		SetHp(currentStatData_->MaxHP);
-		currentHP_ = currentStatData_->MaxHP;
+		ABLOG(Error, TEXT("Nullptr : CurrentStatData"));
+		return;
 	}
-	else
-	{
-		ABLOG(Error, TEXT("Level : %d data dosn't exit"));
-	}
+	level_ = _newLevel;
+	SetHp(currentStatData_->MaxHP);
+	currentHP_ = currentStatData_->MaxHP;
 }
 
 void UADEnemyStatComponent::SetHp(float _newHp)

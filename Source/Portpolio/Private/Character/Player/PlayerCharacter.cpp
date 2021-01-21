@@ -6,6 +6,7 @@
 #include "../Public/Character/Player/PlayerStatComponent.h"
 #include "../Public/Weapon/GunWeapon.h"
 #include "../Public/Character/Player/WarPlayerState.h"
+#include "..//Public/UI/PlayerHudWidget.h"
 
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
@@ -89,12 +90,6 @@ void APlayerCharacter::BeginPlay()
 		return;
 	}
 
-	if (warPlayerState_ == nullptr)
-	{
-		ABLOG(Error, TEXT("Nullptr : warPlayerState_"));
-		return;
-	}
-
 	if (weapon_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : weapon_"));
@@ -105,9 +100,15 @@ void APlayerCharacter::BeginPlay()
 	weapon_->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 	weapon_->SetMuzzleSocketPosition(GetMesh()->GetSocketLocation(MuzzleSocket), GetMesh()->GetSocketRotation(MuzzleSocket));
 
-	playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
+	//Loading
+	if (warPlayerState_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warPlayerState_"));
+		return;
+	}
 
-	//characterSt
+	playerController_->GetHudWidget()->BindPlayerStat(playerStat_);
+	playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
 
 	//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
 	//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));

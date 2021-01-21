@@ -3,7 +3,6 @@
 #include "../Public/Character/Player/PlayerStatComponent.h"
 #include "../Public/GameSetting/WarGameInstance.h"
 
-// Sets default values for this component's properties
 UPlayerStatComponent::UPlayerStatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -17,8 +16,6 @@ UPlayerStatComponent::UPlayerStatComponent()
 void UPlayerStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 	
 }
 
@@ -27,15 +24,12 @@ void UPlayerStatComponent::InitializeComponent()
 	Super::InitializeComponent();
 
 	SetNewLevel(currentLevel_);
-
 }
 
-// Called every frame
 void UPlayerStatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
 }
 
 void UPlayerStatComponent::SetNewLevel(int32 _newLevel)
@@ -48,18 +42,20 @@ void UPlayerStatComponent::SetNewLevel(int32 _newLevel)
 		return;
 	}
 
-	currentStatData_ = WarGameInstance->GetADEnemyData(_newLevel);
+	currentStatData_ = WarGameInstance->GetPlayerData(_newLevel);
 
-	if (currentStatData_ != nullptr)
-	{
-		currentLevel_ = _newLevel;
-		SetHp(currentStatData_->MaxHP);
-		currentHP_ = currentStatData_->MaxHP;
-	}
-	else
+	if (currentStatData_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : currentStatData"));
+		return;
 	}
+
+	currentLevel_ = _newLevel;
+
+	SetHp(currentStatData_->MaxHP);
+	currentHP_ = currentStatData_->MaxHP;
+	SetMp(currentStatData_->MaxMP);
+	currentMP_ = currentStatData_->MaxMP;
 }
 
 void UPlayerStatComponent::SetHp(float _newHp)
@@ -73,6 +69,22 @@ void UPlayerStatComponent::SetHp(float _newHp)
 	}
 }
 
+void UPlayerStatComponent::SetMp(float _newMp)
+{
+	currentMP_ = _newMp;
+	onMpChanged_.Broadcast();
+
+	if (currentMP_ < KINDA_SMALL_NUMBER)
+	{
+		currentMP_ = 0.0f;
+	}
+}
+
+void UPlayerStatComponent::SetExp(int32 _newExp)
+{
+	currentEXP_ = _newExp;
+}
+
 float UPlayerStatComponent::GetHpRatio()
 {
 	if (currentStatData_ == nullptr)
@@ -81,4 +93,24 @@ float UPlayerStatComponent::GetHpRatio()
 		return 0.0f;
 	}
 	return (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP);
+}
+
+float UPlayerStatComponent::GetHpText()
+{
+	return currentHP_;
+}
+
+float UPlayerStatComponent::GetMpRatio()
+{
+	if (currentStatData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
+		return 0.0f;
+	}
+	return (currentStatData_->MaxMP < KINDA_SMALL_NUMBER) ? 0.0f : (currentMP_ / currentStatData_->MaxMP);
+}
+
+float UPlayerStatComponent::GetMpText()
+{
+	return currentMP_;
 }

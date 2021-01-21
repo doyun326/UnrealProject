@@ -16,6 +16,7 @@ void UPlayerHudWidget::BindPlayerStat(class UPlayerStatComponent* _playerStat)
 	}
 	currentPlayerStat_ = _playerStat;
 	currentPlayerStat_->onHpChanged_.AddUObject(this, &UPlayerHudWidget::UpdatePlayerStat);
+	currentPlayerStat_->onMpChanged_.AddUObject(this, &UPlayerHudWidget::UpdatePlayerStat);
 }
 
 void UPlayerHudWidget::BindWarPlayerState(class AWarPlayerState* _playerState)
@@ -84,7 +85,10 @@ void UPlayerHudWidget::UpdatePlayerStat()
 		ABLOG(Error, TEXT("Nullptr : currentPlayerStat_"));
 		return;
 	}
+	hpText_->SetText(FText::FromString(FString::FromInt(currentPlayerStat_->GetHpText())));
 	hpBar_->SetPercent(currentPlayerStat_->GetHpRatio());
+	mpText_->SetText(FText::FromString(FString::FromInt(currentPlayerStat_->GetMpText())));
+	mpBar_->SetPercent(currentPlayerStat_->GetMpRatio());
 }
 
 void UPlayerHudWidget::UpdateWarPlayerState()
