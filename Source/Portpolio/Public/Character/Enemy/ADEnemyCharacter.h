@@ -37,4 +37,6 @@ protected:
 private:
 	UPROPERTY()
 		class UADAnimInstance* ADAnim_;
+	UPROPERTY()
+		class UEnemyHPWidget* EnemyHpWidget_;
 };

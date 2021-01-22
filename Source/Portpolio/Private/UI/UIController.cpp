@@ -5,10 +5,12 @@
 
 #include "Blueprint/UserWidget.h"
 
+#define TITLEUI_PATH "/Game/My/Blueprints/UI/UI_Title.UI_Title_C"
+
 AUIController::AUIController()
 {
 	//Title UI Object
-	static ConstructorHelpers::FObjectFinder<UClass> TITLE_UI(TEXT("/Game/My/Asset/UI/UI_Title.UI_Title_C"));
+	static ConstructorHelpers::FObjectFinder<UClass> TITLE_UI(TEXT(TITLEUI_PATH));
 
 	if (TITLE_UI.Succeeded())
 	{

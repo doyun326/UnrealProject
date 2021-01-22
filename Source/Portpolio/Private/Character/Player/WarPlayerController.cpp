@@ -8,7 +8,7 @@
 
 #include "Engine/Engine.h"
 
-#define PLAYERHUD_WIDGET "/Game/My/Asset/UI/PlayerStausBar_UI.PlayerStausBar_UI_C"
+#define PLAYERHUD_WIDGET "/Game/My/Blueprints/UI/PlayerStausBar_UI.PlayerStausBar_UI_C"
 
 AWarPlayerController::AWarPlayerController()
 {

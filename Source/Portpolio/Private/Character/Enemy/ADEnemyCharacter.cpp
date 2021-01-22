@@ -8,8 +8,9 @@
 
 #include "Components/WidgetComponent.h"
 
-#define ENEMYMESH_PATH	"/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
-#define ADANIM_PATH			"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
+#define ENEMYMESH_PATH			"/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
+#define ADANIM_PATH				"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
+#define ADENEMY_WIDGET_PATH		"/Game/My/Blueprints/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"
 
 AADEnemyCharacter::AADEnemyCharacter()
 {
@@ -55,13 +56,14 @@ AADEnemyCharacter::AADEnemyCharacter()
 	HPBarWidget_->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
 	HPBarWidget_->SetWidgetSpace(EWidgetSpace::Screen);
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_ENEMYHP(TEXT("/Game/My/Asset/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_ENEMYHP(TEXT(ADENEMY_WIDGET_PATH));
 
 	if (UI_ENEMYHP.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : UI_ENEMYHP"));
+
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
-		ABLOG(Warning, TEXT("Success : UI_ENEMYHP"));
 	}
 } 
 
@@ -77,11 +79,15 @@ void AADEnemyCharacter::BeginPlay()
 	}
 
 	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
-	auto EnemyHpWidget = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
 
-	if (EnemyHpWidget != nullptr)
+	if (HPBarWidget_ != nullptr)
 	{
-		EnemyHpWidget->BindCharacterStat(enemyStat_);
+		EnemyHpWidget_ = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
+
+		if (EnemyHpWidget_ != nullptr)
+		{
+			EnemyHpWidget_->BindCharacterStat(enemyStat_);
+		}
 	}
 	
 	bUseControllerRotationYaw = false;
