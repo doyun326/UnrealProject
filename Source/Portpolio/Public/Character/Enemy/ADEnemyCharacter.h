@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameSetting/Portpolio.h"
+
 #include "Character/BaseCharacter.h"
 #include "ADEnemyCharacter.generated.h"
 
@@ -25,9 +26,9 @@ public:
 
 	void	EnemyDestroy();
 
-	UPROPERTY(EditAnywhere, Category = UI)
+	UPROPERTY(EditAnywhere, Category = "UI")
 		class UWidgetComponent*	HPBarWidget_;
-	UPROPERTY(VisibleAnywhere, Category = Stat)
+	UPROPERTY(VisibleAnywhere, Category = "Stat")
 		class UADEnemyStatComponent* enemyStat_;
 
 protected:
@@ -38,5 +39,5 @@ private:
 	UPROPERTY()
 		class UADAnimInstance* ADAnim_;
 	UPROPERTY()
-		class UEnemyHPWidget* EnemyHpWidget_;
+		class UEnemyHPWidget* EnemyHpWidget_;	
 };

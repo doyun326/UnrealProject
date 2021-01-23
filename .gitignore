@@ -8,14 +8,16 @@
 *Intermediate
 *Saved
 *Content/StartPack
-*Content/My/Asset
-*Content/ParagonWraith
 
 ############
 #Asset Files#
 #/Content/AssetFolderName1#
 ###########
-
+*Content/My/Asset
+*Content/ParagonWraith
+*Content/InfinityBladeGrassLands
+*Content/ParagonKhaimera
+*Content/ParagonMinions
 
 
 ##################

@@ -79,7 +79,6 @@ void AADEnemyCharacter::BeginPlay()
 	}
 
 	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
-
 	if (HPBarWidget_ != nullptr)
 	{
 		EnemyHpWidget_ = Cast<UEnemyHPWidget>(HPBarWidget_->GetUserWidgetObject());
@@ -126,7 +125,6 @@ void AADEnemyCharacter::PostInitializeComponents()
 		ABLOG(Error, TEXT("Nullptr : enemyStat"));
 		return;
 	}
-
 }
 
 void AADEnemyCharacter::PossessedBy(AController* NewController)
