@@ -9,8 +9,8 @@
 
 #define OPERATORMESH_PATH	"/Game/My/Asset/Character/Operator/Original_Bone/Idle.Idle"
 #define OPERANIM_PATH		"/Game/My/Blueprints/Anim/Npc/OperAnim_BP.OperAnim_BP_C"
-//#define PRESSEBTN_PATH		"/Game/My/Blueprints/UI/Npc/NpcInteractUI.NpcInteractUI_C"
-#define PRESSEBTN_PATH		"/Game/My/Blueprints/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"
+#define PRESSEBTN_PATH		"/Game/My/Blueprints/UI/Npc/NpcInteractUI.NpcInteractUI_C"
+//#define PRESSEBTN_PATH		"/Game/My/Blueprints/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"
 
 ANpcOperator::ANpcOperator()
 {
