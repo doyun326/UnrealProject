@@ -21,7 +21,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	if (ControllingPawn == nullptr)
 	{
-		ABLOG(Warning, TEXT("Controlling is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : Controlling Pawn"));
 		return;
 	}
 
@@ -31,7 +31,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 
 	if (World == nullptr)
 	{
-		ABLOG(Warning, TEXT("World is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : World"));
 		return;
 	}
 	

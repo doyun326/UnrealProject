@@ -18,7 +18,7 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 
 	if (ControllingPawn == nullptr)
 	{
-		ABLOG(Warning, TEXT("Controlling Pawn is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : Controlling Pawn"));
 		return EBTNodeResult::Failed;
 	}
 
@@ -26,11 +26,12 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 
 	if (NavSystem == nullptr)
 	{
-		ABLOG(Warning, TEXT("NavSystem is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : NavSystem"));
 		return EBTNodeResult::Failed;
 	}
 
 	FVector Origin = OwnerComp.GetBlackboardComponent()->GetValueAsVector(AADAIController::homePosKey_);
+
 	FNavLocation NextPatrol;
 
 	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.0f, NextPatrol))

@@ -14,5 +14,11 @@ UCLASS()
 class PORTPOLIO_API ABossAIController : public AAIController
 {
 	GENERATED_BODY()
+
+public:
+	ABossAIController();
+
+	virtual void OnPossess(APawn* InPawn) override;
 	
+private:
 };
