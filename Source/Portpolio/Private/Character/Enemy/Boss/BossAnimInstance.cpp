@@ -11,4 +11,11 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
+	auto Pawn = TryGetPawnOwner();
+
+	if (::IsValid(Pawn))
+	{
+		curSpeed_ = Pawn->GetVelocity().Size();
+		//ABLOG(Warning, TEXT("%f"), curSpeed_);
+	}
 }

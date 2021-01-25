@@ -25,8 +25,8 @@ private:
 	UFUNCTION()
 		void AnimNotify_DieEnd();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AIStat, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		float	curSpeed_;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AIStat, meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		bool	isDead_;
 };

@@ -2,6 +2,7 @@
 
 #include "../Public/Character/Enemy/BTTask_FindPatrolPos.h"
 #include "../Public/Character/Enemy/ADAIController.h"
+
 #include "BehaviorTree/BlackboardComponent.h"
 #include "NavigationSystem.h"
 

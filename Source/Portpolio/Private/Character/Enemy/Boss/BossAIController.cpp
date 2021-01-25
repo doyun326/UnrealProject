@@ -44,7 +44,7 @@ void ABossAIController::OnPossess(APawn* InPawn)
 
 		if (!RunBehaviorTree(bossBT_))
 		{
-			ABLOG(Warning, TEXT("AIController couldn't BehaviorTree!"));
+			ABLOG(Warning, TEXT("BossAIController couldn't BehaviorTree!"));
 		}
 	}
 }
