@@ -7,12 +7,12 @@
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+#define BLACKBOARD_PATH "/Game/My/AI/ADEnemy_BB.ADEnemy_BB"
+#define BEHAVIORTREE_PATH "/Game/My/AI/ADEnemy_BT.ADEnemy_BT"
+
 const FName AADAIController::homePosKey_(TEXT("HomePos"));
 const FName AADAIController::patrolPosKey_(TEXT("PatrolPos"));
 const FName AADAIController::targetKey_(TEXT("Target"));
-
-#define BLACKBOARD_PATH "/Game/My/AI/ADEnemy_BB.ADEnemy_BB"
-#define BEHAVIORTREE_PATH "/Game/My/AI/ADEnemy_BT.ADEnemy_BT"
 
 AADAIController::AADAIController()
 {
@@ -21,6 +21,7 @@ AADAIController::AADAIController()
 
 	if (BBObject.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Succeess : ADBlackBoard"));
 		assetBB_ = BBObject.Object;
 	}
 
@@ -29,6 +30,7 @@ AADAIController::AADAIController()
 
 	if (BTObject.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Succeess : ADBehaviorTree"));
 		assetBT_ = BTObject.Object;
 	}
 }

@@ -28,5 +28,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	
+	UPROPERTY()
+		class UBossAnimInstance* bossAnim_;
 };
