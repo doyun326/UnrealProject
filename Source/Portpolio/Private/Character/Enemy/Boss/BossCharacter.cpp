@@ -69,5 +69,4 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	return FinalDamage;
-
 }
