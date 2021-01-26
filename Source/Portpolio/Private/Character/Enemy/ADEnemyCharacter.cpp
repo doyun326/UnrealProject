@@ -73,9 +73,10 @@ void AADEnemyCharacter::BeginPlay()
 
 	ADAnim_ = Cast<UADAnimInstance>(GetMesh()->GetAnimInstance());
 
-	if (ADAnim_ != nullptr)
+	if (ADAnim_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("Success : ADEnemyAnim"));
+		ABLOG(Error, TEXT("Nullptr : ADEnemyAnim"));
+		return;
 	}
 
 	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)

@@ -29,7 +29,7 @@ ABossAIController::ABossAIController()
 
 	if (BTObject.Succeeded())
 	{
-		ABLOG(Warning, TEXT("Succeess : BossBevior Tree"));
+		ABLOG(Warning, TEXT("Succeess : BossBeviorTree"));
 		bossBT_ = BTObject.Object;
 	}
 }
@@ -41,7 +41,6 @@ void ABossAIController::OnPossess(APawn* InPawn)
 	if (UseBlackboard(bossBB_, Blackboard))
 	{
 		Blackboard->SetValueAsVector(homePosKey_, InPawn->GetActorLocation());
-
 		if (!RunBehaviorTree(bossBT_))
 		{
 			ABLOG(Warning, TEXT("BossAIController couldn't BehaviorTree!"));

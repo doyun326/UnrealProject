@@ -36,6 +36,24 @@ ABossCharacter::ABossCharacter()
 	}
 }
 
+void ABossCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	bossAnim_ = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (bossAnim_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : BossEnemyAnim"));
+		return;
+	}
+
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
+}
+
 void ABossCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -57,11 +75,7 @@ void ABossCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-}
-
-void ABossCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 }
 
 float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)

@@ -15,13 +15,37 @@ AWarGameMode::AWarGameMode()
 	DefaultPawnClass = APlayerCharacter::StaticClass();
 	PlayerControllerClass = AWarPlayerController::StaticClass();
 	PlayerStateClass = AWarPlayerState::StaticClass();
+	HUDClass = AWarHUD::StaticClass();
 
-	if (PlayerControllerClass != nullptr)
+	if (DefaultPawnClass == nullptr)
 	{
-		ABLOG(Warning, TEXT("Success : PlayerControllerClass"));
+		ABLOG(Error, TEXT("Nullptr : DefaultPawnClass"));
+		return;
 	}
 
-	HUDClass = AWarHUD::StaticClass();
+	if (PlayerControllerClass == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerControllerClass"));
+		return;
+	}
+
+	if (PlayerStateClass == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerStateClass"));
+		return;
+	}
+
+	if (PlayerControllerClass == nullptr)
+	{
+		ABLOG(Error, TEXT("Error : PlayerControllerClass"));
+		return;
+	}
+
+	if (HUDClass == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : HUDClass"));
+		return;
+	}
 }
 
 void AWarGameMode::PostInitializeComponents()
