@@ -86,3 +86,8 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 	return FinalDamage;
 }
+
+void ABossCharacter::Attack()
+{
+	ABLOG(Warning, TEXT("Boss Attack!!!!!!"));
+}
