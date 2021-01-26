@@ -37,7 +37,6 @@ void ABaseCharacter::Tick(float DeltaTime)
 	{
 		isWalk_ = true;
 	}
-
 }
 
 // Called to bind functionality to input

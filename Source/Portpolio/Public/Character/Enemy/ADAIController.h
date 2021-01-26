@@ -26,9 +26,9 @@ public:
 
 private:
 	UPROPERTY()
-		class UBehaviorTree*	assetBT_;
+		class UBehaviorTree*			assetBT_;
 	UPROPERTY()
-		class UBlackboardData*	assetBB_;
+		class UBlackboardData*			assetBB_;
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		class UBehaviorTreeComponent*	behaviorTree_;
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))

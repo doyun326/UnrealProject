@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../Public/Character/Enemy/Boss/BTBossTask_FindPatrolPos.h"
+#include "../Public/Character/Enemy/Boss/BTTask_BossFindPatrolPos.h"
 #include "../Public/Character/Enemy/Boss/BossAIController.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "NavigationSystem.h"
 
-UBTBossTask_FindPatrolPos::UBTBossTask_FindPatrolPos()
+UBTTask_BossFindPatrolPos::UBTTask_BossFindPatrolPos()
 {
 	NodeName = TEXT("FindPatrolPos");
 }
 
-EBTNodeResult::Type UBTBossTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_BossFindPatrolPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
@@ -43,3 +43,4 @@ EBTNodeResult::Type UBTBossTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponen
 
 	return EBTNodeResult::Failed;
 }
+

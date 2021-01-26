@@ -5,18 +5,18 @@
 #include "GameSetting/Portpolio.h"
 
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTBossTask_FindPatrolPos.generated.h"
+#include "BTTask_BossFindPatrolPos.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PORTPOLIO_API UBTBossTask_FindPatrolPos : public UBTTaskNode
+class PORTPOLIO_API UBTTask_BossFindPatrolPos : public UBTTaskNode
 {
 	GENERATED_BODY()
 
 public:
-	UBTBossTask_FindPatrolPos();
+	UBTTask_BossFindPatrolPos();
 
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
