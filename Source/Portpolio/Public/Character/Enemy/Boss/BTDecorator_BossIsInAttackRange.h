@@ -15,4 +15,13 @@ class PORTPOLIO_API UBTDecorator_BossIsInAttackRange : public UBTDecorator
 {
 	GENERATED_BODY()
 	
+public:
+	UBTDecorator_BossIsInAttackRange();
+
+protected:
+	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
+
+private:
+
+
 };
