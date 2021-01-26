@@ -8,9 +8,11 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 
+#define DETECT_RADIUS 3000.0f
+
 UBTService_BossDetect::UBTService_BossDetect()
 {
-	NodeName = TEXT("Detect");
+	NodeName = TEXT("BossDetect");
 	Interval = 1.0f;
 }
 
@@ -28,7 +30,7 @@ void UBTService_BossDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 
 	UWorld* World = ControllingPawn->GetWorld();
 	FVector Center = ControllingPawn->GetActorLocation();
-	float	DetectRadius = 600.0f;
+	float	DetectRadius = DETECT_RADIUS;
 
 	if (World == nullptr)
 	{

@@ -8,7 +8,7 @@
 
 UBTTask_BossFindPatrolPos::UBTTask_BossFindPatrolPos()
 {
-	NodeName = TEXT("FindPatrolPos");
+	NodeName = TEXT("BossFindPatrolPos");
 }
 
 EBTNodeResult::Type UBTTask_BossFindPatrolPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
