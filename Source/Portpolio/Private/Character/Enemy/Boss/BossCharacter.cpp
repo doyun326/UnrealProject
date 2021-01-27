@@ -7,7 +7,7 @@
 #define BOSSMESH_PATH	"/Game/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera.Khaimera"
 #define BOSSANIM_PATH	"/Game/My/Blueprints/Anim/Enemy/Boss/BossAnim_BP.BossAnim_BP_C"
 
-#define MAX_SPEED 500.0f
+#define MAX_SPEED			500.0f
 
 ABossCharacter::ABossCharacter()
 {
@@ -37,6 +37,9 @@ ABossCharacter::ABossCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_PATH.Class);
 	}
 
+	isFirstAttack_ = false;
+	isSecondAttack_ = false;
+	isThirdAttack_ = false;
 }
 
 void ABossCharacter::BeginPlay()
@@ -51,8 +54,11 @@ void ABossCharacter::BeginPlay()
 		return;
 	}
 
-	//Delegate
-	OnAttackEnd.AddUObject(this, &ABossCharacter::AttackStop);
+	//Delegate Setting	
+	//OnAttackEnd.AddUObject(this, &ABossCharacter::FirstAttackStop);
+	OnAttackFirEnd.AddUObject(this, &ABossCharacter::FirstAttackStop);
+	OnAttackSecEnd.AddUObject(this, &ABossCharacter::SecondAttackStop);
+	OnAttackThiEnd.AddUObject(this, &ABossCharacter::ThirdAttackStop);
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
@@ -91,17 +97,57 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	return FinalDamage;
 }
 
-void ABossCharacter::Attack()
+//void ABossCharacter::Attack()
+//{
+//	isFirstAttack_ = true;
+//	int32 Test = 0;
+//
+//	Test = FMath::RandRange(1, 3);
+//	ABLOG(Error, TEXT("%d"), Test);
+//
+//}
+
+void ABossCharacter::FirstAttack()
 {
-	isAttack_ = true;
+	isFirstAttack_ = true;
 }
 
-void ABossCharacter::AttackStop()
+void ABossCharacter::SecondAttack()
 {
-	isAttack_ = false;
+	isSecondAttack_ = true;
 }
 
-bool ABossCharacter::GetAttacking()
+void ABossCharacter::ThirdAttack()
 {
-	return isAttack_;
+	isThirdAttack_ = true;
+}
+
+void ABossCharacter::FirstAttackStop()
+{
+	isFirstAttack_ = false;
+}
+
+void ABossCharacter::SecondAttackStop()
+{
+	isSecondAttack_ = false;
+}
+
+void ABossCharacter::ThirdAttackStop()
+{
+	isThirdAttack_ = false;
+}
+
+bool ABossCharacter::GetFirstAttacking()
+{
+	return isFirstAttack_;
+}
+
+bool ABossCharacter::GetSecondAttacking()
+{
+	return isSecondAttack_;
+}
+
+bool ABossCharacter::GetThirdAttacking()
+{
+	return isThirdAttack_;
 }

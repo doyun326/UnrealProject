@@ -22,14 +22,22 @@ public:
 
 private:
 	UFUNCTION()
-		void	AnimNotify_AttackEnd();
+		void	AnimNotify_AttackFirEnd();
+	UFUNCTION()
+		void	AnimNotify_AttackSecEnd();
+	UFUNCTION()
+		void	AnimNotify_AttackThiEnd();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		float	curSpeed_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		bool	isDead_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
-		bool	isAttacking_;
+		bool	isFirstAttacking_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isSecondAttacking_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isThirdAttacking_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		bool	isInAir_;
 

@@ -7,6 +7,15 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_BossAttack.generated.h"
 
+enum ATTACK_PATTERN
+{
+	ATTACK_START,
+	ATTACK_ONE,
+	ATTACK_TWO,
+	ATTACK_THREE,
+	ATTACK_END
+};
+
 /**
  * 
  */

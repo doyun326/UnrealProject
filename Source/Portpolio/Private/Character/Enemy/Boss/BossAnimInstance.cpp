@@ -6,8 +6,10 @@
 UBossAnimInstance::UBossAnimInstance()
 {
 	curSpeed_ = 0.0f;
-	isAttacking_ = false;
 	isInAir_ = false;
+	isFirstAttacking_ = false;
+	isSecondAttacking_ = false;
+	isThirdAttacking_ = false;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -32,21 +34,42 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (::IsValid(Pawn))
 	{
 		curSpeed_ = Pawn->GetVelocity().Size();
-		isAttacking_ = character_->GetAttacking();
+		isFirstAttacking_ = character_->GetFirstAttacking();
+		isSecondAttacking_ = character_->GetSecondAttacking();
+		isThirdAttacking_ = character_->GetThirdAttacking();
 		isInAir_ = character_->GetMovementComponent()->IsFalling();
+		//isFirstAttacking_ = character_->GetAttacking();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 		//ABLOG(Warning, TEXT("%d"), isAttacking_);
 	}
 }
 
-void UBossAnimInstance::AnimNotify_AttackEnd()
+void UBossAnimInstance::AnimNotify_AttackFirEnd()
 {
-	ABLOG(Warning, TEXT("AttackEnd"));
 	if (character_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
+	character_->OnAttackFirEnd.Broadcast();
+}
 
-	character_->OnAttackEnd.Broadcast();
+void UBossAnimInstance::AnimNotify_AttackSecEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	character_->OnAttackSecEnd.Broadcast();
+}
+
+void UBossAnimInstance::AnimNotify_AttackThiEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	character_->OnAttackThiEnd.Broadcast();
 }

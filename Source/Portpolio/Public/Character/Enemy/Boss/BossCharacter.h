@@ -8,6 +8,9 @@
 #include "BossCharacter.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnAttackFirEndDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnAttackSecEndDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnAttackThiEndDelegate);
 
 /**
  * 
@@ -26,11 +29,21 @@ public:
 	virtual void	PossessedBy(AController* NewController) override;
 	virtual float	TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	void	Attack();
-	void	AttackStop();
-	bool	GetAttacking();
+	void	FirstAttack();
+	void	FirstAttackStop();
+	void	SecondAttack();
+	void	SecondAttackStop();
+	void	ThirdAttack();
+	void	ThirdAttackStop();
+
+	bool	GetFirstAttacking();
+	bool	GetSecondAttacking();
+	bool	GetThirdAttacking();
 
 	FOnAttackEndDelegate	OnAttackEnd;
+	FOnAttackFirEndDelegate	OnAttackFirEnd;
+	FOnAttackSecEndDelegate	OnAttackSecEnd;
+	FOnAttackThiEndDelegate	OnAttackThiEnd;
 
 protected:
 	virtual void BeginPlay() override;
@@ -39,5 +52,7 @@ private:
 	UPROPERTY()
 		class UBossAnimInstance* bossAnim_;
 
-	bool	isAttack_;
+	bool	isFirstAttack_;
+	bool	isSecondAttack_;
+	bool	isThirdAttack_;
 };

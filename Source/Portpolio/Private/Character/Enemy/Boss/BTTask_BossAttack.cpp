@@ -4,6 +4,9 @@
 #include "../Public/Character/Enemy/Boss/BossAIController.h"
 #include "../Public/Character/Enemy/Boss/BossCharacter.h"
 
+#define ATTACKRANGE_MIN		1
+#define ATTACKRANGE_MAX		3
+
 UBTTask_BossAttack::UBTTask_BossAttack()
 {
 	bNotifyTick = true;
@@ -16,6 +19,7 @@ EBTNodeResult::Type UBTTask_BossAttack::ExecuteTask(UBehaviorTreeComponent& Owne
 	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	auto Character = Cast<ABossCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	int32 RandNum = FMath::RandRange(ATTACKRANGE_MIN, ATTACKRANGE_MAX);
 
 	if (Character == nullptr)
 	{
@@ -23,9 +27,31 @@ EBTNodeResult::Type UBTTask_BossAttack::ExecuteTask(UBehaviorTreeComponent& Owne
 		return EBTNodeResult::Failed;
 	}
 
-	Character->Attack();
+	switch (RandNum)
+	{
+	case ATTACK_ONE:
+		Character->FirstAttack();
+		break;
+	case ATTACK_TWO:
+		Character->SecondAttack();
+		break;
+	case ATTACK_THREE:
+		Character->ThirdAttack();
+		break;
+	}
+
+	//Character->Attack();
 	isAttacking_ = true;
-	Character->OnAttackEnd.AddLambda([this]()-> void
+
+	Character->OnAttackFirEnd.AddLambda([this]()-> void
+		{
+			isAttacking_ = false;
+		});
+	Character->OnAttackSecEnd.AddLambda([this]()-> void
+		{
+			isAttacking_ = false;
+		});
+	Character->OnAttackThiEnd.AddLambda([this]()-> void
 		{
 			isAttacking_ = false;
 		});
