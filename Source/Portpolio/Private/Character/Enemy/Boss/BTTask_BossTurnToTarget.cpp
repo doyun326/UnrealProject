@@ -6,7 +6,7 @@
 #include "../Public/Character/Player/PlayerCharacter.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
-
+	
 UBTTask_BossTurnToTarget::UBTTask_BossTurnToTarget()
 {
 	NodeName = TEXT("BossTurn");
