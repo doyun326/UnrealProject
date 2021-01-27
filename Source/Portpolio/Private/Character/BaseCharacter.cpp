@@ -5,9 +5,8 @@
 #include "../Public/Character/BaseCharacter.h"
 //#include "PlayerCharacter.h"
 
-#define JUMP_POWER		 600.0f		//점프 파워 설정
+#define JUMP_POWER		 400.0f		//점프 파워 설정
 
-// Sets default values
 ABaseCharacter::ABaseCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -17,14 +16,12 @@ ABaseCharacter::ABaseCharacter()
 	GetCharacterMovement()->JumpZVelocity = JUMP_POWER;
 }
 
-// Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -39,7 +36,6 @@ void ABaseCharacter::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
