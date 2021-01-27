@@ -15,4 +15,10 @@ class PORTPOLIO_API UBTTask_BossTurnToTarget : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
+public:
+	UBTTask_BossTurnToTarget();
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+private:
 };

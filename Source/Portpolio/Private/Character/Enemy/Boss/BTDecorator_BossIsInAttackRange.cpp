@@ -7,7 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 
-#define ATTACK_RANGE 200.0f
+#define ATTACK_RANGE 300.0f
 
 UBTDecorator_BossIsInAttackRange::UBTDecorator_BossIsInAttackRange()
 {
