@@ -5,7 +5,8 @@
 
 UBossAnimInstance::UBossAnimInstance()
 {
-
+	curSpeed_ = 0.0f;
+	isAttacking_ = false;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -13,11 +14,37 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
 	auto Pawn = TryGetPawnOwner();
-	auto Character = Cast<ABossCharacter>(Pawn);
+	character_ = Cast<ABossCharacter>(Pawn);
+
+	if (Pawn == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Pawn"));
+		return;
+	}
+
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
 
 	if (::IsValid(Pawn))
 	{
 		curSpeed_ = Pawn->GetVelocity().Size();
+		isAttacking_ = character_->GetAttacking();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
+		//ABLOG(Warning, TEXT("%d"), isAttacking_);
 	}
+}
+
+void UBossAnimInstance::AnimNotify_AttackEnd()
+{
+	ABLOG(Warning, TEXT("AttackEnd"));
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+
+	character_->OnAttackEnd.Broadcast();
 }

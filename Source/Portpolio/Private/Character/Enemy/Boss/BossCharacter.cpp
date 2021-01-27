@@ -33,9 +33,10 @@ ABossCharacter::ABossCharacter()
 
 	if (ANIM_PATH.Succeeded())
 	{
-		ABLOG(Warning, TEXT("Success : Anim_Path"));
+		ABLOG(Warning, TEXT("Success : BossAnim_Path"));
 		GetMesh()->SetAnimInstanceClass(ANIM_PATH.Class);
 	}
+
 }
 
 void ABossCharacter::BeginPlay()
@@ -49,6 +50,9 @@ void ABossCharacter::BeginPlay()
 		ABLOG(Error, TEXT("Nullptr : BossEnemyAnim"));
 		return;
 	}
+
+	//Delegate
+	OnAttackEnd.AddUObject(this, &ABossCharacter::AttackStop);
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
@@ -89,5 +93,15 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 
 void ABossCharacter::Attack()
 {
-	ABLOG(Warning, TEXT("Boss Attack!!!!!!"));
+	isAttack_ = true;
+}
+
+void ABossCharacter::AttackStop()
+{
+	isAttack_ = false;
+}
+
+bool ABossCharacter::GetAttacking()
+{
+	return isAttack_;
 }

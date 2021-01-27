@@ -27,6 +27,8 @@ public:
 	virtual float	TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	void	Attack();
+	void	AttackStop();
+	bool	GetAttacking();
 
 	FOnAttackEndDelegate	OnAttackEnd;
 
@@ -36,4 +38,6 @@ protected:
 private:
 	UPROPERTY()
 		class UBossAnimInstance* bossAnim_;
+
+	bool	isAttack_;
 };

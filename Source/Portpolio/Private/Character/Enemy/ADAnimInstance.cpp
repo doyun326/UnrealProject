@@ -15,6 +15,12 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	auto Pawn = TryGetPawnOwner();
 
+	if (Pawn == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Pawn"));
+		return;
+	}
+
 	if (::IsValid(Pawn))
 	{
 		curSpeed_ = Pawn->GetVelocity().Size();

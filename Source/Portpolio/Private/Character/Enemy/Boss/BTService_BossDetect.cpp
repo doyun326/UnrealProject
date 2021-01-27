@@ -62,7 +62,7 @@ void UBTService_BossDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(ABossAIController::targetKey_, Player);
 				DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 				DrawDebugPoint(World, Player->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
-				DrawDebugLine(World, ControllingPawn->GetActorLocation(), Player->GetActorLocation(), FColor::Blue, false, 1.2f);
+				DrawDebugLine(World, ControllingPawn->GetActorLocation(), Player->GetActorLocation(), FColor::Blue, false, 0.2f);
 				return;
 			}
 		}
