@@ -7,6 +7,7 @@ UBossAnimInstance::UBossAnimInstance()
 {
 	curSpeed_ = 0.0f;
 	isAttacking_ = false;
+	isInAir_ = false;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -32,6 +33,7 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		curSpeed_ = Pawn->GetVelocity().Size();
 		isAttacking_ = character_->GetAttacking();
+		isInAir_ = character_->GetMovementComponent()->IsFalling();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 		//ABLOG(Warning, TEXT("%d"), isAttacking_);
 	}

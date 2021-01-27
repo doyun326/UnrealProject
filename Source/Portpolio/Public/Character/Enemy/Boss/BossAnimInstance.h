@@ -30,6 +30,8 @@ private:
 		bool	isDead_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		bool	isAttacking_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isInAir_;
 
 	class ABossCharacter* character_;
 };
