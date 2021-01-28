@@ -33,16 +33,22 @@ void ABullet::Tick(float DeltaTime)
 	FCollisionQueryParams CollisionParams;
 
 	CollisionParams.AddIgnoredActor(this);
-
-	DrawDebugLine(GetWorld(), StartTrace, bulletEndVector_, FColor::Green, false, 0.5, 0, 1);
+#ifdef DRAW_DEBUGHELPER
+	{
+		DrawDebugLine(GetWorld(), StartTrace, bulletEndVector_, FColor::Green, false, 0.5, 0, 1);
+	}
+#endif
 
 	//if (GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, EndTrace, ECC_Destructible, CollisionParams))
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, bulletEndVector_, ECC_Destructible, CollisionParams))
 	{
 		if (HitResult.GetActor())
 		{
-			DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
-
+#ifdef DRAW_DEBUGHELPER
+			{
+				DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
+			}
+#endif
 			auto PlayerController = Cast<AWarPlayerController>(playerController_);
 
 			if (PlayerController != nullptr)
@@ -52,15 +58,23 @@ void ABullet::Tick(float DeltaTime)
 
 			FDamageEvent DamageEvent;
 			HitResult.Actor->TakeDamage(50.0f, DamageEvent, PlayerController, this);
-			//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red);
+#ifdef DRAW_DEBUGHELPER
+			{
+				//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red);
+			}
+#endif
 		}
 		Destroy();
 	}
 	else
 	{
 		bulletExpiry_ += DeltaTime;
-		//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor(0.f, -bulletExpiry_ * 80.0f, 100.0f));
-		//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red);
+#ifdef DRAW_DEBUGHELPER
+		{
+			//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor(0.f, -bulletExpiry_ * 80.0f, 100.0f));
+			//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red);
+		}
+#endif
 		SetActorLocation(EndTrace);
 		Velocity += FVector(0.f, 0.0f, -200.0f) * DeltaTime;
 	}

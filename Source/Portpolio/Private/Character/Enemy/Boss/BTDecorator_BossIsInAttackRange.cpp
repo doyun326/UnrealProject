@@ -39,14 +39,18 @@ bool UBTDecorator_BossIsInAttackRange::CalculateRawConditionValue(UBehaviorTreeC
 
 	bResult = (Target->GetDistanceTo(ControllingPawn) <= ATTACK_RANGE);
 
-	if (bResult)
+#ifdef DRAW_DEBUGHELPER
 	{
-		DrawDebugSphere(World, Center, ATTACK_RANGE, 16, FColor::Green, false, 0.2f);
+		if (bResult)
+		{
+			DrawDebugSphere(World, Center, ATTACK_RANGE, 16, FColor::Green, false, 0.2f);
+		}
+		else
+		{
+			DrawDebugSphere(World, Center, ATTACK_RANGE, 16, FColor::Red, false, 0.2f);
+		}
 	}
-	else
-	{
-		DrawDebugSphere(World, Center, ATTACK_RANGE, 16, FColor::Red, false, 0.2f);
-	}
+#endif
 
 	return bResult;
 }

@@ -151,7 +151,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 	bool RayHit = GetWorld()->LineTraceSingleByChannel(Outhit, startPoint_, endPoint_, ECC_Visibility, CollisionParams);
 
 	/*Draw rayCast debug Line START*/
-	//DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 0.5, 0, 1);
+#ifdef DRAW_DEBUGHELPER
+	{
+		//DrawDebugLine(GetWorld(), startPoint_, endPoint_, FColor::Red, false, 0.5, 0, 1);
+	}
+#endif
 	/*Draw rayCast debug Line END*/
 
 	//공격, 줌인시 캐릭터 회전
@@ -189,7 +193,11 @@ void APlayerCharacter::Tick(float DeltaTime)
 	CharParams.AddIgnoredActor(this);
 
 	/*Draw rayCast debug Line START*/
-	//DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);
+#ifdef DRAW_DEBUGHELPER
+	{
+		//DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);
+	}
+#endif
 	/*Draw rayCast debug Line START*/
 	/////////////////////////////////////Test/////////////////////////////////////
 }
