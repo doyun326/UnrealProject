@@ -4,11 +4,25 @@
 #include "../Public/Character/Player/WarPlayerController.h"
 #include "../Public/Weapon/GunWeapon.h"
 
+#include "Kismet/KismetMathLibrary.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "DrawDebugHelpers.h"
+
+#define BULLET_WALL_HIT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_2_ONCE.NS_AR_Muzzleflash_2_ONCE"
 
 ABullet::ABullet()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	//≈∫æÀ ¿Ã∆Â∆Æ
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> BULLET_EFFECT(TEXT(BULLET_WALL_HIT_PATH));
+
+	if (BULLET_EFFECT.Succeeded())
+	{
+		bulletEffect_ = BULLET_EFFECT.Object;
+		ABLOG(Warning, TEXT("Success : BULLET_EFFECT"));
+	}
 }
 
 void ABullet::BeginPlay()
@@ -24,31 +38,26 @@ void ABullet::Tick(float DeltaTime)
 	FHitResult HitResult;
 	FVector StartTrace = this->GetActorLocation();
 	StartTrace = StartTrace + this->GetActorForwardVector();
-
-	//ABLOG(Warning, TEXT("%f, %f, %f"), StartTrace.X, StartTrace.Y, StartTrace.Z);
-	
 	FVector EndTrace = (this->GetActorForwardVector() * 1000.0f) + StartTrace;
-	//EndTrace.Z += this->GetActorRotation().Roll;
 
 	FCollisionQueryParams CollisionParams;
 
 	CollisionParams.AddIgnoredActor(this);
+
 #ifdef DRAW_DEBUGHELPER
 	{
 		DrawDebugLine(GetWorld(), StartTrace, bulletEndVector_, FColor::Green, false, 0.5, 0, 1);
 	}
 #endif
 
-	//if (GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, EndTrace, ECC_Destructible, CollisionParams))
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, bulletEndVector_, ECC_Destructible, CollisionParams))
 	{
+		FRotator bulletRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), HitResult.ImpactPoint);
+		bulletRoatator.Pitch = bulletRoatator.Pitch * 180.0f;
+		onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, bulletEffect_, HitResult.ImpactPoint, bulletRoatator);
+
 		if (HitResult.GetActor())
 		{
-#ifdef DRAW_DEBUGHELPER
-			{
-				DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
-			}
-#endif
 			auto PlayerController = Cast<AWarPlayerController>(playerController_);
 
 			if (PlayerController != nullptr)
@@ -58,11 +67,14 @@ void ABullet::Tick(float DeltaTime)
 
 			FDamageEvent DamageEvent;
 			HitResult.Actor->TakeDamage(50.0f, DamageEvent, PlayerController, this);
-#ifdef DRAW_DEBUGHELPER
+
+			#ifdef DRAW_DEBUGHELPER
 			{
+				ABLOG(Warning, TEXT("Hit!!!"));
+				DrawDebugSolidBox(GetWorld(), HitResult.ImpactPoint, FVector(10.0f), FColor::Blue, true);
 				//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Red);
 			}
-#endif
+			#endif
 		}
 		Destroy();
 	}

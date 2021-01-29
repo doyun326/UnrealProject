@@ -27,6 +27,8 @@ private:
 		void	AnimNotify_AttackSecEnd();
 	UFUNCTION()
 		void	AnimNotify_AttackThiEnd();
+	UFUNCTION()
+		void	AnimNotify_HitEnd();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		float	curSpeed_;
@@ -40,6 +42,8 @@ private:
 		bool	isThirdAttacking_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		bool	isInAir_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isHit_;
 
 	class ABossCharacter* character_;
 };

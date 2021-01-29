@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameSetting/Portpolio.h"
+
 #include "GameFramework/Actor.h"
 #include "NiagaraComponent.h"
 #include "GunWeapon.generated.h"
@@ -31,7 +32,6 @@ public:
 		void	ShootBullet();
 
 	void	OnFire(bool _fire);
-	void	PlayShootEffect(FVector _newLocation);
 	void	SetAimVector(FVector _aimVector);
 	void	SetMuzzleSocketPosition(FVector _muzLoc, FRotator _muzRot);
 	void	FireShootGun();
@@ -39,14 +39,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 		USkeletalMeshComponent*	weapon_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem*	fireEffect_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem*	shootEffect_;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Bulle")
 		TSubclassOf<class ABullet>	bullet_;
 
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem* fireEffect_;
+
 	bool		rayHit_;
 	bool		isShooting_;
 	bool		fireStateOld_;

@@ -8,12 +8,11 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Math/UnrealMathUtility.h"
+#include "DrawDebugHelpers.h"
 
 #define FIRE_EFFECT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_ONCE.NS_AR_Muzzleflash_1_ONCE"
-#define SHOOT_EFFECT_PATH "/Game/sA_ShootingVfxPack/FX/NiagaraSystems/NS_AR_Muzzleflash_2_INFINITE.NS_AR_Muzzleflash_2_INFINITE"
 
 // Sets default values
 AGunWeapon::AGunWeapon()
@@ -32,15 +31,6 @@ AGunWeapon::AGunWeapon()
 	{
 		fireEffect_ = FIRE_EFFECT.Object;
 		ABLOG(Warning, TEXT("Success : FIRE_EFFECT"));
-	}
-
-	//총 발사 했을때 튕기는 이미지
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SHOOT_EFFECT(TEXT(SHOOT_EFFECT_PATH));
-
-	if (SHOOT_EFFECT.Succeeded())
-	{
-		shootEffect_ = SHOOT_EFFECT.Object;
-		ABLOG(Warning, TEXT("Success : SHOOT_EFFECT"));
 	}
 
 	//Bullet
@@ -103,6 +93,7 @@ void AGunWeapon::FireShootGun()
 
 }
 
+//탄알 발사 + NiagaraEffect
 void AGunWeapon::ShootBullet()
 {
 	if (bullet_ == nullptr)
@@ -126,19 +117,6 @@ void AGunWeapon::ShootBullet()
 	Bullet->SetFormation(playerAimVector_);
 	FVector NewVelocity = GetActorRightVector() * 5000.0f;
 	Bullet->Velocity = FVector(NewVelocity);
-}
-
-//탄알 벽에 충돌 시 이펙트
-void AGunWeapon::PlayShootEffect(FVector _newLocation)
-{
-	muzzleRotation_.Pitch = muzzleRotation_.Pitch * 90.0f;
-
-	FRotator test1;
-	test1.Pitch = 180.0f;
-	test1.Yaw = 0.0f;
-	test1.Roll = 0.0f;
-
-	spawnShootEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, shootEffect_, _newLocation, test1);
 }
 
 void AGunWeapon::SetAimVector(FVector _aimVector)

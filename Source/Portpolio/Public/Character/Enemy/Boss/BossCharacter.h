@@ -7,10 +7,10 @@
 #include "Character/BaseCharacter.h"
 #include "BossCharacter.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 DECLARE_MULTICAST_DELEGATE(FOnAttackFirEndDelegate);
 DECLARE_MULTICAST_DELEGATE(FOnAttackSecEndDelegate);
 DECLARE_MULTICAST_DELEGATE(FOnAttackThiEndDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnHitEndDelegate);
 
 /**
  * 
@@ -35,16 +35,17 @@ public:
 	void	SecondAttackStop();
 	void	ThirdAttack();
 	void	ThirdAttackStop();
+	void	HitStop();
 
 	bool	GetFirstAttacking();
 	bool	GetSecondAttacking();
 	bool	GetThirdAttacking();
+	bool	GetIsHiting();
 
-	FOnAttackEndDelegate	OnAttackEnd;
 	FOnAttackFirEndDelegate	OnAttackFirEnd;
 	FOnAttackSecEndDelegate	OnAttackSecEnd;
 	FOnAttackThiEndDelegate	OnAttackThiEnd;
-
+	FOnHitEndDelegate		OnHitEnd;
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,4 +56,5 @@ private:
 	bool	isFirstAttack_;
 	bool	isSecondAttack_;
 	bool	isThirdAttack_;
+	bool	isHiting_;
 };

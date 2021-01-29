@@ -3,7 +3,9 @@
 #pragma once
 
 #include "GameSetting/Portpolio.h"
+
 #include "GameFramework/Actor.h"
+#include "NiagaraComponent.h"
 #include "Bullet.generated.h"
 
 UCLASS()
@@ -34,8 +36,13 @@ public:
 	float bulletExpiry_ = 0.0f;
 
 private:
-	FVector bulletEndVector_;
-	
 	UPROPERTY()
-	class AGunWeapon* weapon_;
+		class AGunWeapon* weapon_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem* bulletEffect_;
+
+	FVector		bulletEndVector_;
+
+	UNiagaraComponent*	onEffect_;
+	
 };

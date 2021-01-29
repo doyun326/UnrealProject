@@ -10,6 +10,7 @@ UBossAnimInstance::UBossAnimInstance()
 	isFirstAttacking_ = false;
 	isSecondAttacking_ = false;
 	isThirdAttacking_ = false;
+	isHit_ = false;
 }
 
 void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -38,6 +39,7 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		isSecondAttacking_ = character_->GetSecondAttacking();
 		isThirdAttacking_ = character_->GetThirdAttacking();
 		isInAir_ = character_->GetMovementComponent()->IsFalling();
+		isHit_ = character_->GetIsHiting();
 		//isFirstAttacking_ = character_->GetAttacking();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 		//ABLOG(Warning, TEXT("%d"), isAttacking_);
@@ -72,4 +74,14 @@ void UBossAnimInstance::AnimNotify_AttackThiEnd()
 		return;
 	}
 	character_->OnAttackThiEnd.Broadcast();
+}
+
+void UBossAnimInstance::AnimNotify_HitEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	character_->OnHitEnd.Broadcast();
 }

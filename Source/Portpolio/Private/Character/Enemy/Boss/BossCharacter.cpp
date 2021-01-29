@@ -40,6 +40,7 @@ ABossCharacter::ABossCharacter()
 	isFirstAttack_ = false;
 	isSecondAttack_ = false;
 	isThirdAttack_ = false;
+	isHiting_ = false;
 }
 
 void ABossCharacter::BeginPlay()
@@ -54,11 +55,11 @@ void ABossCharacter::BeginPlay()
 		return;
 	}
 
-	//Delegate Setting	
-	//OnAttackEnd.AddUObject(this, &ABossCharacter::FirstAttackStop);
+	//Delegate Setting
 	OnAttackFirEnd.AddUObject(this, &ABossCharacter::FirstAttackStop);
 	OnAttackSecEnd.AddUObject(this, &ABossCharacter::SecondAttackStop);
 	OnAttackThiEnd.AddUObject(this, &ABossCharacter::ThirdAttackStop);
+	OnHitEnd.AddUObject(this, &ABossCharacter::HitStop);
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
@@ -93,6 +94,8 @@ void ABossCharacter::PossessedBy(AController* NewController)
 float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	isHiting_ = true;
 
 	return FinalDamage;
 }
@@ -137,6 +140,11 @@ void ABossCharacter::ThirdAttackStop()
 	isThirdAttack_ = false;
 }
 
+void ABossCharacter::HitStop()
+{
+	isHiting_ = false;
+}
+
 bool ABossCharacter::GetFirstAttacking()
 {
 	return isFirstAttack_;
@@ -150,4 +158,9 @@ bool ABossCharacter::GetSecondAttacking()
 bool ABossCharacter::GetThirdAttacking()
 {
 	return isThirdAttack_;
+}
+
+bool ABossCharacter::GetIsHiting()
+{
+	return isHiting_;
 }
