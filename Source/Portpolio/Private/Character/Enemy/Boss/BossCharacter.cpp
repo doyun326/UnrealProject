@@ -56,10 +56,10 @@ void ABossCharacter::BeginPlay()
 	}
 
 	//Delegate Setting
-	OnAttackFirEnd.AddUObject(this, &ABossCharacter::FirstAttackStop);
-	OnAttackSecEnd.AddUObject(this, &ABossCharacter::SecondAttackStop);
-	OnAttackThiEnd.AddUObject(this, &ABossCharacter::ThirdAttackStop);
-	OnHitEnd.AddUObject(this, &ABossCharacter::HitStop);
+	onFirstAttack_.AddUObject(this, &ABossCharacter::ChangeFirstAttack);
+	onSecondAttack_.AddUObject(this, &ABossCharacter::ChangeSecondAttack);
+	onThirdAttack_.AddUObject(this, &ABossCharacter::ChangeThirdAttack);
+	onHit_.AddUObject(this, &ABossCharacter::ChangeHit);
 
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
@@ -100,49 +100,24 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	return FinalDamage;
 }
 
-//void ABossCharacter::Attack()
-//{
-//	isFirstAttack_ = true;
-//	int32 Test = 0;
-//
-//	Test = FMath::RandRange(1, 3);
-//	ABLOG(Error, TEXT("%d"), Test);
-//
-//}
-
-void ABossCharacter::FirstAttack()
+void ABossCharacter::ChangeFirstAttack(bool _attack)
 {
-	isFirstAttack_ = true;
+	isFirstAttack_ = _attack;
 }
 
-void ABossCharacter::SecondAttack()
+void ABossCharacter::ChangeSecondAttack(bool _attack)
 {
-	isSecondAttack_ = true;
+	isSecondAttack_ = _attack;
 }
 
-void ABossCharacter::ThirdAttack()
+void ABossCharacter::ChangeThirdAttack(bool _attack)
 {
-	isThirdAttack_ = true;
+	isThirdAttack_ = _attack;
 }
 
-void ABossCharacter::FirstAttackStop()
+void ABossCharacter::ChangeHit(bool _hit)
 {
-	isFirstAttack_ = false;
-}
-
-void ABossCharacter::SecondAttackStop()
-{
-	isSecondAttack_ = false;
-}
-
-void ABossCharacter::ThirdAttackStop()
-{
-	isThirdAttack_ = false;
-}
-
-void ABossCharacter::HitStop()
-{
-	isHiting_ = false;
+	isHiting_ = _hit;
 }
 
 bool ABossCharacter::GetFirstAttacking()

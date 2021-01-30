@@ -53,7 +53,7 @@ void UBossAnimInstance::AnimNotify_AttackFirEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	character_->OnAttackFirEnd.Broadcast();
+	character_->onFirstAttack_.Broadcast(false);
 }
 
 void UBossAnimInstance::AnimNotify_AttackSecEnd()
@@ -63,7 +63,7 @@ void UBossAnimInstance::AnimNotify_AttackSecEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	character_->OnAttackSecEnd.Broadcast();
+	character_->onSecondAttack_.Broadcast(false);
 }
 
 void UBossAnimInstance::AnimNotify_AttackThiEnd()
@@ -73,7 +73,7 @@ void UBossAnimInstance::AnimNotify_AttackThiEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	character_->OnAttackThiEnd.Broadcast();
+	character_->onThirdAttack_.Broadcast(false);
 }
 
 void UBossAnimInstance::AnimNotify_HitEnd()
@@ -83,5 +83,5 @@ void UBossAnimInstance::AnimNotify_HitEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	character_->OnHitEnd.Broadcast();
+	character_->onHit_.Broadcast(false);
 }

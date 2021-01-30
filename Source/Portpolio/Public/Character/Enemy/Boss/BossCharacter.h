@@ -7,10 +7,10 @@
 #include "Character/BaseCharacter.h"
 #include "BossCharacter.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnAttackFirEndDelegate);
-DECLARE_MULTICAST_DELEGATE(FOnAttackSecEndDelegate);
-DECLARE_MULTICAST_DELEGATE(FOnAttackThiEndDelegate);
-DECLARE_MULTICAST_DELEGATE(FOnHitEndDelegate);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFistAttackDelegate, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnSecondAttackDelegate, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnThirdAttackDelegate, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHitDelegate, bool);
 
 /**
  * 
@@ -29,23 +29,20 @@ public:
 	virtual void	PossessedBy(AController* NewController) override;
 	virtual float	TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	void	FirstAttack();
-	void	FirstAttackStop();
-	void	SecondAttack();
-	void	SecondAttackStop();
-	void	ThirdAttack();
-	void	ThirdAttackStop();
-	void	HitStop();
+	void	ChangeFirstAttack(bool _attack);
+	void	ChangeSecondAttack(bool _attack);
+	void	ChangeThirdAttack(bool _attack);
+	void	ChangeHit(bool _hit);
 
 	bool	GetFirstAttacking();
 	bool	GetSecondAttacking();
 	bool	GetThirdAttacking();
 	bool	GetIsHiting();
 
-	FOnAttackFirEndDelegate	OnAttackFirEnd;
-	FOnAttackSecEndDelegate	OnAttackSecEnd;
-	FOnAttackThiEndDelegate	OnAttackThiEnd;
-	FOnHitEndDelegate		OnHitEnd;
+	FOnFistAttackDelegate	onFirstAttack_;
+	FOnFistAttackDelegate	onSecondAttack_;
+	FOnFistAttackDelegate	onThirdAttack_;
+	FOnHitDelegate			onHit_;
 
 protected:
 	virtual void BeginPlay() override;

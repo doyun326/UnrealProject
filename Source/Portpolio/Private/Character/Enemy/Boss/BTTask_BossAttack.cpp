@@ -30,30 +30,38 @@ EBTNodeResult::Type UBTTask_BossAttack::ExecuteTask(UBehaviorTreeComponent& Owne
 	switch (RandNum)
 	{
 	case ATTACK_ONE:
-		Character->FirstAttack();
+		Character->onFirstAttack_.Broadcast(true);
 		break;
 	case ATTACK_TWO:
-		Character->SecondAttack();
+		Character->onSecondAttack_.Broadcast(true);
 		break;
 	case ATTACK_THREE:
-		Character->ThirdAttack();
+		Character->onThirdAttack_.Broadcast(true);
 		break;
 	}
 
-	//Character->Attack();
 	isAttacking_ = true;
 
-	Character->OnAttackFirEnd.AddLambda([this]()-> void
+	Character->onFirstAttack_.AddLambda([this](bool _isAttack)-> void
 		{
-			isAttacking_ = false;
+			if (!_isAttack)
+			{
+				isAttacking_ = false;
+			}
 		});
-	Character->OnAttackSecEnd.AddLambda([this]()-> void
+	Character->onSecondAttack_.AddLambda([this](bool _isAttack)-> void
 		{
-			isAttacking_ = false;
+			if (!_isAttack)
+			{
+				isAttacking_ = false;
+			}
 		});
-	Character->OnAttackThiEnd.AddLambda([this]()-> void
+	Character->onThirdAttack_.AddLambda([this](bool _isAttack)-> void
 		{
-			isAttacking_ = false;
+			if (!_isAttack)
+			{
+				isAttacking_ = false;
+			}
 		});
 
 	return EBTNodeResult::InProgress;
