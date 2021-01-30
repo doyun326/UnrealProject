@@ -46,6 +46,7 @@ public:
 	FOnAttackSecEndDelegate	OnAttackSecEnd;
 	FOnAttackThiEndDelegate	OnAttackThiEnd;
 	FOnHitEndDelegate		OnHitEnd;
+
 protected:
 	virtual void BeginPlay() override;
 

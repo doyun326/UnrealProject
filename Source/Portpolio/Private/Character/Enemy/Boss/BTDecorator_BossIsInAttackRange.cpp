@@ -3,6 +3,7 @@
 #include "../Public/Character/Enemy/Boss/BTDecorator_BossIsInAttackRange.h"
 #include "../Public/Character/Enemy/Boss/BossAIController.h"
 #include "../Public/Character/Player/PlayerCharacter.h"
+#include "../Public/Character/Enemy/Boss/BossCharacter.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
@@ -19,6 +20,9 @@ bool UBTDecorator_BossIsInAttackRange::CalculateRawConditionValue(UBehaviorTreeC
 	bool bResult = Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
 
 	auto ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
+	UWorld* World = ControllingPawn->GetWorld();
+
+	ABLOG_S(Warning);
 
 	if (ControllingPawn == nullptr)
 	{
@@ -26,9 +30,13 @@ bool UBTDecorator_BossIsInAttackRange::CalculateRawConditionValue(UBehaviorTreeC
 		return false;
 	}
 
-	UWorld* World = ControllingPawn->GetWorld();
-	FVector Center = ControllingPawn->GetActorLocation();
+	if (World == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : World"));
+		return false;
+	}
 
+	FVector Center = ControllingPawn->GetActorLocation();
 	auto Target = Cast<APlayerCharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(ABossAIController::targetKey_));
 
 	if (Target == nullptr)

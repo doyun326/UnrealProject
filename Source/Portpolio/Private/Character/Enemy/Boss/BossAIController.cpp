@@ -12,6 +12,7 @@
 const FName ABossAIController::homePosKey_(TEXT("HomePos"));
 const FName ABossAIController::patrolPosKey_(TEXT("PatrolPos"));
 const FName ABossAIController::targetKey_(TEXT("Target"));
+const FName ABossAIController::isHitKey_(TEXT("isHit"));
 
 ABossAIController::ABossAIController()
 {
@@ -32,6 +33,12 @@ ABossAIController::ABossAIController()
 		ABLOG(Warning, TEXT("Succeess : BossBeviorTree"));
 		bossBT_ = BTObject.Object;
 	}
+}
+
+void ABossAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
 }
 
 void ABossAIController::OnPossess(APawn* InPawn)

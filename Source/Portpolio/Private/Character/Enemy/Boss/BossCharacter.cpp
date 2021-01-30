@@ -50,7 +50,7 @@ void ABossCharacter::BeginPlay()
 	bossAnim_ = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (bossAnim_ == nullptr)
-	{
+	{	
 		ABLOG(Error, TEXT("Nullptr : BossEnemyAnim"));
 		return;
 	}

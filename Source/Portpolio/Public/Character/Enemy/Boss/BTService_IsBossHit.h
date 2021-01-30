@@ -5,18 +5,18 @@
 #include "GameSetting/Portpolio.h"
 
 #include "BehaviorTree/BTService.h"
-#include "BTService_BossDetect.generated.h"
+#include "BTService_IsBossHit.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PORTPOLIO_API UBTService_BossDetect : public UBTService
+class PORTPOLIO_API UBTService_IsBossHit : public UBTService
 {
 	GENERATED_BODY()
 
 public:
-	UBTService_BossDetect();
+	UBTService_IsBossHit();
 
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 private:
