@@ -2,3 +2,7 @@
 
 #include "../Public/Character/Enemy/Minion/MinionAIController.h"
 
+AMinionAIController::AMinionAIController()
+{
+
+}

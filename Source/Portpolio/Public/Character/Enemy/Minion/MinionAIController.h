@@ -15,4 +15,13 @@ class PORTPOLIO_API AMinionAIController : public AAIController
 {
 	GENERATED_BODY()
 	
+public:
+	AMinionAIController();
+
+protected:
+
+
+private:
+
+
 };

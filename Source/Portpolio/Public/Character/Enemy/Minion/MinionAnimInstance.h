@@ -14,5 +14,16 @@ UCLASS()
 class PORTPOLIO_API UMinionAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
+public:
+	UMinionAnimInstance();
+
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+protected:
+
+
+private:
+
 	
 };
