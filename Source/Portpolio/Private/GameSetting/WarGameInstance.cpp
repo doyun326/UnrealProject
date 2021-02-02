@@ -25,6 +25,14 @@ UWarGameInstance::UWarGameInstance()
 		playerTable_ = PLAYER_DT.Object;
 		ABLOG(Warning, TEXT("Success : PlayerTable"));
 	}
+
+	//MinionData(ADData »ç¿ë)
+	static ConstructorHelpers::FObjectFinder<UDataTable> ENEMY_DT(TEXT(ADENEMYDT_PATH));
+	if (ENEMY_DT.Succeeded())
+	{
+		minionTable_ = ENEMY_DT.Object;
+		ABLOG(Warning, TEXT("Success : EnemyTable"));
+	}
 }
 
 void UWarGameInstance::Init()
@@ -42,4 +50,9 @@ FADEnemyData* UWarGameInstance::GetADEnemyData(int32 _level)
 FPlayerData* UWarGameInstance::GetPlayerData(int32 _level)
 {
 	return playerTable_->FindRow<FPlayerData>(*FString::FromInt(_level), TEXT(""));
+}
+
+FMinionData* UWarGameInstance::GetMinionEnemyData(int32 _level)
+{
+	return minionTable_->FindRow<FMinionData>(*FString::FromInt(_level), TEXT(""));
 }

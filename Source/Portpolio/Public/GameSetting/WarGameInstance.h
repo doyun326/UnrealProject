@@ -66,6 +66,35 @@ public:
 		int32	NextExp;
 };
 
+/*
+* MinionData(ADEnemyData »ç¿ë)
+*/
+USTRUCT(BlueprintType)
+struct FMinionData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	FMinionData() :
+		Level(1)
+		, MaxHP(100.0f)
+		, Damage(100.0f)
+		, DropExp(10)
+		, NextExp(30)
+	{}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+		int32	Level;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+		float	MaxHP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+		float	Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+		int32	DropExp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+		int32	NextExp;
+};
+
 /**
  * 
  */ 
@@ -78,12 +107,15 @@ public:
 
 	virtual void	Init() override;
 	
-	FADEnemyData* GetADEnemyData(int32 _level);
-	FPlayerData* GetPlayerData(int32 _level);
+	FADEnemyData*	GetADEnemyData(int32 _level);
+	FMinionData*	GetMinionEnemyData(int32 _level);
+	FPlayerData*	GetPlayerData(int32 _level);
 
 private:
 	UPROPERTY()
 		class UDataTable* adEnemyTable_;
 	UPROPERTY()
 		class UDataTable* playerTable_;
+	UPROPERTY()
+		class UDataTable* minionTable_;
 };
