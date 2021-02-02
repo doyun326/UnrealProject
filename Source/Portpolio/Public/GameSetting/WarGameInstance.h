@@ -70,12 +70,12 @@ public:
 * MinionData(ADEnemyData »ç¿ë)
 */
 USTRUCT(BlueprintType)
-struct FMinionData : public FTableRowBase
+struct FMinionEnemyData : public FTableRowBase
 {
 	GENERATED_BODY()
 
 public:
-	FMinionData() :
+	FMinionEnemyData() :
 		Level(1)
 		, MaxHP(100.0f)
 		, Damage(100.0f)
@@ -107,9 +107,9 @@ public:
 
 	virtual void	Init() override;
 	
-	FADEnemyData*	GetADEnemyData(int32 _level);
-	FMinionData*	GetMinionEnemyData(int32 _level);
-	FPlayerData*	GetPlayerData(int32 _level);
+	FADEnemyData*		GetADEnemyData(int32 _level);
+	FMinionEnemyData*	GetMinionEnemyData(int32 _level);
+	FPlayerData*		GetPlayerData(int32 _level);
 
 private:
 	UPROPERTY()

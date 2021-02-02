@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "GameSetting//Portpolio.h"
+#include "GameSetting/Portpolio.h"
 
 #include "Components/ActorComponent.h"
 #include "MinionEnemyStatComponent.generated.h"
@@ -31,9 +31,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void InitializeComponent() override;
 
 private:
-	struct FADEnemyData* currentStatData_ = nullptr;
+	struct FMinionEnemyData* currentStatData_ = nullptr;
 
 	UPROPERTY(EditInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 level_;

@@ -52,7 +52,7 @@ FPlayerData* UWarGameInstance::GetPlayerData(int32 _level)
 	return playerTable_->FindRow<FPlayerData>(*FString::FromInt(_level), TEXT(""));
 }
 
-FMinionData* UWarGameInstance::GetMinionEnemyData(int32 _level)
+FMinionEnemyData* UWarGameInstance::GetMinionEnemyData(int32 _level)
 {
-	return minionTable_->FindRow<FMinionData>(*FString::FromInt(_level), TEXT(""));
+	return minionTable_->FindRow<FMinionEnemyData>(*FString::FromInt(_level), TEXT(""));
 }
