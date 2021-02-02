@@ -39,5 +39,5 @@ private:
 	UPROPERTY()
 		class UADAnimInstance* ADAnim_;
 	UPROPERTY()
-		class UEnemyHPWidget* EnemyHpWidget_;	
+		class UEnemyHPWidget* EnemyHpWidget_;
 };

@@ -50,6 +50,7 @@ void UADEnemyStatComponent::SetNewLevel(int32 _newLevel)
 		ABLOG(Error, TEXT("Nullptr : CurrentStatData"));
 		return;
 	}
+
 	level_ = _newLevel;
 	SetHp(currentStatData_->MaxHP);
 	currentHP_ = currentStatData_->MaxHP;

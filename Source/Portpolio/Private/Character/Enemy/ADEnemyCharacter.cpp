@@ -12,6 +12,8 @@
 #define ADANIM_PATH				"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
 #define ADENEMY_WIDGET_PATH		"/Game/My/Blueprints/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"
 
+#define MAX_SPEED		300.0f
+
 AADEnemyCharacter::AADEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -105,7 +107,6 @@ void AADEnemyCharacter::Tick(float DeltaTime)
 void AADEnemyCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AADEnemyCharacter::PostInitializeComponents()
@@ -132,7 +133,7 @@ void AADEnemyCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+	GetCharacterMovement()->MaxWalkSpeed = MAX_SPEED;
 }
 
 float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
@@ -140,7 +141,6 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	ABLOG(Warning, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
-
 	if (enemyStat_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : enemtStat_"));

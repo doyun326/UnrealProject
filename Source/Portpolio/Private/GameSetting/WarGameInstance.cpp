@@ -3,8 +3,9 @@
 
 #include "../Public/GameSetting/WarGameInstance.h"
 
-#define ADENEMYDT_PATH "/Game/My/GameData/ADEnemyData.ADEnemyData"
-#define PLAYERDT_PATH "/Game/My/GameData/PlayerData.PlayerData"
+#define ADENEMYDT_PATH		"/Game/My/GameData/ADEnemyData.ADEnemyData"
+#define PLAYERDT_PATH		"/Game/My/GameData/PlayerData.PlayerData"
+#define MINIONDT_PATH		"/Game/My/GameData/MinionEnemyData.MinionEnemyData"
 
 UWarGameInstance::UWarGameInstance()
 {
@@ -27,11 +28,12 @@ UWarGameInstance::UWarGameInstance()
 	}
 
 	//MinionData(ADData »ç¿ë)
-	static ConstructorHelpers::FObjectFinder<UDataTable> ENEMY_DT(TEXT(ADENEMYDT_PATH));
-	if (ENEMY_DT.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UDataTable> MINION_DT(TEXT(MINIONDT_PATH));
+
+	if (MINION_DT.Succeeded())
 	{
-		minionTable_ = ENEMY_DT.Object;
-		ABLOG(Warning, TEXT("Success : EnemyTable"));
+		minionTable_ = MINION_DT.Object;
+		ABLOG(Warning, TEXT("Success : MinionTable"));
 	}
 }
 

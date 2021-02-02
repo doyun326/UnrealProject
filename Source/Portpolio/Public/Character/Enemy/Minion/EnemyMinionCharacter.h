@@ -41,6 +41,11 @@ public:
 
 	void	EnemyDestroy();
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+		class UWidgetComponent*			HPBarWidget_;
+	UPROPERTY(VisibleAnywhere, Category = "Stat")
+		class UMinionEnemyStatComponent* enemyStat_;
+
 	FOnFistAttackDelegate	onFirstAttack_;
 	FOnFistAttackDelegate	onSecondAttack_;
 	FOnFistAttackDelegate	onThirdAttack_;
@@ -51,7 +56,9 @@ protected:
 
 private:
 	UPROPERTY()
-		class UMinionAnimInstance* minionAnim_;
+		class UMinionAnimInstance*	minionAnim_;
+	UPROPERTY()
+		class UMinionHPWidget*		minionHpWidget_;
 
 	bool	isFirstAttack_;
 	bool	isSecondAttack_;

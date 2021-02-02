@@ -83,15 +83,15 @@ public:
 		, NextExp(30)
 	{}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
 		int32	Level;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
 		float	MaxHP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
 		float	Damage;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
 		int32	DropExp;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "EnemyData")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
 		int32	NextExp;
 };
 

@@ -33,6 +33,5 @@ void UMinionAnimInstance::AnimNotify_HitEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	ABLOG(Error, TEXT("Why Babe wh"));
 	character_->onHit_.Broadcast(false);
 }
