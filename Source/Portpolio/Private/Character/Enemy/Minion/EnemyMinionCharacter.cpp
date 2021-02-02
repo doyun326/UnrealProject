@@ -36,6 +36,11 @@ AEnemyMinionCharacter::AEnemyMinionCharacter()
 		ABLOG(Warning, TEXT("Success : MinionAnim_Path"));
 		GetMesh()->SetAnimInstanceClass(ANIM_PATH.Class);
 	}
+
+	isFirstAttack_ = false;
+	isSecondAttack_ = false;
+	isThirdAttack_ = false;
+	isHiting_ = false;
 }
 
 void AEnemyMinionCharacter::BeginPlay()
@@ -43,6 +48,23 @@ void AEnemyMinionCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	minionAnim_ = Cast<UMinionAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (minionAnim_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : minionAnim"));
+		return;
+	}
+
+	//Delegate Setting
+	onFirstAttack_.AddUObject(this, &AEnemyMinionCharacter::ChangeFirstAttack);
+	onSecondAttack_.AddUObject(this, &AEnemyMinionCharacter::ChangeSecondAttack);
+	onThirdAttack_.AddUObject(this, &AEnemyMinionCharacter::ChangeThirdAttack);
+	onHit_.AddUObject(this, &AEnemyMinionCharacter::ChangeHit);
+
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bUseControllerDesiredRotation = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
 }
 
 void AEnemyMinionCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -59,6 +81,8 @@ void AEnemyMinionCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	GetCharacterMovement()->MaxWalkSpeed = MAX_SPEED;
+
 }
 
 void AEnemyMinionCharacter::Tick(float DeltaTime)
@@ -70,7 +94,48 @@ float AEnemyMinionCharacter::TakeDamage(float DamageAmount, FDamageEvent const& 
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	isHiting_ = true;
+
 	return FinalDamage;
+}
+
+void AEnemyMinionCharacter::ChangeFirstAttack(bool _attack)
+{
+	isFirstAttack_ = _attack;
+}
+
+void AEnemyMinionCharacter::ChangeSecondAttack(bool _attack)
+{
+	isSecondAttack_ = _attack;
+}
+
+void AEnemyMinionCharacter::ChangeThirdAttack(bool _attack)
+{
+	isThirdAttack_ = _attack;
+}
+
+void AEnemyMinionCharacter::ChangeHit(bool _hit)
+{
+	isHiting_ = _hit;
+}
+
+bool AEnemyMinionCharacter::GetFirstAttacking()
+{
+	return isFirstAttack_;
+}
+
+bool AEnemyMinionCharacter::GetSecondAttacking()
+{
+	return isSecondAttack_;
+}
+
+bool AEnemyMinionCharacter::GetThirdAttacking()
+{
+	return isThirdAttack_;
+}
+bool AEnemyMinionCharacter::GetIsHiting()
+{
+	return isHiting_;
 }
 
 void AEnemyMinionCharacter::EnemyDestroy()

@@ -18,10 +18,20 @@ class PORTPOLIO_API AMinionAIController : public AAIController
 public:
 	AMinionAIController();
 
-protected:
+	virtual void OnPossess(APawn* InPawn) override;
 
+	static const FName	homePosKey_;
+	static const FName	patrolPosKey_;
+	static const FName	targetKey_;
+	static const FName	isHitKey_;
+
+protected:
+	virtual void BeginPlay() override;
 
 private:
-
+	UPROPERTY()
+		class UBehaviorTree* minionBT_;
+	UPROPERTY()
+		class UBlackboardData* minionBB_;
 
 };
