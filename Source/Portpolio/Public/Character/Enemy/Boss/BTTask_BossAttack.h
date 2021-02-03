@@ -7,15 +7,6 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTask_BossAttack.generated.h"
 
-enum ATTACK_PATTERN
-{
-	ATTACK_START,
-	ATTACK_ONE,
-	ATTACK_TWO,
-	ATTACK_THREE,
-	ATTACK_END
-};
-
 /**
  * 
  */
@@ -33,6 +24,15 @@ protected:
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 private:
+	enum ATTACK_PATTERN
+	{
+		ATTACK_START,
+		ATTACK_ONE,
+		ATTACK_TWO,
+		ATTACK_THREE,
+		ATTACK_END
+	};
+
 	bool	isAttacking_;
 
 };
