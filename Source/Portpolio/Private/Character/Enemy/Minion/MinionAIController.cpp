@@ -45,12 +45,12 @@ void AMinionAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	/*if (UseBlackboard(minionBB_, Blackboard))
+	if (UseBlackboard(minionBB_, Blackboard))
 	{
 		Blackboard->SetValueAsVector(homePosKey_, InPawn->GetActorLocation());
 		if (!RunBehaviorTree(minionBT_))
 		{
 			ABLOG(Warning, TEXT("BossAIController couldn't BehaviorTree!"));
 		}
-	}*/
+	}
 }
