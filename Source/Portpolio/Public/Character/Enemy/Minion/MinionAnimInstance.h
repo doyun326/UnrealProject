@@ -22,6 +22,12 @@ public:
 
 private:
 	UFUNCTION()
+		void	AnimNotify_AttackFirEnd();
+	UFUNCTION()
+		void	AnimNotify_AttackSecEnd();
+	UFUNCTION()
+		void	AnimNotify_AttackThiEnd();
+	UFUNCTION()
 		void	AnimNotify_HitEnd();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true)) 

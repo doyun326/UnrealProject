@@ -181,7 +181,7 @@ void AEnemyMinionCharacter::ChangeThirdAttack(bool _attack)
 
 void AEnemyMinionCharacter::ChangeHit(bool _hit)
 {
-	isHiting_ = _hit;
+	isHiting_ = _hit;	
 }
 
 bool AEnemyMinionCharacter::GetFirstAttacking()

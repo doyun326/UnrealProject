@@ -26,6 +26,36 @@ void UMinionAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
+void UMinionAnimInstance::AnimNotify_AttackFirEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	ABLOG_S(Error);
+}
+
+void UMinionAnimInstance::AnimNotify_AttackSecEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	ABLOG_S(Error);
+}
+
+void UMinionAnimInstance::AnimNotify_AttackThiEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	ABLOG_S(Error);
+}
+
 void UMinionAnimInstance::AnimNotify_HitEnd()
 {
 	if (character_ == nullptr)
@@ -33,5 +63,6 @@ void UMinionAnimInstance::AnimNotify_HitEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
+	ABLOG(Warning, TEXT("Minion Anim Hit"));
 	character_->onHit_.Broadcast(false);
 }
