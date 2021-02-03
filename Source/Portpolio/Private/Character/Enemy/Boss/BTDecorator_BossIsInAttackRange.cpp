@@ -22,8 +22,6 @@ bool UBTDecorator_BossIsInAttackRange::CalculateRawConditionValue(UBehaviorTreeC
 	auto ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
 	UWorld* World = ControllingPawn->GetWorld();
 
-	ABLOG_S(Warning);
-
 	if (ControllingPawn == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : ControllingPawn"));
