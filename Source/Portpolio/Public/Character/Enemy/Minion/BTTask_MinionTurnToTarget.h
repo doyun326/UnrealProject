@@ -15,4 +15,10 @@ class PORTPOLIO_API UBTTask_MinionTurnToTarget : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
+public:
+	UBTTask_MinionTurnToTarget();
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+private:
 };
