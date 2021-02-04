@@ -33,7 +33,7 @@ void UMinionAnimInstance::AnimNotify_AttackFirEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	ABLOG_S(Error);
+	character_->onFirstAttack_.Broadcast(false);
 }
 
 void UMinionAnimInstance::AnimNotify_AttackSecEnd()
@@ -43,7 +43,7 @@ void UMinionAnimInstance::AnimNotify_AttackSecEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	ABLOG_S(Error);
+	character_->onSecondAttack_.Broadcast(false);
 }
 
 void UMinionAnimInstance::AnimNotify_AttackThiEnd()
@@ -53,7 +53,7 @@ void UMinionAnimInstance::AnimNotify_AttackThiEnd()
 		ABLOG(Error, TEXT("Nullptr : Character"));
 		return;
 	}
-	ABLOG_S(Error);
+	character_->onThirdAttack_.Broadcast(false);
 }
 
 void UMinionAnimInstance::AnimNotify_HitEnd()

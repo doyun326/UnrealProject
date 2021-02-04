@@ -26,6 +26,8 @@ EBTNodeResult::Type UBTTask_MinionAttack::ExecuteTask(UBehaviorTreeComponent& Ow
 		ABLOG(Error, TEXT("Nullptr : AEnemyMinionCharacter"));
 		return EBTNodeResult::Failed;
 	}
+
+	ABLOG(Warning, TEXT("%d"), RandNum);
 	
 	switch (RandNum)
 	{
