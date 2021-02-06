@@ -13,15 +13,39 @@ class PORTPOLIO_API AStageSection : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AStageSection();
 
+	virtual void OnConstruction(const FTransform& Transform) override;
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	enum class ESectionState : uint8
+	{
+		READY = 0,
+		BATTLE,
+		COMPLATE
+	};
 
+	UFUNCTION()
+		void	OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+		void	OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+	void	SetState(ESectionState _newState);
+	void	OperatorGates(bool _bOpen = true);
+
+	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
+		UStaticMeshComponent*			mapMesh_;
+	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
+		TArray<UStaticMeshComponent*>	gateMeshs_;
+	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
+		UBoxComponent*			startTrigger_;
+	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
+		TArray<UBoxComponent*>	gateTriggers_;
+	UPROPERTY(VisibleAnywhere, Category = "State", meta = (AllowPrivateAccess = true))
+		bool	bNoBattle_;
+		
+	ESectionState currentState_ = ESectionState::READY;
 };

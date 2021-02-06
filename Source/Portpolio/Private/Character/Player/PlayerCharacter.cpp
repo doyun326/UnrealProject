@@ -65,6 +65,9 @@ APlayerCharacter::APlayerCharacter()
 		ABLOG(Error, TEXT("Nullptr : PlayerStat"));
 	}
 
+	//Collision Preset Setting
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+
 	isFire_ = false;
 	isSprint_ = false;
 	isZoomIn_ = false;
