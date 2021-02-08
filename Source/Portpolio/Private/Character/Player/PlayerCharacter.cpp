@@ -21,7 +21,6 @@
 //Test 탄알 발사시 탄알 발사한 방향으로 회전
 #define SHOOTTURN_SPEED		20.0f
 
-// Sets default values
 APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -54,9 +53,6 @@ APlayerCharacter::APlayerCharacter()
 	cameraArm_->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 	armLengthTo_ = 0.0f;	//카메라봉 길이
 
-	//캐릭터 이동속도
-	GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
-
 	//PlayerStat 설정
 	playerStat_ = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("PLAYERSTAT"));
 
@@ -68,11 +64,13 @@ APlayerCharacter::APlayerCharacter()
 	//Collision Preset Setting
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 
+	//Actor 기초 세팅
+	SetActorHiddenInGame(true);
+	SetCanBeDamaged(false);
+
 	isFire_ = false;
 	isSprint_ = false;
-	isZoomIn_ = false;
-
-	SetViewMode(ViewMode::COMMONVIEW);
+	isZoomIn_ = false;	
 }
 
 // Called when the game starts or when spawned
@@ -110,8 +108,8 @@ void APlayerCharacter::BeginPlay()
 		return;
 	}
 
-	playerController_->GetHudWidget()->BindPlayerStat(playerStat_);
-	playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
+	//SetCharacterState(ECharacterState::LOADING);
+	SetCharacterState(ECharacterState::READY);
 
 	//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
 	//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
@@ -247,7 +245,6 @@ void APlayerCharacter::SetViewMode(ViewMode _newMode)
 		GetCharacterMovement()->bUseControllerDesiredRotation = true;
 		GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 		isZoomIn_ = false;
-
 		break;
 	}
 	
@@ -271,6 +268,71 @@ void APlayerCharacter::WeaponFire()
 {
 	//weapon_->OnFire(isFire_);
 	weapon_->ShootBullet();
+}
+
+void APlayerCharacter::SetCharacterState(ECharacterState _newState)
+{
+	currentState_ = _newState;
+
+	if (playerStat_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerStatComponent"));
+		return;
+	}
+
+	if (playerController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerController"));
+		return;
+	}
+	
+	switch (currentState_)
+	{
+	case ECharacterState::LOADING:
+	{
+		SetActorHiddenInGame(true);
+		SetCanBeDamaged(false);
+		DisableInput(playerController_);
+		//playerController_->GetHudWidget()->BindPlayerStat(playerStat_);
+		//playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
+		break;
+	}
+
+	case ECharacterState::READY:
+	{
+		SetActorHiddenInGame(false);
+		SetCanBeDamaged(true);
+
+		/*-------------해당 내용은 추후 Loading으로 옮길것----------------*/
+		playerController_->GetHudWidget()->BindPlayerStat(playerStat_);
+		playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
+		/*--------------------------------------------------------------*/
+
+		playerStat_->onHpIsZero_.AddLambda([this]()->void 
+			{
+				SetCharacterState(ECharacterState::DEAD);
+			});
+
+		SetViewMode(ViewMode::COMMONVIEW);
+		GetCharacterMovement()->MaxWalkSpeed = WALK_SPEED;
+		EnableInput(playerController_);
+		break;
+	}
+
+	case ECharacterState::DEAD:
+	{
+		GetMesh()->SetHiddenInGame(false);
+		SetActorEnableCollision(false);
+		SetCanBeDamaged(false);
+		DisableInput(playerController_);
+		break;
+	}
+	}
+}
+
+ECharacterState	APlayerCharacter::GetCharacterState() const
+{
+	return currentState_;
 }
 
 ControlMode APlayerCharacter::GetCurrentControllMode()

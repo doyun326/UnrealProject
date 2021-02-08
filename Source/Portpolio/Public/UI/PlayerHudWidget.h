@@ -34,7 +34,6 @@ private:
 		class UProgressBar* mpBar_;
 	UPROPERTY()
 		class UProgressBar* expBar_;
-
 	UPROPERTY()
 		class UTextBlock*	levelText_;
 	UPROPERTY()

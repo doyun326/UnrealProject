@@ -98,5 +98,6 @@ void UPlayerHudWidget::UpdateWarPlayerState()
 		ABLOG(Error, TEXT("Nullptr : currentWarPlayerState"));
 		return;
 	}
+	expBar_->SetPercent(currentWarPlayerState_->GetExpRatio());
 	levelText_->SetText(FText::FromString(FString::FromInt(currentWarPlayerState_->GetCharacterLevel())));
 }

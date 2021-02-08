@@ -44,7 +44,7 @@ AStageSection::AStageSection()
 
 	static FName GateSockets[] = { {TEXT("+XGate")}, {TEXT("-XGate")}, {TEXT("+YGate")}, {TEXT("-YGate")} };
 
-	for(FName GateSocket : GateSockets)
+	for (FName GateSocket : GateSockets)
 	{
 		if (!mapMesh_->DoesSocketExist(GateSocket))
 		{
@@ -56,10 +56,7 @@ AStageSection::AStageSection()
 		NewGate->SetStaticMesh(DEMON_GATE.Object);
 		NewGate->SetupAttachment(RootComponent, GateSocket);
 		NewGate->SetRelativeLocation(FVector(18.0f, 0.0f, 0.0f));
-
-		NewGate->SetRelativeRotation(FRotator(13.0, 17.0, 12.0));
-
-		NewGate->SetRelativeScale3D(FVector(1.8f, 1.0f, 1.5f));
+		NewGate->SetRelativeScale3D(FVector(1.8f, 1.8f, 1.5f));
 		gateMeshs_.Add(NewGate);
 
 		//Trigger Setting (gateTrigger)
@@ -128,18 +125,20 @@ void AStageSection::SetState(ESectionState _newState)
 		{
 			GateTrigger->SetCollisionProfileName(TEXT("MapTrigger"));
 		}
-		OperatorGates(true);
+		//OperatorGates(true);
+		OperatorGates(false);
 		ABLOG(Error, TEXT("ESectionState::COMPLATE"));
 		break;
 	}
 	}
-	currentState_ = _newState;
+	//currentState_ = _newState;
 }
 
 void AStageSection::OperatorGates(bool _bOpen)
 {
 	for(UStaticMeshComponent* Gate : gateMeshs_)
 	{
+		Gate->SetRelativeLocation(_bOpen ? FVector::ZeroVector : FVector(150.0f, 80.0f, 0.0f));
 		Gate->SetRelativeRotation(_bOpen ? FRotator(0.0f, -90.0f, 0.0f) : FRotator::ZeroRotator);
 	}
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameSetting/Portpolio.h"
+
 #include "Blueprint/UserWidget.h"
 #include "TitleUIWidget.generated.h"
 
@@ -20,15 +21,11 @@ protected:
 	UPROPERTY()
 		class UButton* newGameBtn_;
 	UPROPERTY()
-		class UButton* continueBtn_;
-	UPROPERTY()
 		class UButton* exitBtn_;
 
 private:
 	UFUNCTION()
 		void OnNewGameClicked();
-	UFUNCTION()
-		void OnContinueClicked();
 	UFUNCTION()
 		void OnExitClicked();
 };

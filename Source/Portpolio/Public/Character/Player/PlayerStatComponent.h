@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "PlayerStatComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnHpZeroDelegate);
 DECLARE_MULTICAST_DELEGATE(FOnHpChangeDelegate);
 DECLARE_MULTICAST_DELEGATE(FOnMpChangeDelegate);
 
@@ -32,6 +33,7 @@ public:
 
 	FOnHpChangeDelegate onHpChanged_;
 	FOnMpChangeDelegate onMpChanged_;
+	FOnHpZeroDelegate	onHpIsZero_;
 
 protected:
 	// Called when the game starts

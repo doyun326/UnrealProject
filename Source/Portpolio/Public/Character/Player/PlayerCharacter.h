@@ -16,26 +16,15 @@ class PORTPOLIO_API APlayerCharacter : public ABaseCharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	APlayerCharacter();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	ControlMode	currentControlMode_;
-	ViewMode	currentViewMode_;
-
-public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void PostInitializeComponents() override;
 
+	void			SetCharacterState(ECharacterState _newState);
 	bool			GetIsFire();
 	bool			GetSprintBtn();
-	ControlMode		GetCurrentControllMode();
-	FVector			GetPlayerLocation();
-	FRotator		GetPlayerRotator();
 	float			GetLookPitch();
 	void			SetSprintBtn(bool _newState);
 	void			SetViewMode(ViewMode _newMode);
@@ -43,18 +32,28 @@ public:
 	void			WeaponFire();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
+	ControlMode		GetCurrentControllMode();
+	FVector			GetPlayerLocation();
+	FRotator		GetPlayerRotator();
+	ECharacterState	GetCharacterState() const;
 
-	class USkeletalMeshComponent*	GetSkelMesh();
+	class USkeletalMeshComponent* GetSkelMesh();
 
 	//카메라 설정
 	UPROPERTY(EditAnywhere, Category = "Camera")
-		UCameraComponent*				camera_;
+		UCameraComponent*			camera_;
 	UPROPERTY(EditAnywhere, Category = "Camera")
-		USpringArmComponent*			cameraArm_;
+		USpringArmComponent*		cameraArm_;
 	UPROPERTY(VisibleAnywhere, Category = "Stat")
-		class UPlayerStatComponent*		playerStat_;
+		class UPlayerStatComponent* playerStat_;
 
 	float		armLengthTo_;
+
+protected:
+	virtual void BeginPlay() override;
+
+	ControlMode	currentControlMode_;
+	ViewMode	currentViewMode_;
 
 private:
 	UPROPERTY()
@@ -65,6 +64,10 @@ private:
 		class UPlayerAnimInstance*	playerAnim_;
 	UPROPERTY()
 		class AWarPlayerState*		warPlayerState_;
+	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
+		ECharacterState				currentState_;
+		
+		
 
 	bool		isFire_;
 	bool		isSprint_;
@@ -78,4 +81,5 @@ private:
 	FVector		endPoint_;
 	FVector		forwardVector_;
 	FName		MuzzleSocket;
+	int32		assetIndex_ = 0;
 };

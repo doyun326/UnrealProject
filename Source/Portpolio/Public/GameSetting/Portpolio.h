@@ -42,7 +42,7 @@ enum class ViewMode
 UENUM(BlueprintType)
 enum class ECharacterState : uint8
 {
-	PREINTI,	//캐릭터 생성전의 스테이트, 캐릭터와 UI를 숨긴다.
+	PREINIT,	//캐릭터 생성전의 스테이트, 캐릭터와 UI를 숨긴다.
 	LOADING,	//선택한 캐릭터 애셋을 로딩, 로딩이 완료될때까지 입력을 비활성화
 	READY,		//애셋 로딩 완료, 캐릭터와 UI를 볼수있고, 입력을 활성화
 	DEAD		//UI 종료, 컨트롤 비활성화, Collision off

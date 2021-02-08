@@ -14,6 +14,7 @@ AUIController::AUIController()
 
 	if (TITLE_UI.Succeeded())
 	{
+		ABLOG(Warning, TEXT("Success : TITLE_UI"));
 		UIWidgetClass_ = (UClass*)TITLE_UI.Object;
 	}
 }
@@ -26,7 +27,7 @@ void AUIController::BeginPlay()
 
 	if (UIWidgetClass_ == nullptr || UIWidgetInstance_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("UIWidget or UIWidgetInstance is nullptr"));
+		ABLOG(Error, TEXT("Nullptr : UIWidgetInstance"));
 		return;
 	}
 

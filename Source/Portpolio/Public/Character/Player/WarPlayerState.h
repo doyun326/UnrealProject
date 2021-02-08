@@ -20,9 +20,11 @@ class PORTPOLIO_API AWarPlayerState : public APlayerState
 public:
 	AWarPlayerState();
 
+	void	InitPlayerData();
 	int32	GetGameScore() const;
 	int32	GetCharacterLevel() const;
-	void	InitPlayerData();
+	float	GetExpRatio();
+	bool	AddExp(int32 _inComeExp);
 
 	FOnPlayerStateChangeDelegate onPlayerStateChange;
 
@@ -31,5 +33,10 @@ protected:
 		int32	gameScore_;
 	UPROPERTY(Transient)
 		int32	characterLevel_;
+	UPROPERTY(Transient)
+		int32	exp_;
 
+private:
+	void	SetCharacterLevel(int32 newCharacterLevel);
+	struct	FPlayerData* currentStatData_;
 };
