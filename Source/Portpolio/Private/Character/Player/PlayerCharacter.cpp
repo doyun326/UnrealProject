@@ -12,6 +12,9 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 
+#define PLAYERMESH_PATH		"/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"
+#define PLAYERANIM_PATH		"/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"
+
 #define ZOOMIN_FIELDVIEW	70.0f
 #define COMMON_FIELDVIEW	90.0f
 #define ZOOMIN_ARMLENGTH	100.0f
@@ -26,7 +29,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Character Mesh 설정
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT("/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> War_Alien(TEXT(PLAYERMESH_PATH));
 
 	if (War_Alien.Succeeded())
 	{
@@ -36,7 +39,7 @@ APlayerCharacter::APlayerCharacter()
 	}
 	
 	//Animation 설정
-	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT("/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> Alien_Anim(TEXT(PLAYERANIM_PATH));
 
 	if (Alien_Anim.Succeeded())
 	{
@@ -59,6 +62,7 @@ APlayerCharacter::APlayerCharacter()
 	if (playerStat_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : PlayerStat"));
+		return;
 	}
 
 	//Collision Preset Setting
@@ -380,7 +384,7 @@ bool APlayerCharacter::GetIsWalking()
 	return isWalk_;
 }
 
-bool	APlayerCharacter::GetIsZoom()
+bool APlayerCharacter::GetIsZoom()
 {
 	return isZoomIn_;
 }

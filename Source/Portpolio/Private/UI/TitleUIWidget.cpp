@@ -34,7 +34,8 @@ void UTitleUIWidget::NativeConstruct()
 
 void UTitleUIWidget::OnNewGameClicked()
 {
-	UGameplayStatics::OpenLevel(this, FName("SpaceShip_Loby"));
+	//UGameplayStatics::OpenLevel(this, FName("SpaceShip_Loby"));
+	UGameplayStatics::OpenLevel(this, FName("/Game/My/Level/CineStage/CineLoby.CineLoby"));
 
 	ABLOG(Warning, TEXT("Click Exit Button Clicked!!!"));
 }
