@@ -6,7 +6,8 @@
 #include "../Public/Character/Player/PlayerStatComponent.h"
 #include "../Public/Weapon/GunWeapon.h"
 #include "../Public/Character/Player/WarPlayerState.h"
-#include "..//Public/UI/PlayerHudWidget.h"
+#include "../Public/UI/PlayerHudWidget.h"
+#include "../Public/GameSetting/BaseInteractable.h"
 
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
@@ -277,6 +278,18 @@ void APlayerCharacter::WeaponFire()
 void APlayerCharacter::Interact()
 {
 	ABLOG(Warning, TEXT("Press Interact"));
+
+	FHitResult OutHit;
+
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, startPoint_, endPoint_, ECC_Visibility))
+	{
+		ABaseInteractable* Object = Cast<ABaseInteractable>(OutHit.Actor);
+
+		if (Object)
+		{
+			Object->Interact();
+		}
+	}
 }
 
 void APlayerCharacter::SetCharacterState(ECharacterState _newState)
