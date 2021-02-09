@@ -120,7 +120,6 @@ void APlayerCharacter::BeginPlay()
 	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, GetWorld()->GetName());
 }
 
-// Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -207,10 +206,12 @@ void APlayerCharacter::Tick(float DeltaTime)
 	/////////////////////////////////////Test/////////////////////////////////////
 }
 
-// Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	//BindAction
+	PlayerInputComponent->BindAction("Interact", EInputEvent::IE_Pressed, this, &APlayerCharacter::Interact);
 }
 
 void APlayerCharacter::PostInitializeComponents()
@@ -270,8 +271,12 @@ void APlayerCharacter::OnFire(bool _firBtn)
 
 void APlayerCharacter::WeaponFire()
 {
-	//weapon_->OnFire(isFire_);
 	weapon_->ShootBullet();
+}
+
+void APlayerCharacter::Interact()
+{
+	ABLOG(Warning, TEXT("Press Interact"));
 }
 
 void APlayerCharacter::SetCharacterState(ECharacterState _newState)

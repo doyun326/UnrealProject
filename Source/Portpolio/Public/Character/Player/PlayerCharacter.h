@@ -3,8 +3,8 @@
 #pragma once
 
 #include "GameSetting/Portpolio.h"
-#include "Character/BaseCharacter.h"
 
+#include "Character/BaseCharacter.h"
 #include "PlayerCharacter.generated.h"
 
 /**
@@ -30,6 +30,7 @@ public:
 	void			SetViewMode(ViewMode _newMode);
 	void			OnFire(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 	void			WeaponFire();
+	void			Interact();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
 	ControlMode		GetCurrentControllMode();

@@ -6,6 +6,11 @@ ABaseInteractable::ABaseInteractable()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	rootComponent_ = CreateDefaultSubobject<USceneComponent>(TEXT("Root Component"));
+	RootComponent = rootComponent_;
+
+	mesh_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	mesh_->SetupAttachment(RootComponent);
 }
 
 void ABaseInteractable::BeginPlay()

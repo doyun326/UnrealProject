@@ -17,12 +17,12 @@ public:
 	ABaseInteractable();
 
 	virtual void Tick(float DeltaTime) override;
-	//virtual void Interact() PURE_VIRTUAL
+	virtual void Interact() PURE_VIRTUAL(ABaseInteractable::Interact, )
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		USceneComponent*	rootComponent_;
+		USceneComponent*		rootComponent_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		UStaticMeshComponent* mesh_;
+		UStaticMeshComponent*	mesh_;
 
 protected: 
 	virtual void BeginPlay() override;
