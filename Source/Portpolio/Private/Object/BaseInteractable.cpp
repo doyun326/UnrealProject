@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../Public/GameSetting/BaseInteractable.h"
+#include "../Public/Object/BaseInteractable.h"
 
 ABaseInteractable::ABaseInteractable()
 {

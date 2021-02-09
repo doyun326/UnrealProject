@@ -7,7 +7,7 @@
 #include "../Public/Weapon/GunWeapon.h"
 #include "../Public/Character/Player/WarPlayerState.h"
 #include "../Public/UI/PlayerHudWidget.h"
-#include "../Public/GameSetting/BaseInteractable.h"
+#include "../Public/Object/BaseInteractable.h"
 
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
