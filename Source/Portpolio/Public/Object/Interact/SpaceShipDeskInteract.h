@@ -24,6 +24,9 @@ public:
 		bool	state_;
 
 protected:
+	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
+		UStaticMeshComponent* terminalMesh_;
 };

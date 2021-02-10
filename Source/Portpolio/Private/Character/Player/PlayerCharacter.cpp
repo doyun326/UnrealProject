@@ -275,10 +275,9 @@ void APlayerCharacter::WeaponFire()
 	weapon_->ShootBullet();
 }
 
+//ObjectInteract
 void APlayerCharacter::Interact()
 {
-	ABLOG(Warning, TEXT("Press Interact"));
-
 	FHitResult OutHit;
 
 	if (GetWorld()->LineTraceSingleByChannel(OutHit, startPoint_, endPoint_, ECC_Visibility))
