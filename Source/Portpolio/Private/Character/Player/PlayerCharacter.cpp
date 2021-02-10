@@ -75,7 +75,8 @@ APlayerCharacter::APlayerCharacter()
 
 	isFire_ = false;
 	isSprint_ = false;
-	isZoomIn_ = false;	
+	isZoomIn_ = false;
+	isInteract_ = false;
 }
 
 // Called when the game starts or when spawned
@@ -186,25 +187,24 @@ void APlayerCharacter::Tick(float DeltaTime)
 		SetActorRotation(playerRotator_);	//Set PlayerLookRotator
 		weapon_->SetAimVector(fireLookPosition_);	//Set PlayerAimVector
 	}
-
-	/////////////////////////////////////Test/////////////////////////////////////
-	FVector charStart = GetActorLocation();
-	FVector charForwardVector = GetActorForwardVector();
-
-	FHitResult chrhit;
-	FVector charEnd = charStart + charForwardVector * 5000.0f;
-	charStart = charStart + (charForwardVector * 100.0f);
-	FCollisionQueryParams CharParams;
-	CharParams.AddIgnoredActor(this);
-
+	isInteract();
+	
 	/*Draw rayCast debug Line START*/
 #ifdef DRAW_DEBUGHELPER
 	{
-		//DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);
+		/*FVector charStart = GetActorLocation();
+		FVector charForwardVector = GetActorForwardVector();
+
+		FHitResult chrhit;
+		FVector charEnd = charStart + charForwardVector * 5000.0f;
+		charStart = charStart + (charForwardVector * 100.0f);
+		FCollisionQueryParams CharParams;
+		CharParams.AddIgnoredActor(this);
+
+		DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);*/
 	}
 #endif
 	/*Draw rayCast debug Line START*/
-	/////////////////////////////////////Test/////////////////////////////////////
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -275,7 +275,27 @@ void APlayerCharacter::WeaponFire()
 	weapon_->ShootBullet();
 }
 
-//ObjectInteract
+void APlayerCharacter::isInteract()
+{
+	FHitResult OutHit;
+
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, startPoint_, endPoint_, ECC_Visibility))
+	{
+		ABaseInteractable* Object = Cast<ABaseInteractable>(OutHit.Actor);
+
+		if (Object)
+		{
+			isInteract_ = true;
+		}
+		else
+		{	
+			isInteract_ = false;
+		}
+		warPlayerState_->ChangeInteractText(isInteract_);
+	}
+}
+
+//Object Interact
 void APlayerCharacter::Interact()
 {
 	FHitResult OutHit;

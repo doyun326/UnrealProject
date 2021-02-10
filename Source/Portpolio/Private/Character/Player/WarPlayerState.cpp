@@ -18,16 +18,6 @@ void AWarPlayerState::InitPlayerData()
 	exp_ = 0;
 }
 
-int32 AWarPlayerState::GetGameScore() const
-{
-	return gameScore_;
-}
-
-int32 AWarPlayerState::GetCharacterLevel() const
-{
-	return characterLevel_;
-}
-
 float AWarPlayerState::GetExpRatio()
 {
 	if (currentStatData_->NextExp <= KINDA_SMALL_NUMBER)
@@ -81,4 +71,26 @@ void AWarPlayerState::SetCharacterLevel(int32 _newCharacterLevel)
 	}
 
 	characterLevel_ = _newCharacterLevel;
+}
+
+int32 AWarPlayerState::GetGameScore() const
+{
+	return gameScore_;
+}
+
+int32 AWarPlayerState::GetCharacterLevel() const
+{
+	return characterLevel_;
+}
+
+void AWarPlayerState::ChangeInteractText(bool _isView)
+{
+	if (_isView)
+	{
+		onInteractChange.Broadcast(true);
+	}
+	else
+	{
+		onInteractChange.Broadcast(false);
+	}
 }

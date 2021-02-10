@@ -30,6 +30,7 @@ public:
 	void			SetViewMode(ViewMode _newMode);
 	void			OnFire(bool _firBtn); //Åº¾Ë ¹ß»ç(RayCast)
 	void			WeaponFire();
+	void			isInteract();
 	void			Interact();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
@@ -68,11 +69,10 @@ private:
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
 		ECharacterState				currentState_;
 		
-		
-
 	bool		isFire_;
 	bool		isSprint_;
 	bool		isZoomIn_;
+	bool		isInteract_;
 	float		lookPitch_;
 	float		camArmLength_;
 	FVector		playerLocation_;

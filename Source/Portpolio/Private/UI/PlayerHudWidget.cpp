@@ -28,6 +28,7 @@ void UPlayerHudWidget::BindWarPlayerState(class AWarPlayerState* _playerState)
 	}
 	currentWarPlayerState_ = _playerState;
 	currentWarPlayerState_->onPlayerStateChange.AddUObject(this, &UPlayerHudWidget::UpdateWarPlayerState);
+	currentWarPlayerState_->onInteractChange.AddUObject(this, &UPlayerHudWidget::isHideInteractText);
 }
 
 void UPlayerHudWidget::NativeConstruct()
@@ -76,6 +77,12 @@ void UPlayerHudWidget::NativeConstruct()
 		ABLOG(Error, TEXT("Nullptr : expText_"));
 		return;
 	}
+	interactText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("InteractBar")));
+	if (interactText_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : interactText_"));
+		return;
+	}
 }
 
 void UPlayerHudWidget::UpdatePlayerStat()
@@ -100,4 +107,17 @@ void UPlayerHudWidget::UpdateWarPlayerState()
 	}
 	expBar_->SetPercent(currentWarPlayerState_->GetExpRatio());
 	levelText_->SetText(FText::FromString(FString::FromInt(currentWarPlayerState_->GetCharacterLevel())));
+}
+
+void UPlayerHudWidget::isHideInteractText(bool _view)
+{
+	if (_view)
+	{
+		interactText_->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		interactText_->SetVisibility(ESlateVisibility::Hidden);
+	}
+	
 }

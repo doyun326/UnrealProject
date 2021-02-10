@@ -8,6 +8,7 @@
 #include "WarPlayerState.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnPlayerStateChangeDelegate);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnInteractionTextDelegate, bool);
 
 /**
  * 
@@ -25,8 +26,10 @@ public:
 	int32	GetCharacterLevel() const;
 	float	GetExpRatio();
 	bool	AddExp(int32 _inComeExp);
+	void	ChangeInteractText(bool _isView);
 
-	FOnPlayerStateChangeDelegate onPlayerStateChange;
+	FOnPlayerStateChangeDelegate	onPlayerStateChange;
+	FOnInteractionTextDelegate		onInteractChange;
 
 protected:
 	UPROPERTY(Transient)

@@ -23,6 +23,7 @@ protected:
 	
 	void	UpdatePlayerStat();
 	void	UpdateWarPlayerState();
+	void	isHideInteractText(bool _view);
 
 private:
 	TWeakObjectPtr<class UPlayerStatComponent>	currentPlayerStat_;
@@ -42,5 +43,7 @@ private:
 		class UTextBlock*	mpText_;
 	UPROPERTY()
 		class UTextBlock*	expText_;
+	UPROPERTY()
+		class UTextBlock*	interactText_;
 	
 };

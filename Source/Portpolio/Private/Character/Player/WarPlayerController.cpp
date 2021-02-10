@@ -86,22 +86,6 @@ void AWarPlayerController::ProcessPlayerInput(const float DeltaTime, const bool 
 	}
 }
 
-void AWarPlayerController::SetupInputComponent()
-{
-	Super::SetupInputComponent();
-
-	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
-
-	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ZoomInStarted);
-	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Released, this, &AWarPlayerController::ZoomInReleased);
-	
-	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Pressed, this, &AWarPlayerController::RunSprintStart);
-	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Released, this, &AWarPlayerController::RunSprintReleased);
-
-	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnFireStart);
-	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Released, this, &AWarPlayerController::OnFireReleased);
-}
-
 void AWarPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -132,7 +116,7 @@ void AWarPlayerController::BeginPlay()
 		ABLOG(Error, TEXT("Nullptr : hudWidget"));
 		return;
 	}
-	
+
 	if (myPlayerState_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : myPlayerState"));
@@ -141,10 +125,22 @@ void AWarPlayerController::BeginPlay()
 
 	hudWidget_->BindWarPlayerState(myPlayerState_);
 	myPlayerState_->onPlayerStateChange.Broadcast();
+}
 
+void AWarPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
 
+	InputComponent->BindAction(TEXT("DiveJump"), EInputEvent::IE_Pressed, this, &AWarPlayerController::DiveJump);
 
+	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Pressed, this, &AWarPlayerController::ZoomInStarted);
+	InputComponent->BindAction(TEXT("ZoomIn"), EInputEvent::IE_Released, this, &AWarPlayerController::ZoomInReleased);
+	
+	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Pressed, this, &AWarPlayerController::RunSprintStart);
+	InputComponent->BindAction(TEXT("RunSprint"), EInputEvent::IE_Released, this, &AWarPlayerController::RunSprintReleased);
 
+	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnFireStart);
+	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Released, this, &AWarPlayerController::OnFireReleased);
 }
 
 void AWarPlayerController::ZoomInStarted()
