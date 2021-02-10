@@ -6,6 +6,7 @@
 
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Components/Border.h"
 
 void UPlayerHudWidget::BindPlayerStat(class UPlayerStatComponent* _playerStat)
 {
@@ -41,46 +42,67 @@ void UPlayerHudWidget::NativeConstruct()
 		ABLOG(Error, TEXT("Nullptr : hpBar_"));
 		return;
 	}
+
 	mpBar_ = Cast<UProgressBar>(GetWidgetFromName(TEXT("MpBar")));
 	if (mpBar_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : mpBar_"));
 		return;
 	}
+
 	expBar_ = Cast<UProgressBar>(GetWidgetFromName(TEXT("ExpBar")));
 	if (expBar_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : expBar_"));
 		return;
 	}
+
 	levelText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("LevelTextNum")));
 	if (hpBar_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : levelText_"));
 		return;
 	}
+
 	hpText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("HPTextNum")));
 	if (hpBar_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : hpText_"));
 		return;
 	}
+
 	mpText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("MPTextNum")));
 	if (hpBar_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : mpText_"));
 		return;
 	}
+
 	expText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("EXPTextNum")));
 	if (hpBar_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : expText_"));
 		return;
 	}
+
 	interactText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("InteractBar")));
 	if (interactText_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : interactText_"));
+		return;
+	}
+
+	dialogueBox_ = Cast<UBorder>(GetWidgetFromName(TEXT("DialogueWindow")));
+	if (dialogueBox_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : dialogueBox_"));
+		return;
+	}
+
+	dialogueText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("DialogueText")));
+	if (dialogueText_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : dialogueText_"));
 		return;
 	}
 }
@@ -119,5 +141,4 @@ void UPlayerHudWidget::isHideInteractText(bool _view)
 	{
 		interactText_->SetVisibility(ESlateVisibility::Hidden);
 	}
-	
 }

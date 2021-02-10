@@ -45,5 +45,9 @@ private:
 		class UTextBlock*	expText_;
 	UPROPERTY()
 		class UTextBlock*	interactText_;
+	UPROPERTY()
+		class UBorder*	dialogueBox_;
+	UPROPERTY()
+		class UTextBlock*	dialogueText_;
 	
 };
