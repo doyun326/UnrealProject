@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Object/Interact/SpaceShipDeskInteract.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 
 #define TERMINAL_MESH_PATH	"/Game/StarterBundle/ModularSci_Comm/Meshes/SM_Terminal_A_UI.SM_Terminal_A_UI"
 
@@ -19,11 +20,33 @@ ASpaceShipDeskInteract::ASpaceShipDeskInteract()
 	}
 
 	state_ = false;
+	currentLine_ = 0;
 }
 
 void ASpaceShipDeskInteract::BeginPlay()
 {
 	Super::BeginPlay();
+
+	auto WarInstancee = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (WarInstancee == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+
+	dialogueData_ = WarInstancee->GetDialogueData(1);
+
+	if (dialogueData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : DialogueData"));
+		return;
+	}
+}
+
+void ASpaceShipDeskInteract::DialogueCreate()
+{
+	ABLOG(Warning, TEXT("DialogueCreate!"));;
 }
 
 void ASpaceShipDeskInteract::Interact()

@@ -95,6 +95,32 @@ public:
 		int32	NextExp;
 };
 
+/*
+* Dialogue Structor(Npc대화용 자막)
+*/
+USTRUCT(BlueprintType)
+struct FNpcDialogueData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	FNpcDialogueData() :
+		NpcID(1)
+		, Conversation(1)
+		, LineID(1)
+		, Dialogue(TEXT(""))
+	{}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+		int32	NpcID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+		int32	Conversation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+		int32	LineID;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dialogue")
+		FString	Dialogue;
+};
+
 /**
  * 
  */ 
@@ -110,12 +136,15 @@ public:
 	FADEnemyData*		GetADEnemyData(int32 _level);
 	FMinionEnemyData*	GetMinionEnemyData(int32 _level);
 	FPlayerData*		GetPlayerData(int32 _level);
+	FNpcDialogueData*	GetDialogueData(int32 _npcID);
 
 private:
 	UPROPERTY()
-		class UDataTable* adEnemyTable_;
+		class UDataTable*	adEnemyTable_;
 	UPROPERTY()
-		class UDataTable* playerTable_;
+		class UDataTable*	playerTable_;
 	UPROPERTY()
-		class UDataTable* minionTable_;
+		class UDataTable*	minionTable_;
+	UPROPERTY()
+		class UDataTable*	dialougeTable_;
 };

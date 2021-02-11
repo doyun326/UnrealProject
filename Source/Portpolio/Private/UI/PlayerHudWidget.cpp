@@ -91,20 +91,6 @@ void UPlayerHudWidget::NativeConstruct()
 		ABLOG(Error, TEXT("Nullptr : interactText_"));
 		return;
 	}
-
-	dialogueBox_ = Cast<UBorder>(GetWidgetFromName(TEXT("DialogueWindow")));
-	if (dialogueBox_ == nullptr)
-	{
-		ABLOG(Error, TEXT("Nullptr : dialogueBox_"));
-		return;
-	}
-
-	dialogueText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("DialogueText")));
-	if (dialogueText_ == nullptr)
-	{
-		ABLOG(Error, TEXT("Nullptr : dialogueText_"));
-		return;
-	}
 }
 
 void UPlayerHudWidget::UpdatePlayerStat()

@@ -6,6 +6,7 @@
 #define ADENEMYDT_PATH		"/Game/My/GameData/ADEnemyData.ADEnemyData"
 #define PLAYERDT_PATH		"/Game/My/GameData/PlayerData.PlayerData"
 #define MINIONDT_PATH		"/Game/My/GameData/MinionEnemyData.MinionEnemyData"
+#define DIALOGUE_PATH		"/Game/My/GameData/NpcDialogue.NpcDialogue"
 
 UWarGameInstance::UWarGameInstance()
 {
@@ -35,6 +36,15 @@ UWarGameInstance::UWarGameInstance()
 		minionTable_ = MINION_DT.Object;
 		ABLOG(Warning, TEXT("Success : MinionTable"));
 	}
+
+	//NpcDialogueData
+	static ConstructorHelpers::FObjectFinder<UDataTable> DIALOGUE_DT(TEXT(DIALOGUE_PATH));
+
+	if (DIALOGUE_DT.Succeeded())
+	{
+		dialougeTable_ = DIALOGUE_DT.Object;
+		ABLOG(Warning, TEXT("Success : DialogueTable"));
+	}
 }
 
 void UWarGameInstance::Init()
@@ -46,15 +56,44 @@ void UWarGameInstance::Init()
 
 FADEnemyData* UWarGameInstance::GetADEnemyData(int32 _level)
 {
+	if (adEnemyTable_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : ADEnemyTable"));
+		return nullptr;
+	}
+
 	return adEnemyTable_->FindRow<FADEnemyData>(*FString::FromInt(_level), TEXT(""));
 }
 
 FPlayerData* UWarGameInstance::GetPlayerData(int32 _level)
 {
+	if (playerTable_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerTable"));
+		return nullptr;
+	}
+
 	return playerTable_->FindRow<FPlayerData>(*FString::FromInt(_level), TEXT(""));
 }
 
 FMinionEnemyData* UWarGameInstance::GetMinionEnemyData(int32 _level)
 {
+	if (minionTable_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : MinionTable"));
+		return nullptr;
+	}
+
 	return minionTable_->FindRow<FMinionEnemyData>(*FString::FromInt(_level), TEXT(""));
+}
+
+FNpcDialogueData* UWarGameInstance::GetDialogueData(int32 _npcID)
+{
+	if (dialougeTable_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : DialougeTable"));
+		return nullptr;
+	}
+
+	return dialougeTable_->FindRow<FNpcDialogueData>(*FString::FromInt(_npcID), TEXT(""));
 }
