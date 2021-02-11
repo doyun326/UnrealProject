@@ -2,7 +2,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "GameSetting/Portpolio.h"
+
 #include "Blueprint/UserWidget.h"
 #include "AIDeskInteractionWidget.generated.h"
 
