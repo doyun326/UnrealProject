@@ -111,7 +111,6 @@ void ASpaceShipDeskInteract::DialogueCreate()
 		ABLOG(Error, TEXT("Nullptr : DialogueWidget"));
 		return;
 	}
-	//이미 추가했는데 또 다시 추가하면 위험 문구 출력, 만약 내가 눌러서 AddToViewPort가 활성화 됬다면 라인 넘기기로 기능을 변경하자!
 
 	dialougeWidget_->AddToViewport();
 	GetDialogueLine();
