@@ -45,6 +45,8 @@ UWarGameInstance::UWarGameInstance()
 		dialougeTable_ = DIALOGUE_DT.Object;
 		ABLOG(Warning, TEXT("Success : DialogueTable"));
 	}
+
+	viewCheck_ = false;
 }
 
 void UWarGameInstance::Init()
@@ -52,6 +54,16 @@ void UWarGameInstance::Init()
 	Super::Init();
 
 	ABLOG(Warning, TEXT("Drop Exp of Leve"));
+}
+
+void UWarGameInstance::SetCheckAddViewport(bool _check)
+{
+	viewCheck_ = _check;
+}
+
+bool UWarGameInstance::GetCheckAddViewport()
+{
+	return viewCheck_;
 }
 
 FADEnemyData* UWarGameInstance::GetADEnemyData(int32 _level)

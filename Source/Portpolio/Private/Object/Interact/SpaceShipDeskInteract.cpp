@@ -45,9 +45,9 @@ void ASpaceShipDeskInteract::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto WarInstance = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	WarInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (WarInstance == nullptr)
+	if (WarInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
@@ -61,9 +61,9 @@ void ASpaceShipDeskInteract::BeginPlay()
 
 	dialougeWidget_ = Cast<UAIDeskInteractionWidget>(dialogueWidgetClass_->GetUserWidgetObject());
 
-	for (int RowNum = 1; RowNum <= WarInstance->GetDialogueRowNums(); RowNum++)
+	for (int RowNum = 1; RowNum <= WarInstance_->GetDialogueRowNums(); RowNum++)
 	{
-		struct FNpcDialogueData* Data = WarInstance->GetDialogueData(RowNum);
+		struct FNpcDialogueData* Data = WarInstance_->GetDialogueData(RowNum);
 
 		if (Data == nullptr)
 		{
@@ -112,22 +112,29 @@ void ASpaceShipDeskInteract::DialogueCreate()
 		return;
 	}
 
+	if (WarInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+
 	dialougeWidget_->AddToViewport();
+	WarInstance_->SetCheckAddViewport(true);
 	GetDialogueLine();
 	addViewportCheck_ = true;
 }
 
 void ASpaceShipDeskInteract::GetDialogueLine()
 {
-	for(int32 DataNum = 0; DataNum < dialogueDatas_.Num(); DataNum++)
-	{
-		dialougeText_.Add(dialogueDatas_[DataNum]->Dialogue);
-	}
-
 	if (dialougeWidget_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : DialogueWidget"));
 		return;
+	}
+
+	for(int32 DataNum = 0; DataNum < dialogueDatas_.Num(); DataNum++)
+	{
+		dialougeText_.Add(dialogueDatas_[DataNum]->Dialogue);
 	}
 
 	dialougeWidget_->SetDialogueText(dialougeText_);
@@ -151,5 +158,6 @@ void ASpaceShipDeskInteract::RemoveWidget()
 	dialougeWidget_->RemoveFromParent();
 	rowNum_ = 0;
 	addViewportCheck_ = false;
+	WarInstance_->SetCheckAddViewport(false);
 	GetWorld()->GetTimerManager().ClearTimer(viewTimeHandler_);
 }

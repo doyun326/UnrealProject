@@ -46,6 +46,8 @@ private:
 		UStaticMeshComponent*				terminalMesh_;
 	UPROPERTY()
 		class UAIDeskInteractionWidget*		dialougeWidget_;
+	UPROPERTY()
+		class UWarGameInstance*				WarInstance_;
 
 	TArray<struct FNpcDialogueData*>	dialogueDatas_;
 	TArray<FString>						lineText_;

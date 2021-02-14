@@ -85,9 +85,24 @@ int32 AWarPlayerState::GetCharacterLevel() const
 
 void AWarPlayerState::ChangeInteractText(bool _isView)
 {
-	if (_isView)
+	auto WarGameInstance = Cast<UWarGameInstance>(GetGameInstance());
+
+	if (WarGameInstance == nullptr)
 	{
-		onInteractChange.Broadcast(true);
+		ABLOG(Error, TEXT("Nullptr : WarGameInstance"));
+		return;
+	}
+
+	if (!WarGameInstance->GetCheckAddViewport())
+	{
+		if (_isView)
+		{
+			onInteractChange.Broadcast(true);
+		}
+		else
+		{
+			onInteractChange.Broadcast(false);
+		}
 	}
 	else
 	{

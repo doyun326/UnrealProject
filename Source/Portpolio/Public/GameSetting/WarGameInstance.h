@@ -133,6 +133,9 @@ public:
 
 	virtual void	Init() override;
 	
+	void	SetCheckAddViewport(bool _check);
+	bool	GetCheckAddViewport();
+	
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
 	FMinionEnemyData*	GetMinionEnemyData(int32 _level);
@@ -153,4 +156,6 @@ private:
 		class UDataTable*	minionTable_;
 	UPROPERTY()
 		class UDataTable*	dialougeTable_;
+
+	bool	viewCheck_;
 };
