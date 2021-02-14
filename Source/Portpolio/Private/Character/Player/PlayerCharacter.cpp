@@ -8,13 +8,15 @@
 #include "../Public/Character/Player/WarPlayerState.h"
 #include "../Public/UI/PlayerHudWidget.h"
 #include "../Public/Object/BaseInteractable.h"
+#include "../Public/GameSetting/MyCameraShake.h"
 
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#define PLAYERMESH_PATH		"/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"
-#define PLAYERANIM_PATH		"/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"
+#define PLAYERMESH_PATH			"/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"
+#define PLAYERANIM_PATH			"/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"
+#define CAMERASHAKECLASS_PATH	"/Script/Portpolio.MyCameraShake"
 
 #define ZOOMIN_FIELDVIEW	70.0f
 #define COMMON_FIELDVIEW	90.0f
@@ -56,6 +58,14 @@ APlayerCharacter::APlayerCharacter()
 	cameraArm_->TargetArmLength = 200.0f;
 	cameraArm_->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 	armLengthTo_ = 0.0f;	//카메라봉 길이
+
+	static ConstructorHelpers::FClassFinder<UCameraShake> CAMERA_SHAKE(TEXT(CAMERASHAKECLASS_PATH));
+
+	if (CAMERA_SHAKE.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : CAMERA_SHAKE"));
+		myShake_ = (UClass*)CAMERA_SHAKE.Class;
+	}
 
 	//PlayerStat 설정
 	playerStat_ = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("PLAYERSTAT"));
@@ -293,6 +303,7 @@ void APlayerCharacter::isInteract()
 		}
 		warPlayerState_->ChangeInteractText(isInteract_);
 	}
+	playerController_->PlayerCameraManager->PlayCameraShake(myShake_, 1.0f);
 }
 
 //Object Interact

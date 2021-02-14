@@ -14,5 +14,10 @@ UCLASS()
 class PORTPOLIO_API UMyCameraShake : public UCameraShake
 {
 	GENERATED_BODY()
+
+public:
+	UMyCameraShake();
+
+private:
 	
 };

@@ -46,6 +46,8 @@ public:
 		UCameraComponent*			camera_;
 	UPROPERTY(EditAnywhere, Category = "Camera")
 		USpringArmComponent*		cameraArm_;
+	UPROPERTY(EditAnywhere, Category = "Camera")
+		TSubclassOf<UCameraShake>	myShake_;
 	UPROPERTY(VisibleAnywhere, Category = "Stat")
 		class UPlayerStatComponent* playerStat_;
 
