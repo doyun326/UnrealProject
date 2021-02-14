@@ -133,10 +133,16 @@ public:
 
 	virtual void	Init() override;
 	
+	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
 	FMinionEnemyData*	GetMinionEnemyData(int32 _level);
+
+	//PlayerData
 	FPlayerData*		GetPlayerData(int32 _level);
+
+	//Dialogue Data
 	FNpcDialogueData*	GetDialogueData(int32 _npcID);
+	int32				GetDialogueRowNums();
 
 private:
 	UPROPERTY()

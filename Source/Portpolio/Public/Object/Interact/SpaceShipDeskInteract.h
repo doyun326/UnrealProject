@@ -20,8 +20,8 @@ public:
 
 	virtual void Interact() override;
 
-	UPROPERTY()
-		bool	state_;
+	void	GetDialogueLine();
+
 	UPROPERTY()
 		int32	npcID_;
 	UPROPERTY()
@@ -29,18 +29,28 @@ public:
 	UPROPERTY()
 		int32	currentLine_;
 	UPROPERTY()
-		TArray<FName>	myDialouge_;
+		TArray<FString>	dialougeText_;
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+		class UWidgetComponent* dialogueWidgetClass_;
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	void	DialogueCreate();
+	void	ChangeDialogue();
+	void	RemoveWidget();
 
 	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
-		UStaticMeshComponent* terminalMesh_;
-	
-	struct FNpcDialogueData*	dialogueData_ = nullptr;
+		UStaticMeshComponent*				terminalMesh_;
+	UPROPERTY()
+		class UAIDeskInteractionWidget*		dialougeWidget_;
 
+	TArray<struct FNpcDialogueData*>	dialogueDatas_;
+	TArray<FString>						lineText_;
+
+	FTimerHandle	viewTimeHandler_;
+	bool			addViewportCheck_;
+	int32			rowNum_;
 };

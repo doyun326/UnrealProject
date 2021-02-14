@@ -97,3 +97,8 @@ FNpcDialogueData* UWarGameInstance::GetDialogueData(int32 _npcID)
 
 	return dialougeTable_->FindRow<FNpcDialogueData>(*FString::FromInt(_npcID), TEXT(""));
 }
+
+int32 UWarGameInstance::GetDialogueRowNums()
+{
+	return dialougeTable_->GetRowNames().Num();
+}
