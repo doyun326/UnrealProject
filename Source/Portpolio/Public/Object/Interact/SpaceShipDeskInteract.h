@@ -27,9 +27,9 @@ public:
 	UPROPERTY()
 		int32	conversation_;
 	UPROPERTY()
-		int32	currentLine_;
+		int32	currentLineID_;
 	UPROPERTY()
-		TArray<FString>	dialougeText_;
+		TArray<FString>	dialougeTexts_;
 
 	UPROPERTY(EditAnywhere, Category = "UI")
 		class UWidgetComponent* dialogueWidgetClass_;

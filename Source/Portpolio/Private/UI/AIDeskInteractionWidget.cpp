@@ -37,3 +37,8 @@ void UAIDeskInteractionWidget::UpdateDialogueText(int32 _rowNum)
 {
 	dialogueText_->SetText(FText::FromString(dialogueTexts_[_rowNum]));
 }
+
+void UAIDeskInteractionWidget::DialogueEmpty()
+{
+	dialogueTexts_.Empty();
+}

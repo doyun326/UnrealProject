@@ -35,7 +35,7 @@ ASpaceShipDeskInteract::ASpaceShipDeskInteract()
 	}
 
 	addViewportCheck_ = false;
-	currentLine_ = 1;
+	currentLineID_ = 1;
 	conversation_ = 1;
 	npcID_ = 1;
 	rowNum_ = 0;
@@ -89,11 +89,11 @@ void ASpaceShipDeskInteract::Interact()
 		ChangeDialogue();
 	}
 
-	if (dialogueDatas_.Num() - 1 > rowNum_)
+	if (dialougeTexts_.Num() - 1 > rowNum_)
 	{
 		rowNum_++;
 	}
-	else if (dialogueDatas_.Num() - 1 == rowNum_)
+	else if (dialougeTexts_.Num() - 1 == rowNum_)
 	{
 		if (GetWorld() == nullptr)
 		{
@@ -134,10 +134,12 @@ void ASpaceShipDeskInteract::GetDialogueLine()
 
 	for(int32 DataNum = 0; DataNum < dialogueDatas_.Num(); DataNum++)
 	{
-		dialougeText_.Add(dialogueDatas_[DataNum]->Dialogue);
+		if (dialogueDatas_[DataNum]->NpcID == npcID_ && dialogueDatas_[DataNum]->LineID == currentLineID_)
+		{
+			dialougeTexts_.Add(dialogueDatas_[DataNum]->Dialogue);
+		}
 	}
-
-	dialougeWidget_->SetDialogueText(dialougeText_);
+	dialougeWidget_->SetDialogueText(dialougeTexts_);
 }
 
 void ASpaceShipDeskInteract::ChangeDialogue()
@@ -155,9 +157,29 @@ void ASpaceShipDeskInteract::ChangeDialogue()
 
 void ASpaceShipDeskInteract::RemoveWidget()
 {
+	if (WarInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+
+	dialougeWidget_->DialogueEmpty();
 	dialougeWidget_->RemoveFromParent();
-	rowNum_ = 0;
 	addViewportCheck_ = false;
 	WarInstance_->SetCheckAddViewport(false);
 	GetWorld()->GetTimerManager().ClearTimer(viewTimeHandler_);
+	dialougeTexts_.Empty();
+	rowNum_ = 0;
+
+	if (currentLineID_ == 1)
+	{
+		WarInstance_->ReserveShakeCamera(5);
+	}
+	else
+	{
+		//WarInstance_->ReserveOpenLevel(1.0f, "Stage_01");
+
+		UGameplayStatics::OpenLevel(this, FName("Stage_01"));
+	}
+	currentLineID_++;
 }

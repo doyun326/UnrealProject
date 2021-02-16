@@ -18,6 +18,7 @@ class PORTPOLIO_API UAIDeskInteractionWidget : public UUserWidget
 public:
 	void	SetDialogueText(TArray<FString> _texts);
 	void	UpdateDialogueText(int32 _rowNum = 0);
+	void	DialogueEmpty();
 
 protected:
 	virtual void NativeConstruct()	override;

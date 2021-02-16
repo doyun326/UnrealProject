@@ -135,6 +135,8 @@ public:
 	
 	void	SetCheckAddViewport(bool _check);
 	bool	GetCheckAddViewport();
+	void	ReserveShakeCamera(int32 _count = 0);
+	void	ShakeCamera();
 	
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
@@ -147,6 +149,9 @@ public:
 	FNpcDialogueData*	GetDialogueData(int32 _npcID);
 	int32				GetDialogueRowNums();
 
+	UPROPERTY(EditAnywhere, Category = "Camera")
+		TSubclassOf<UCameraShake>	myShake_;
+
 private:
 	UPROPERTY()
 		class UDataTable*	adEnemyTable_;
@@ -157,5 +162,8 @@ private:
 	UPROPERTY()
 		class UDataTable*	dialougeTable_;
 
-	bool	viewCheck_;
+	bool			viewCheck_;
+	FTimerHandle	reserveTiemrHandler_;
+	int32			checkCount_;
+	int32			shakeCount_;
 };

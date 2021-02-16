@@ -2,11 +2,14 @@
 
 
 #include "../Public/GameSetting/WarGameInstance.h"
+#include "../Public/GameSetting/MyCameraShake.h"
+#include "../Public/Character/Player/WarPlayerController.h"
 
-#define ADENEMYDT_PATH		"/Game/My/GameData/ADEnemyData.ADEnemyData"
-#define PLAYERDT_PATH		"/Game/My/GameData/PlayerData.PlayerData"
-#define MINIONDT_PATH		"/Game/My/GameData/MinionEnemyData.MinionEnemyData"
-#define DIALOGUE_PATH		"/Game/My/GameData/NpcDialogue.NpcDialogue"
+#define ADENEMYDT_PATH			"/Game/My/GameData/ADEnemyData.ADEnemyData"
+#define PLAYERDT_PATH			"/Game/My/GameData/PlayerData.PlayerData"
+#define MINIONDT_PATH			"/Game/My/GameData/MinionEnemyData.MinionEnemyData"
+#define DIALOGUE_PATH			"/Game/My/GameData/NpcDialogue.NpcDialogue"
+#define CAMERASHAKECLASS_PATH	"/Script/Portpolio.MyCameraShake"
 
 UWarGameInstance::UWarGameInstance()
 {
@@ -46,7 +49,18 @@ UWarGameInstance::UWarGameInstance()
 		ABLOG(Warning, TEXT("Success : DialogueTable"));
 	}
 
+	//ShakeCamera Setting
+	static ConstructorHelpers::FClassFinder<UCameraShake> CAMERA_SHAKE(TEXT(CAMERASHAKECLASS_PATH));
+
+	if (CAMERA_SHAKE.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : CAMERA_SHAKE"));
+		myShake_ = (UClass*)CAMERA_SHAKE.Class;
+	}
+
 	viewCheck_ = false;
+	checkCount_ = 0;
+	shakeCount_ = 0;
 }
 
 void UWarGameInstance::Init()
@@ -113,4 +127,37 @@ FNpcDialogueData* UWarGameInstance::GetDialogueData(int32 _npcID)
 int32 UWarGameInstance::GetDialogueRowNums()
 {
 	return dialougeTable_->GetRowNames().Num();
+}
+
+void UWarGameInstance::ReserveShakeCamera(int32 _count)
+{
+	if (_count == 0)
+	{
+		GetWorld()->GetTimerManager().SetTimer(reserveTiemrHandler_, this, &UWarGameInstance::ShakeCamera, 2.0f, false);
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimer(reserveTiemrHandler_, this, &UWarGameInstance::ShakeCamera, 2.0f, true);
+		checkCount_ = _count;
+	}
+}
+
+void UWarGameInstance::ShakeCamera()
+{
+	if (GetWorld() == nullptr || myShake_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Error : ShakeCamera"));
+		return;
+	}
+	ABLOG(Error, TEXT("ShakeCamera"));
+	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(myShake_, 0.3f);
+
+	if (checkCount_ != 0)
+	{
+		shakeCount_++;
+	}
+	if (shakeCount_ == checkCount_)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(reserveTiemrHandler_);
+	}
 }
