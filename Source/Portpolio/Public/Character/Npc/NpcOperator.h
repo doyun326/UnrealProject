@@ -22,15 +22,10 @@ public:
 	virtual void	PostInitializeComponents() override;
 	virtual void	PossessedBy(AController* NewController) override;
 
-	UFUNCTION()
-		void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	UFUNCTION()
-		void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	UPROPERTY(EditAnywhere, Category = "UI")
-		class UWidgetComponent* pressWidgetComponent_;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USphereComponent* collisionSphere_;
+	UPROPERTY(EditAnywhere, Category = "UI")
+		class UWidgetComponent* dialogueWidgetClass_;
 
 protected:
 	virtual void BeginPlay() override;
@@ -39,7 +34,20 @@ private:
 	UPROPERTY()
 		class UNpcOperatorAnimInstance* operAnim_;
 	UPROPERTY()
-		class UUserWidget* pressWidget_;
+		class UAIDeskInteractionWidget* dialougeWidget_;
+	UPROPERTY()
+		class UWarGameInstance*			WarInstance_;
+	UPROPERTY()
+		int32	npcID_;
+	UPROPERTY()
+		int32	conversation_;
+	UPROPERTY()
+		int32	currentLineID_;
+	UPROPERTY()
+		TArray<FString>	dialougeTexts_;
 
-	bool	isTouch_;
+	TArray<struct FNpcDialogueData*>	dialogueDatas_;
+	FTimerHandle	viewTimeHandler_;
+	bool			addViewportCheck_;
+	int32			rowNum_;
 };

@@ -78,9 +78,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isWalk_ = false;
 			isFire_ = false;
 			
-			//NiagaraSystem C++코드화, 추후 적당한 위치로 옮겨놈(Flash Niagara)
-			//FName NoneName("none");
-			//UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashSystem_, characterMesh_, test, characterMesh_->GetRelativeLocation(), characterMesh_->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+			FName NoneName("none");
+			UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashSystem_, characterMesh_, NoneName, characterMesh_->GetRelativeLocation(), characterMesh_->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
 		}
 
 		//걷는 모션

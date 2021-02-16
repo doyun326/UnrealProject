@@ -3,14 +3,15 @@
 #include "../Public/Character/Npc/NpcOperator.h"
 #include "../Public/Character/Npc//NpcOperatorAnimInstance.h"
 #include "../Public/Character/Player/PlayerCharacter.h"
+#include "../Public/GameSetting/WarGameInstance.h"
+#include "../Public/UI/AIDeskInteractionWidget.h"
 
 #include "Components/WidgetComponent.h"
 #include "Components/SphereComponent.h"
 
 #define OPERATORMESH_PATH	"/Game/My/Asset/Character/Operator/Original_Bone/Idle.Idle"
 #define OPERANIM_PATH		"/Game/My/Blueprints/Anim/Npc/OperAnim_BP.OperAnim_BP_C"
-#define PRESSEBTN_PATH		"/Game/My/Blueprints/UI/Npc/NpcInteractUI.NpcInteractUI_C"
-//#define PRESSEBTN_PATH		"/Game/My/Blueprints/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"
+#define DIALOGUEWIDGET_PATH	"/Game/My/Blueprints/UI/DialogueWidget.DialogueWidget_C"
 
 ANpcOperator::ANpcOperator()
 {
@@ -36,31 +37,21 @@ ANpcOperator::ANpcOperator()
 		GetMesh()->SetAnimInstanceClass(OPER_ANIM.Class);
 	}
 
-	//Press Widget 설정
-	pressWidgetComponent_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("PressWidget"));
-	pressWidgetComponent_->SetupAttachment(GetMesh());
-	pressWidgetComponent_->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
-	pressWidgetComponent_->SetWidgetSpace(EWidgetSpace::Screen);
+	//Widget Setting
+	dialogueWidgetClass_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Dialogue Widget"));
+	static ConstructorHelpers::FClassFinder<UAIDeskInteractionWidget> DIALOGUE_WIDGET(TEXT(DIALOGUEWIDGET_PATH));
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> UI_PRESS(TEXT(PRESSEBTN_PATH));
-
-	if (UI_PRESS.Succeeded())
+	if (DIALOGUE_WIDGET.Succeeded())
 	{
-		ABLOG(Warning, TEXT("Success : UI_PRESS"));
-
-		pressWidgetComponent_->SetWidgetClass(UI_PRESS.Class);
-		pressWidgetComponent_->SetDrawSize(FVector2D(120.0f, 50.0f));
+		ABLOG(Warning, TEXT("Success : DIALOGUE_WIDGET"));
+		dialogueWidgetClass_->SetWidgetClass(DIALOGUE_WIDGET.Class);
 	}
 
-	//Overlap Collision
-	collisionSphere_ = CreateDefaultSubobject<USphereComponent>(TEXT("GetCollisionSphere"));
-	collisionSphere_->SetupAttachment(this->GetCapsuleComponent());
-	collisionSphere_->InitSphereRadius(100.0f);
-
-	collisionSphere_->OnComponentBeginOverlap.AddDynamic(this, &ANpcOperator::OnOverlapBegin);
-	collisionSphere_->OnComponentEndOverlap.AddDynamic(this, &ANpcOperator::OnOverlapEnd);
-
-	isTouch_ = false;
+	addViewportCheck_ = false;
+	currentLineID_ = 1;
+	conversation_ = 1;
+	npcID_ = 2;
+	rowNum_ = 0;
 }
 
 void ANpcOperator::PostInitializeComponents()
@@ -85,18 +76,37 @@ void ANpcOperator::BeginPlay()
 		return;
 	}
 
-	//UI 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
-	/*if (pressWidgetComponent_ != nullptr)
-	{
-		ABLOG(Warning, TEXT("PressWidgetComponent"));
-		pressWidget_ = Cast<UUserWidget>(pressWidgetComponent_->GetUserWidgetObject());
+	WarInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-		if (pressWidget_ == nullptr)
+	if (WarInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+
+	if (dialogueWidgetClass_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : dialogueWidgetClass"));
+		return;
+	}
+
+	dialougeWidget_ = Cast<UAIDeskInteractionWidget>(dialogueWidgetClass_->GetUserWidgetObject());
+
+	for (int RowNum = 1; RowNum <= WarInstance_->GetDialogueRowNums(); RowNum++)
+	{
+		struct FNpcDialogueData* Data = WarInstance_->GetDialogueData(RowNum);
+
+		if (Data == nullptr)
 		{
-			ABLOG(Error, TEXT("Nullptr : pressWidget_"));
+			ABLOG(Error, TEXT("Nullptr : NpcDialogueData"));
 			return;
 		}
-	}*/
+
+		if (Data->NpcID == npcID_)
+		{
+			dialogueDatas_.Add(Data);
+		}
+	}
 }
 
 void ANpcOperator::Tick(float DeltaTime)
@@ -104,24 +114,4 @@ void ANpcOperator::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	ACharacter* myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-}
-
-void ANpcOperator::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (!isTouch_)
-	{
-		isTouch_ = true;
-		ABLOG(Warning, TEXT("Touch"));
-	}
-
-	ABLOG(Warning, TEXT("%s"), *(OtherActor->GetName()));
-}
-
-void ANpcOperator::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (isTouch_)
-	{
-		isTouch_ = false;
-		ABLOG(Warning, TEXT("End Touch"));
-	}
 }
