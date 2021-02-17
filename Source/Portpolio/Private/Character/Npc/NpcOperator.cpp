@@ -107,6 +107,7 @@ void ANpcOperator::BeginPlay()
 			dialogueDatas_.Add(Data);
 		}
 	}
+	LevelStart();
 }
 
 void ANpcOperator::Tick(float DeltaTime)
@@ -114,4 +115,38 @@ void ANpcOperator::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	ACharacter* myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+}
+
+void ANpcOperator::LevelStart()
+{
+	if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
+	{
+		DialogueCreate();
+	}
+}
+
+void ANpcOperator::DialogueCreate()
+{
+	if (dialougeWidget_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : DialogueWidget"));
+		return;
+	}
+
+	if (WarInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+	dialougeWidget_->AddToViewport();
+
+	for (int32 DataNum = 0; DataNum < dialogueDatas_.Num(); DataNum++)
+	{
+		if (dialogueDatas_[DataNum]->NpcID == npcID_ && dialogueDatas_[DataNum]->LineID == currentLineID_)
+		{
+			dialougeTexts_.Add(dialogueDatas_[DataNum]->Dialogue);
+		}
+	}
+
+	dialougeWidget_->SetDialogueText(dialougeTexts_);
 }

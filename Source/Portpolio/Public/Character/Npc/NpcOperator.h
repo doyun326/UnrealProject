@@ -22,6 +22,9 @@ public:
 	virtual void	PostInitializeComponents() override;
 	virtual void	PossessedBy(AController* NewController) override;
 
+	void	LevelStart();
+	void	DialogueCreate();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USphereComponent* collisionSphere_;
 	UPROPERTY(EditAnywhere, Category = "UI")
@@ -47,6 +50,7 @@ private:
 		TArray<FString>	dialougeTexts_;
 
 	TArray<struct FNpcDialogueData*>	dialogueDatas_;
+
 	FTimerHandle	viewTimeHandler_;
 	bool			addViewportCheck_;
 	int32			rowNum_;

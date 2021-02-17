@@ -390,7 +390,7 @@ void APlayerCharacter::SetCharacterState(ECharacterState _newState)
 	}
 }
 
-void APlayerCharacter::PlayAvoidEffect()
+void APlayerCharacter::PlayFlashEffect()
 {
 	FName NoneName("none");
 	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);

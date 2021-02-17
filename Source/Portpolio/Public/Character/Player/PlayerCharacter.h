@@ -32,7 +32,7 @@ public:
 	void			WeaponFire();
 	void			isInteract();
 	void			Interact();
-	void			PlayAvoidEffect();
+	void			PlayFlashEffect();
 	void			InfinityMode();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
@@ -69,7 +69,7 @@ private:
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
 		ECharacterState				currentState_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem* flashEffect_;
+		class UNiagaraSystem*		flashEffect_;
 		
 	bool		isFire_;
 	bool		isSprint_;

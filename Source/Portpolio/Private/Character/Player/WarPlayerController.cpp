@@ -149,7 +149,7 @@ void AWarPlayerController::SetupInputComponent()
 
 void AWarPlayerController::OnAvoid()
 {
-	myPlayer_->PlayAvoidEffect();
+	myPlayer_->PlayFlashEffect();
 }
 
 void AWarPlayerController::OnInfinityMode()
