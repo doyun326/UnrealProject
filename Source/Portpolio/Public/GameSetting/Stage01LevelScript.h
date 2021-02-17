@@ -16,6 +16,14 @@ class PORTPOLIO_API AStage01LevelScript : public ALevelScriptActor
 	GENERATED_BODY()
 	
 public:
+	AStage01LevelScript();
+
 protected:
 	virtual void BeginPlay();
+
+private:
+	UPROPERTY()
+		class ULevelSequencePlayer*	SequencePlayer;
+	UPROPERTY(EditAnywhere)
+		class ULevelSequence*		SequenceAsset;
 };
