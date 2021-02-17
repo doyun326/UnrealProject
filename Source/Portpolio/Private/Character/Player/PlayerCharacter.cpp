@@ -9,13 +9,14 @@
 #include "../Public/UI/PlayerHudWidget.h"
 #include "../Public/Object/BaseInteractable.h"
 
-
+#include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 
 #define PLAYERMESH_PATH			"/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"
 #define PLAYERANIM_PATH			"/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"
+#define FLASHEFFECT_PATH		"/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
 
 
 #define ZOOMIN_FIELDVIEW	70.0f
@@ -59,8 +60,6 @@ APlayerCharacter::APlayerCharacter()
 	cameraArm_->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 	armLengthTo_ = 0.0f;	//카메라봉 길이
 
-	
-
 	//PlayerStat 설정
 	playerStat_ = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("PLAYERSTAT"));
 
@@ -72,6 +71,15 @@ APlayerCharacter::APlayerCharacter()
 
 	//Collision Preset Setting
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+
+	//Flahs System
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_EFFECT(TEXT(FLASHEFFECT_PATH));
+
+	if (FLASH_EFFECT.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : FLASH_EFFECT"));
+		flashEffect_ = FLASH_EFFECT.Object;
+	}
 
 	//Actor 기초 세팅
 	SetActorHiddenInGame(true);
@@ -382,6 +390,12 @@ void APlayerCharacter::SetCharacterState(ECharacterState _newState)
 	}
 }
 
+void APlayerCharacter::PlayAvoidEffect()
+{
+	FName NoneName("none");
+	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+}
+
 ECharacterState	APlayerCharacter::GetCharacterState() const
 {
 	return currentState_;
@@ -420,11 +434,6 @@ void APlayerCharacter::SetSprintBtn(bool _newState)
 float APlayerCharacter::GetLookPitch()
 {
 	return lookPitch_;
-}
-
-USkeletalMeshComponent* APlayerCharacter::GetSkelMesh()
-{
-	return GetMesh();
 }
 
 bool APlayerCharacter::GetIsWalking()

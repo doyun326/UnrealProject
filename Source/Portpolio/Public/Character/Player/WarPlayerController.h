@@ -48,6 +48,7 @@ private:
 	void	RunSprintReleased();
 	void	OnFireStart();
 	void	OnFireReleased();
+	void	OnAvoid();
 
 	bool	zoomInBtn_;
 	bool	sprintBtn_;

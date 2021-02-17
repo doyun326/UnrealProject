@@ -6,9 +6,6 @@
 
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 
-#define FLASH_EFFECT_PATH "/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
-#define FLASH_SYSTEM_PATH "/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
-
 UPlayerAnimInstance::UPlayerAnimInstance()
 {	
 	//RestMontage
@@ -23,21 +20,9 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 		attackMT_ = FIRE_MONTAGE.Object;
 	}
 
-	//Flash Effect
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_EFFECT(TEXT(FLASH_EFFECT_PATH));
-
-	//Flahs System
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FLASH_SYSTEM(TEXT(FLASH_SYSTEM_PATH));
-
 	if (REST_MONTAGE.Succeeded())
 	{
 		restMontage_ = REST_MONTAGE.Object;
-	}
-
-	if (FLASH_EFFECT.Succeeded() && FLASH_SYSTEM.Succeeded())
-	{
-		flashEffect_ = FLASH_EFFECT.Object;
-		flashSystem_ = FLASH_SYSTEM.Object;
 	}
 
 	currentChrSpeed_ = 0.0f;
@@ -63,23 +48,17 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			isFire_ = Character_->GetIsFire();
 			isSprint_ = Character_->GetSprintBtn();
 			isInAir_ = Character_->GetMovementComponent()->IsFalling();
-			characterMesh_ = Character_->GetSkelMesh();
 			isWalk_ = Character_->GetIsWalking();
 			lookPitch_ = Character_->GetLookPitch();
 			currentChrSpeed_ = Pawn->GetVelocity().Size();
 			isZoom_ = Character_->GetIsZoom();
 		}
 
-		//state 형식으로 바꿀것,
-
 		//달리는 모션
 		if (isSprint_)
 		{
 			isWalk_ = false;
 			isFire_ = false;
-			
-			FName NoneName("none");
-			UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashSystem_, characterMesh_, NoneName, characterMesh_->GetRelativeLocation(), characterMesh_->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
 		}
 
 		//걷는 모션

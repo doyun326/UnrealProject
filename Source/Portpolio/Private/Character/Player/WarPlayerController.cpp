@@ -141,6 +141,13 @@ void AWarPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnFireStart);
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Released, this, &AWarPlayerController::OnFireReleased);
+
+	InputComponent->BindAction(TEXT("Avoid"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnAvoid);
+}
+
+void AWarPlayerController::OnAvoid()
+{
+	myPlayer_->PlayAvoidEffect();
 }
 
 void AWarPlayerController::ZoomInStarted()

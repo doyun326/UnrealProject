@@ -32,14 +32,13 @@ public:
 	void			WeaponFire();
 	void			isInteract();
 	void			Interact();
+	void			PlayAvoidEffect();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
 	ControlMode		GetCurrentControllMode();
 	FVector			GetPlayerLocation();
 	FRotator		GetPlayerRotator();
 	ECharacterState	GetCharacterState() const;
-
-	class USkeletalMeshComponent* GetSkelMesh();
 
 	//카메라 설정
 	UPROPERTY(EditAnywhere, Category = "Camera")
@@ -68,6 +67,8 @@ private:
 		class AWarPlayerState*		warPlayerState_;
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
 		ECharacterState				currentState_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem* flashEffect_;
 		
 	bool		isFire_;
 	bool		isSprint_;
