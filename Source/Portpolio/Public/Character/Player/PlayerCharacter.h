@@ -33,6 +33,7 @@ public:
 	void			isInteract();
 	void			Interact();
 	void			PlayAvoidEffect();
+	void			InfinityMode();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
 	ControlMode		GetCurrentControllMode();

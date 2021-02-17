@@ -143,11 +143,18 @@ void AWarPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("OnFire"), EInputEvent::IE_Released, this, &AWarPlayerController::OnFireReleased);
 
 	InputComponent->BindAction(TEXT("Avoid"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnAvoid);
+
+	InputComponent->BindAction(TEXT("InfinityMode"), EInputEvent::IE_Pressed, this, &AWarPlayerController::OnInfinityMode);
 }
 
 void AWarPlayerController::OnAvoid()
 {
 	myPlayer_->PlayAvoidEffect();
+}
+
+void AWarPlayerController::OnInfinityMode()
+{
+	myPlayer_->InfinityMode();
 }
 
 void AWarPlayerController::ZoomInStarted()
