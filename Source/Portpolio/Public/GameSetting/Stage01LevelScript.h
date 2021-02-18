@@ -22,8 +22,14 @@ protected:
 	virtual void BeginPlay();
 
 private:
+	void	WidgetStart();
+
 	UPROPERTY()
-		class ULevelSequencePlayer*	SequencePlayer;
+		class UWarGameInstance*		warInstance_;
+	UPROPERTY()
+		class ULevelSequencePlayer*	sequencePlayer_;
 	UPROPERTY(EditAnywhere)
-		class ULevelSequence*		SequenceAsset;
+		class ULevelSequence*		sequenceAsset_;
+
+	FTimerHandle	startWidgetHandler_;
 };

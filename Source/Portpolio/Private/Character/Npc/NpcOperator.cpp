@@ -48,10 +48,12 @@ ANpcOperator::ANpcOperator()
 	}
 
 	addViewportCheck_ = false;
+	effectCheck_ = false;
 	currentLineID_ = 1;
 	conversation_ = 1;
 	npcID_ = 2;
 	rowNum_ = 0;
+	remainNum_ = 4;
 }
 
 void ANpcOperator::PostInitializeComponents()
@@ -107,7 +109,8 @@ void ANpcOperator::BeginPlay()
 			dialogueDatas_.Add(Data);
 		}
 	}
-	LevelStart();
+
+	WarInstance_->onStageStart.AddUObject(this, &ANpcOperator::LevelStart);
 }
 
 void ANpcOperator::Tick(float DeltaTime)
@@ -149,4 +152,62 @@ void ANpcOperator::DialogueCreate()
 	}
 
 	dialougeWidget_->SetDialogueText(dialougeTexts_);
+	rowNum_++;
+
+	if (GetWorld() == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : GetWorld()"));
+		return;
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
+	GetWorld()->GetTimerManager().SetTimer(viewTimeHandler_, this, &ANpcOperator::ChangeDialogue, 2.5f, true);
+}
+
+void ANpcOperator::ChangeDialogue()
+{
+	if (dialougeWidget_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : dialogueWidget"));
+		return;
+	}
+
+	dialougeWidget_->UpdateDialogueText(rowNum_);
+
+	if (dialougeTexts_.Num() - 1 > rowNum_)
+	{
+		rowNum_++;
+	}
+	else if (dialougeTexts_.Num() - 1 == rowNum_)
+	{
+		if (GetWorld() == nullptr)
+		{
+			ABLOG(Error, TEXT("Nullptr : World"));
+			return;
+		}
+		GetWorld()->GetTimerManager().SetTimer(viewTimeHandler_, this, &ANpcOperator::RemoveWidget, 2.0f, false);
+	}
+}
+
+void ANpcOperator::ControllPlayerEffect()
+{
+	WarInstance_->ActiveFlashEffect();
+
+	if (--remainNum_ < 0)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(effectTimeHandler_);
+		effectCheck_ = true;
+	}
+}
+
+void ANpcOperator::RemoveWidget()
+{
+	if (dialougeWidget_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : dialougeWidget"))
+		return;
+	}
+
+	dialougeWidget_->DialogueEmpty();
+	dialougeWidget_->RemoveFromParent();
 }

@@ -66,6 +66,8 @@ private:
 		class UPlayerAnimInstance*	playerAnim_;
 	UPROPERTY()
 		class AWarPlayerState*		warPlayerState_;
+	UPROPERTY()
+		class UWarGameInstance*		warInstance_;
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
 		ECharacterState				currentState_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))

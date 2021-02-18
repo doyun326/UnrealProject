@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/GameSetting/Stage01LevelScript.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 
 #include "LevelSequence/Public/LevelSequencePlayer.h"
 #include "LevelSequence/Public/LevelSequence.h"
@@ -16,17 +17,35 @@ void AStage01LevelScript::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
 	FStringAssetReference SequenceName(TEXT(STAGE01_SEQUENCE_PATH));
 	ALevelSequenceActor* currentLevelSequenceActor = nullptr;
 
-	SequenceAsset = Cast<ULevelSequence>(SequenceName.TryLoad());
-	SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), SequenceAsset, FMovieSceneSequencePlaybackSettings(), currentLevelSequenceActor);
+	sequenceAsset_ = Cast<ULevelSequence>(SequenceName.TryLoad());
+	sequencePlayer_ = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), sequenceAsset_, FMovieSceneSequencePlaybackSettings(), currentLevelSequenceActor);
 
-	if (SequencePlayer)
+	if (sequenceAsset_ == nullptr || sequencePlayer_ == nullptr)
 	{
-		SequencePlayer->Play();
+		ABLOG(Error, TEXT("Error : sequence"));
+		return;
 	}
-	
-	ABLOG(Error, TEXT("%f"), SequencePlayer->GetLength());
-	//SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), SequenceAsset, FMovieSceneSequencePlaybackSettings());
+
+	if (sequencePlayer_)
+	{
+		sequencePlayer_->Play();
+	}
+
+	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
+}
+
+void AStage01LevelScript::WidgetStart()
+{
+	if (warInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+	warInstance_->StageStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
 }

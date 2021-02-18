@@ -24,6 +24,9 @@ public:
 
 	void	LevelStart();
 	void	DialogueCreate();
+	void	ChangeDialogue();
+	void	ControllPlayerEffect();
+	void	RemoveWidget();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USphereComponent* collisionSphere_;
@@ -52,6 +55,10 @@ private:
 	TArray<struct FNpcDialogueData*>	dialogueDatas_;
 
 	FTimerHandle	viewTimeHandler_;
-	bool			addViewportCheck_;
-	int32			rowNum_;
+	FTimerHandle	effectTimeHandler_;
+
+	bool		addViewportCheck_;
+	int32		rowNum_;
+	int32		remainNum_;
+	int32		effectCheck_;
 };

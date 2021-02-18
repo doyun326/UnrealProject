@@ -8,6 +8,7 @@
 #include "../Public/Character/Player/WarPlayerState.h"
 #include "../Public/UI/PlayerHudWidget.h"
 #include "../Public/Object/BaseInteractable.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -125,6 +126,16 @@ void APlayerCharacter::BeginPlay()
 		ABLOG(Error, TEXT("Nullptr : warPlayerState_"));
 		return;
 	}
+
+	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (warInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstnace"));
+		return;
+	}
+
+	warInstance_->onCharacterEffect.AddUObject(this, &APlayerCharacter::PlayFlashEffect);
 
 	//SetCharacterState(ECharacterState::LOADING);
 	SetCharacterState(ECharacterState::READY);

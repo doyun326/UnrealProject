@@ -161,3 +161,16 @@ void UWarGameInstance::ShakeCamera()
 		GetWorld()->GetTimerManager().ClearTimer(reserveTiemrHandler_);
 	}
 }
+
+void UWarGameInstance::StageStart(FString _name)
+{
+	if (_name == "Stage_01")
+	{
+		onStageStart.Broadcast();
+	}
+}
+
+void UWarGameInstance::ActiveFlashEffect()
+{
+	onCharacterEffect.Broadcast();
+}
