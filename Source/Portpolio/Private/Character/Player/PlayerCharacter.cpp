@@ -18,6 +18,8 @@
 #define PLAYERMESH_PATH			"/Game/My/Asset/Character/Player/ODGreen/Meshes/Wraith_ODGreen.Wraith_ODGreen"
 #define PLAYERANIM_PATH			"/Game/My/Blueprints/Anim/Character/AlienAnim_BP.AlienAnim_BP_C"
 #define FLASHEFFECT_PATH		"/Game/My/Asset/Niagara/Flash/FlashSystem.FlashSystem"
+#define LIMITCLEAR_PATH			"/Game/My/Asset/Niagara/Flash/LimitClearSystem.LimitClearSystem"
+#define CAMERASHAKECLASS_PATH	"/Script/Portpolio.MyCameraShake"
 
 
 #define ZOOMIN_FIELDVIEW	70.0f
@@ -61,6 +63,15 @@ APlayerCharacter::APlayerCharacter()
 	cameraArm_->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 	armLengthTo_ = 0.0f;	//카메라봉 길이
 
+	//ShakeCamera Setting
+	static ConstructorHelpers::FClassFinder<UCameraShake> CAMERA_SHAKE(TEXT(CAMERASHAKECLASS_PATH));
+
+	if (CAMERA_SHAKE.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : CAMERA_SHAKE"));
+		myShake_ = (UClass*)CAMERA_SHAKE.Class;
+	}
+
 	//PlayerStat 설정
 	playerStat_ = CreateDefaultSubobject<UPlayerStatComponent>(TEXT("PLAYERSTAT"));
 
@@ -82,6 +93,15 @@ APlayerCharacter::APlayerCharacter()
 		flashEffect_ = FLASH_EFFECT.Object;
 	}
 
+	//Flahs System
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> LIMIT_EFFECT(TEXT(LIMITCLEAR_PATH));
+
+	if (LIMIT_EFFECT.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : LIMIT_EFFECT"));
+		limitEffect_ = LIMIT_EFFECT.Object;
+	}
+	
 	//Actor 기초 세팅
 	SetActorHiddenInGame(true);
 	SetCanBeDamaged(false);
@@ -135,7 +155,8 @@ void APlayerCharacter::BeginPlay()
 		return;
 	}
 
-	warInstance_->onCharacterEffect.AddUObject(this, &APlayerCharacter::PlayFlashEffect);
+	warInstance_->onFlashEffect.AddUObject(this, &APlayerCharacter::PlayFlashEffect);
+	warInstance_->onLimitEffect.AddUObject(this, &APlayerCharacter::PlayLimintClearEffect);
 
 	//SetCharacterState(ECharacterState::LOADING);
 	SetCharacterState(ECharacterState::READY);
@@ -297,12 +318,12 @@ void APlayerCharacter::WeaponFire()
 {
 	weapon_->ShootBullet();
 
-	/*if (playerController_ == nullptr || myShake_ == nullptr)
+	if (playerController_ == nullptr || myShake_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : myShake"));
 		return;
-	}*/
-	//playerController_->PlayerCameraManager->PlayCameraShake(myShake_, 0.008f);
+	}
+	playerController_->PlayerCameraManager->PlayCameraShake(myShake_, 0.008f);
 }
 
 void APlayerCharacter::isInteract()
@@ -405,6 +426,12 @@ void APlayerCharacter::PlayFlashEffect()
 {
 	FName NoneName("none");
 	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+}
+
+void APlayerCharacter::PlayLimintClearEffect()
+{
+	FName NoneName("none");
+	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(limitEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
 }
 
 void APlayerCharacter::InfinityMode()

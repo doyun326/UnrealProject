@@ -25,14 +25,10 @@ public:
 	static const FName	targetKey_;
 
 private:
-	UPROPERTY()
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		class UBehaviorTree*			assetBT_;
-	UPROPERTY()
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		class UBlackboardData*			assetBB_;
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-		class UBehaviorTreeComponent*	behaviorTree_;
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
-		class UBehaviorTree*			bTree_;
 
 	class UBlackboardComponent*		blackboard_;
 	class UAISenseConfig_Sight*		sightConfig_;

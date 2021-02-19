@@ -162,15 +162,20 @@ void UWarGameInstance::ShakeCamera()
 	}
 }
 
-void UWarGameInstance::StageStart(FString _name)
+void UWarGameInstance::StageViewWidgetStart(FString _name)
 {
 	if (_name == "Stage_01")
 	{
-		onStageStart.Broadcast();
+		onViewWidget.Broadcast();
 	}
 }
 
 void UWarGameInstance::ActiveFlashEffect()
 {
-	onCharacterEffect.Broadcast();
+	onFlashEffect.Broadcast();
+}
+
+void UWarGameInstance::ActiveLimitEffect()
+{
+	onLimitEffect.Broadcast();
 }

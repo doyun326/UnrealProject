@@ -110,7 +110,7 @@ void ANpcOperator::BeginPlay()
 		}
 	}
 
-	WarInstance_->onStageStart.AddUObject(this, &ANpcOperator::LevelStart);
+	WarInstance_->onViewWidget.AddUObject(this, &ANpcOperator::ViewWidget);
 }
 
 void ANpcOperator::Tick(float DeltaTime)
@@ -120,7 +120,7 @@ void ANpcOperator::Tick(float DeltaTime)
 	ACharacter* myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 }
 
-void ANpcOperator::LevelStart()
+void ANpcOperator::ViewWidget()
 {
 	if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
 	{
@@ -160,7 +160,10 @@ void ANpcOperator::DialogueCreate()
 		return;
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
+	if (currentLineID_ == 1)
+	{
+		GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
+	}
 	GetWorld()->GetTimerManager().SetTimer(viewTimeHandler_, this, &ANpcOperator::ChangeDialogue, 2.5f, true);
 }
 
@@ -177,6 +180,11 @@ void ANpcOperator::ChangeDialogue()
 	if (dialougeTexts_.Num() - 1 > rowNum_)
 	{
 		rowNum_++;
+
+		if (currentLineID_ == 2 && rowNum_ == 3)
+		{
+			GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
+		}
 	}
 	else if (dialougeTexts_.Num() - 1 == rowNum_)
 	{
@@ -191,12 +199,20 @@ void ANpcOperator::ChangeDialogue()
 
 void ANpcOperator::ControllPlayerEffect()
 {
-	WarInstance_->ActiveFlashEffect();
+	if (currentLineID_ == 1)
+	{
+		WarInstance_->ActiveFlashEffect();
+	}
+	else if (currentLineID_ == 2)
+	{
+		WarInstance_->ActiveLimitEffect();
+	}
 
 	if (--remainNum_ < 0)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(effectTimeHandler_);
 		effectCheck_ = true;
+		remainNum_ = 4;
 	}
 }
 
@@ -210,4 +226,7 @@ void ANpcOperator::RemoveWidget()
 
 	dialougeWidget_->DialogueEmpty();
 	dialougeWidget_->RemoveFromParent();
+	dialougeTexts_.Empty();
+	currentLineID_++;
+	rowNum_ = 0;
 }

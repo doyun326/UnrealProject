@@ -16,7 +16,7 @@ const FName AADAIController::targetKey_(TEXT("Target"));
 AADAIController::AADAIController()
 {
 	//BlackBoard가져오기
-	static ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT(BLACKBOARD_PATH));
+	ConstructorHelpers::FObjectFinder<UBlackboardData> BBObject(TEXT(BLACKBOARD_PATH));
 
 	if (BBObject.Succeeded())
 	{
@@ -25,7 +25,7 @@ AADAIController::AADAIController()
 	}
 
 	//BehaviorTree 가져오기
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT(BEHAVIORTREE_PATH));
+	ConstructorHelpers::FObjectFinder<UBehaviorTree> BTObject(TEXT(BEHAVIORTREE_PATH));
 
 	if (BTObject.Succeeded())
 	{
@@ -37,6 +37,11 @@ AADAIController::AADAIController()
 void AADAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	if (assetBB_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : assetBB"));
+	}
 
 	if (UseBlackboard(assetBB_, Blackboard))
 	{

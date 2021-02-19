@@ -15,7 +15,7 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 {
 	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	auto ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();
+ 	auto ControllingPawn = OwnerComp.GetAIOwner()->GetPawn();	
 
 	if (ControllingPawn == nullptr)
 	{
@@ -34,11 +34,26 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 	FVector Origin = OwnerComp.GetBlackboardComponent()->GetValueAsVector(AADAIController::homePosKey_);
 
 	FNavLocation NextPatrol;
+	FVector PawnLocation;
 
-	if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.0f, NextPatrol))
+	if (ControllingPawn == nullptr)
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsVector(AADAIController::patrolPosKey_, NextPatrol.Location);
-		return EBTNodeResult::Succeeded;
+		ABLOG(Error, TEXT("Nullptr : COntrollingPawn"));
+		return EBTNodeResult::Failed;
+	}
+	else
+	{
+		PawnLocation = ControllingPawn->GetActorLocation();
+
+		if (NavSystem->GetRandomPointInNavigableRadius(FVector::ZeroVector, 500.0f, NextPatrol))
+		{
+			NextPatrol.Location.Z = 0.0f;
+			NextPatrol.Location.Y += PawnLocation.Y;
+			NextPatrol.Location.X += PawnLocation.X;
+
+			OwnerComp.GetBlackboardComponent()->SetValueAsVector(AADAIController::patrolPosKey_, NextPatrol.Location);
+			return EBTNodeResult::Succeeded;
+		}
 	}
 
 	return EBTNodeResult::Failed;

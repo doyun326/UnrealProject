@@ -33,6 +33,7 @@ public:
 	void			isInteract();
 	void			Interact();
 	void			PlayFlashEffect();
+	void			PlayLimintClearEffect();
 	void			InfinityMode();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
@@ -70,8 +71,12 @@ private:
 		class UWarGameInstance*		warInstance_;
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
 		ECharacterState				currentState_;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (AllowPrivateAccess = true))
 		class UNiagaraSystem*		flashEffect_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem*		limitEffect_;
+	UPROPERTY(EditAnywhere, Category = "Camera")
+		TSubclassOf<UCameraShake>	myShake_;
 		
 	bool		isFire_;
 	bool		isSprint_;

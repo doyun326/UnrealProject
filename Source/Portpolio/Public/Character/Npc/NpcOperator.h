@@ -22,7 +22,7 @@ public:
 	virtual void	PostInitializeComponents() override;
 	virtual void	PossessedBy(AController* NewController) override;
 
-	void	LevelStart();
+	void	ViewWidget();
 	void	DialogueCreate();
 	void	ChangeDialogue();
 	void	ControllPlayerEffect();

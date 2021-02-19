@@ -8,8 +8,9 @@
 #include "Engine/GameInstance.h"
 #include "WarGameInstance.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnStageStart);
-DECLARE_MULTICAST_DELEGATE(FOnCharacterEffect)
+DECLARE_MULTICAST_DELEGATE(FOnViewWidget);
+DECLARE_MULTICAST_DELEGATE(FOnFlashEffect)
+DECLARE_MULTICAST_DELEGATE(FOnLimitEffect)
 
 /*
 * PlayerData
@@ -140,8 +141,9 @@ public:
 	bool	GetCheckAddViewport();
 	void	ReserveShakeCamera(int32 _count = 0);
 	void	ShakeCamera();
-	void	StageStart(FString _name);
+	void	StageViewWidgetStart(FString _name);
 	void	ActiveFlashEffect();
+	void	ActiveLimitEffect();
 	
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
@@ -157,8 +159,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 		TSubclassOf<UCameraShake>	myShake_;
 
-	FOnStageStart		onStageStart;
-	FOnCharacterEffect	onCharacterEffect;
+	FOnViewWidget	onViewWidget;
+	FOnFlashEffect	onFlashEffect;
+	FOnLimitEffect	onLimitEffect;
 
 private:
 	UPROPERTY()

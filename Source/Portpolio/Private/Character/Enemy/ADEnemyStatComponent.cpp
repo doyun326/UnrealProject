@@ -98,6 +98,6 @@ float UADEnemyStatComponent::GetHpRatio()
 		return 0.0f;
 	}
 
-	ABLOG(Warning, TEXT("%f"), (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP));
+	//ABLOG(Warning, TEXT("%f"), (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP));
 	return (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP);
 }
