@@ -25,7 +25,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void SetFormation(FVector _playerAimVector);
+	void	SetFormation(FVector _playerAimVector);
+	void	SetDamage(int32 _newDamage);
 	 
 	UPROPERTY(EditAnywhere)
 		FVector Velocity = FVector(100.0f);
@@ -41,8 +42,8 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
 		class UNiagaraSystem* bulletEffect_;
 
-	FVector		bulletEndVector_;
-
 	UNiagaraComponent*	onEffect_;
-	
+
+	FVector	bulletEndVector_;
+	int32	currentDamage_;
 };

@@ -42,18 +42,17 @@ void AStage01LevelScript::BeginPlay()
 
 	if (sequencePlayer_)
 	{
-		sequencePlayer_->Play();
+		//sequencePlayer_->Play();
 	}
 
 	//WalkTrigger - Center, Extent
-	DrawDebugBox(GetWorld(), FVector(4000.0f, 4900.0f, 200.0f), FVector(3500.0f, 200.0f, 200.0f), FColor::Red, true, -1, 0, 10);
+	//DrawDebugBox(GetWorld(), FVector(4000.0f, 4900.0f, 200.0f), FVector(3500.0f, 200.0f, 200.0f), FColor::Red, true, -1, 0, 10);
 
-	
 	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
+	//GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
 
 	//빠른 진행을 위한 일단 스킵
-	//WidgetStart();
+	WidgetStart();
 }
 
 void AStage01LevelScript::WidgetStart()

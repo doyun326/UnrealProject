@@ -56,6 +56,8 @@ void UPlayerStatComponent::SetNewLevel(int32 _newLevel)
 	currentHP_ = currentStatData_->MaxHP;
 	SetMp(currentStatData_->MaxMP);
 	currentMP_ = currentStatData_->MaxMP;
+	SetDamage(currentStatData_->Damage);
+	currentDamage_ = currentStatData_->Damage;
 }
 
 void UPlayerStatComponent::SetHp(float _newHp)
@@ -83,6 +85,11 @@ void UPlayerStatComponent::SetMp(float _newMp)
 void UPlayerStatComponent::SetExp(int32 _newExp)
 {
 	currentEXP_ = _newExp;
+}
+
+void UPlayerStatComponent::SetDamage(float _newDamage)
+{
+	currentDamage_ = _newDamage;
 }
 
 float UPlayerStatComponent::GetHpRatio()
@@ -113,4 +120,9 @@ float UPlayerStatComponent::GetMpRatio()
 float UPlayerStatComponent::GetMpText()
 {
 	return currentMP_;
+}
+
+int32 UPlayerStatComponent::GetDamageRatio()
+{
+	return currentDamage_;
 }

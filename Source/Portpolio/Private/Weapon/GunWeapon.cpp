@@ -88,11 +88,6 @@ void AGunWeapon::OnFire(bool _fire)
 	}
 }
 
-void AGunWeapon::FireShootGun()
-{
-
-}
-
 //Åº¾Ë ¹ß»ç + NiagaraEffect
 void AGunWeapon::ShootBullet()
 {
@@ -115,6 +110,8 @@ void AGunWeapon::ShootBullet()
 	onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, SpawnLocation, SpawnRotation);
 
 	Bullet->SetFormation(playerAimVector_);
+	Bullet->SetDamage(currentDamage_);
+
 	FVector NewVelocity = GetActorRightVector() * 5000.0f;
 	Bullet->Velocity = FVector(NewVelocity);
 }
@@ -133,4 +130,9 @@ void AGunWeapon::SetMuzzleSocketPosition(FVector _muzLoc, FRotator _muzRot)
 {
 	muzzleLocation_ = _muzLoc;
 	muzzleRotation_ = _muzRot;
+}
+
+void AGunWeapon::SetPlayerDamage(int32 _newDamage)
+{
+	currentDamage_ = _newDamage;
 }

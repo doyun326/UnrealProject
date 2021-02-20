@@ -23,6 +23,8 @@ ABullet::ABullet()
 		bulletEffect_ = BULLET_EFFECT.Object;
 		ABLOG(Warning, TEXT("Success : BULLET_EFFECT"));
 	}
+
+	currentDamage_ = 0;
 }
 
 void ABullet::BeginPlay()
@@ -66,7 +68,7 @@ void ABullet::Tick(float DeltaTime)
 			}
 
 			FDamageEvent DamageEvent;
-			HitResult.Actor->TakeDamage(50.0f, DamageEvent, PlayerController, this);
+			HitResult.Actor->TakeDamage(currentDamage_, DamageEvent, PlayerController, this);
 
 			#ifdef DRAW_DEBUGHELPER
 			{
@@ -100,4 +102,9 @@ void ABullet::Tick(float DeltaTime)
 void ABullet::SetFormation(FVector _playerAimVector)
 {
 	bulletEndVector_ = _playerAimVector;
+}
+
+void ABullet::SetDamage(int32 _newDamage)
+{
+	currentDamage_ = _newDamage;
 }

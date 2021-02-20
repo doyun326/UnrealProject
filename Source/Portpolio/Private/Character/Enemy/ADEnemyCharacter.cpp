@@ -140,7 +140,8 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	ABLOG(Warning, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+	ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+
 	if (enemyStat_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : enemtStat_"));

@@ -316,6 +316,14 @@ void APlayerCharacter::OnFire(bool _firBtn)
 
 void APlayerCharacter::WeaponFire()
 {
+	if (weapon_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : weapon"));
+		return;
+	}
+
+	ABLOG(Error, TEXT("Damage : %d"), playerStat_->GetDamageRatio());
+	weapon_->SetPlayerDamage(playerStat_->GetDamageRatio());
 	weapon_->ShootBullet();
 
 	if (playerController_ == nullptr || myShake_ == nullptr)

@@ -34,7 +34,7 @@ public:
 	void	OnFire(bool _fire);
 	void	SetAimVector(FVector _aimVector);
 	void	SetMuzzleSocketPosition(FVector _muzLoc, FRotator _muzRot);
-	void	FireShootGun();
+	void	SetPlayerDamage(int32 _newDamage);
 	FVector	GetAimVector();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
@@ -50,6 +50,7 @@ private:
 	bool		rayHit_;
 	bool		isShooting_;
 	bool		fireStateOld_;
+	int32		currentDamage_;
 
 	FVector		muzzleLocation_;
 	FRotator	muzzleRotation_;

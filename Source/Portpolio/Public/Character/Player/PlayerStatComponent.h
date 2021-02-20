@@ -26,10 +26,12 @@ public:
 	void	SetHp(float _newHp);
 	void	SetMp(float _newMp);
 	void	SetExp(int32 _newExp);
+	void	SetDamage(float _newDamage);
 	float	GetHpRatio();
 	float	GetHpText();
 	float	GetMpRatio();
 	float	GetMpText();
+	int32	GetDamageRatio();
 
 	FOnHpChangeDelegate onHpChanged_;
 	FOnMpChangeDelegate onMpChanged_;

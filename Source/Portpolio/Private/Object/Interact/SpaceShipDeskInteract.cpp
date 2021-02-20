@@ -177,8 +177,6 @@ void ASpaceShipDeskInteract::RemoveWidget()
 	}
 	else
 	{
-		//WarInstance_->ReserveOpenLevel(1.0f, "Stage_01");
-
 		UGameplayStatics::OpenLevel(this, FName("Stage_01"));
 	}
 	currentLineID_++;
