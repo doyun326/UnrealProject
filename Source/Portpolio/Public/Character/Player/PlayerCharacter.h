@@ -35,6 +35,7 @@ public:
 	void			PlayFlashEffect();
 	void			PlayLimintClearEffect();
 	void			InfinityMode();
+	void			LimitLevelUp();
 	bool			GetIsWalking();
 	bool			GetIsZoom();
 	ControlMode		GetCurrentControllMode();

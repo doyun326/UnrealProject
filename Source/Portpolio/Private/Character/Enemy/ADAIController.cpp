@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Character/Enemy/ADAIController.h"
+#include "../Public/Character/Player/PlayerCharacter.h"
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
@@ -52,4 +53,10 @@ void AADAIController::OnPossess(APawn* InPawn)
 			ABLOG(Warning, TEXT("AIController couldn't BehaviorTree!"));
 		}
 	}
+}
+
+void AADAIController::EnemyKill(class AADEnemyCharacter* _killedNpc) const
+{
+	//ABPlayerState_->AddExp(_killedNpc->GetExp());
+	//auto PlayerCharacter = Cast<>();
 }

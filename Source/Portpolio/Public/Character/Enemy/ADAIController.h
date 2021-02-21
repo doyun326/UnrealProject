@@ -20,6 +20,8 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	void	EnemyKill(class AADEnemyCharacter* _killedNpc) const;
+
 	static const FName	homePosKey_;
 	static const FName	patrolPosKey_;
 	static const FName	targetKey_;

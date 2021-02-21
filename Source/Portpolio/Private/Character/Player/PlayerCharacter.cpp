@@ -247,7 +247,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 		DrawDebugLine(GetWorld(), charStart, charEnd, FColor::Blue, false, 0.5, 0, 1);*/
 	}
-#endif
+#endif //DRAW_DEBUGHELPER
 	/*Draw rayCast debug Line START*/
 }
 
@@ -443,6 +443,11 @@ void APlayerCharacter::PlayLimintClearEffect()
 }
 
 void APlayerCharacter::InfinityMode()
+{
+
+}
+
+void APlayerCharacter::LimitLevelUp()
 {
 
 }

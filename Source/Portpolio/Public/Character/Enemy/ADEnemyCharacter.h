@@ -24,12 +24,18 @@ public:
 	virtual void	PossessedBy(AController* NewController) override;
 	virtual float	TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	void	EnemyDestroy();
+	void			EnemyDestroy();
+	void			SetEnemyState(ECharacterState _newState);
+	ECharacterState	GetEnemyState() const;
 
+	UPROPERTY()
+		class AADAIController*			enemyController_;
 	UPROPERTY(EditAnywhere, Category = "UI")
-		class UWidgetComponent*	HPBarWidget_;
+		class UWidgetComponent*			HPBarWidget_;
 	UPROPERTY(VisibleAnywhere, Category = "Stat")
-		class UADEnemyStatComponent* enemyStat_;
+		class UADEnemyStatComponent*	enemyStat_;
+	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
+		ECharacterState					currentState_;
 
 protected:
 	// Called when the game starts or when spawned

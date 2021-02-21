@@ -67,6 +67,8 @@ AADEnemyCharacter::AADEnemyCharacter()
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
 	}
+
+	SetEnemyState(ECharacterState::READY);
 } 
 
 void AADEnemyCharacter::BeginPlay()
@@ -74,10 +76,17 @@ void AADEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	ADAnim_ = Cast<UADAnimInstance>(GetMesh()->GetAnimInstance());
+	enemyController_ = Cast<AADAIController>(GetController());
 
 	if (ADAnim_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : ADEnemyAnim"));
+		return;
+	}
+
+	if (enemyController_)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController"));
 		return;
 	}
 
@@ -136,10 +145,54 @@ void AADEnemyCharacter::PossessedBy(AController* NewController)
 	GetCharacterMovement()->MaxWalkSpeed = MAX_SPEED;
 }
 
+void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)
+{
+	currentState_ = _newState;
+
+	if (enemyStat_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyStat"));
+		return;
+	}
+
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController"));
+		return;
+	}
+
+	switch (currentState_)
+	{
+	case ECharacterState::LOADING:
+	{
+		break;
+	}
+
+	case ECharacterState::READY:
+	{
+
+		break;
+	}
+
+	case ECharacterState::DEAD:
+	{
+		SetActorEnableCollision(false);
+		GetMesh()->SetHiddenInGame(false);
+		break;
+	}
+	}
+}
+
+ECharacterState	AADEnemyCharacter::GetEnemyState() const
+{
+	return currentState_;
+}
+
 float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	enemyStat_->SetDamage(FinalDamage);
 	ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
 
 	if (enemyStat_ == nullptr)
@@ -147,8 +200,21 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		ABLOG(Error, TEXT("Nullptr : enemtStat_"));
 		return 0.0f;
 	}
-	
-	enemyStat_->SetDamage(FinalDamage);
+
+	if (currentState_ == ECharacterState::DEAD)
+	{
+		if (EventInstigator->IsPlayerController())
+		{
+			auto EnemyController = Cast<AADAIController>(EventInstigator);
+
+			if (EnemyController == nullptr)
+			{
+				ABLOG(Error, TEXT("Nullptr : EnemyController"));
+				return 0.0f;
+			}
+			//enemyController_->EnemyKill(this);
+		}
+	}
 	return FinalDamage;
 }
 
