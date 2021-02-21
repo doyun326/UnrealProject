@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Character/Enemy/ADAIController.h"
-#include "../Public/Character/Player/PlayerCharacter.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
@@ -35,6 +35,26 @@ AADAIController::AADAIController()
 	}
 }
 
+void AADAIController::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	ABLOG(Warning, TEXT("Bind AIController"));
+}
+
+void AADAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	warGameInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (warGameInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warGameInstance"));
+		return;
+	}
+}
+
 void AADAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -57,6 +77,10 @@ void AADAIController::OnPossess(APawn* InPawn)
 
 void AADAIController::EnemyKill(class AADEnemyCharacter* _killedNpc) const
 {
-	//ABPlayerState_->AddExp(_killedNpc->GetExp());
-	//auto PlayerCharacter = Cast<>();
+	if (warGameInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warGameInstance_"));
+		return;
+	}
+	ABLOG(Error, TEXT("Nullptr : EnemyKill"));
 }

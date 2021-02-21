@@ -27,6 +27,7 @@ public:
 	void	SetDamage(float _newDamage);
 	float	GetDamage();
 	float	GetHpRatio();
+	int32	GetDropExp() const;
 
 	FOnHpChangeDelegate onHpChanged_;
 	FOnHpZeroDelegate	onHpZero_;

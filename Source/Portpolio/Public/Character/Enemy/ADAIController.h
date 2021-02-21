@@ -18,6 +18,7 @@ class PORTPOLIO_API AADAIController : public AAIController
 public:
 	AADAIController();
 
+	virtual void PostInitializeComponents() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
 	void	EnemyKill(class AADEnemyCharacter* _killedNpc) const;
@@ -26,7 +27,12 @@ public:
 	static const FName	patrolPosKey_;
 	static const FName	targetKey_;
 
+protected:
+	virtual void BeginPlay() override;
+	
 private:
+	UPROPERTY()
+		class UWarGameInstance*			warGameInstance_;
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))
 		class UBehaviorTree*			assetBT_;
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "AI", meta = (AllowPrivateAccess = "true"))

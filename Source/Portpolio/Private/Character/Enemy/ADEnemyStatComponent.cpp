@@ -101,3 +101,13 @@ float UADEnemyStatComponent::GetHpRatio()
 	//ABLOG(Warning, TEXT("%f"), (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP));
 	return (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP);
 }
+
+int32 UADEnemyStatComponent::GetDropExp() const
+{
+	if (currentStatData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
+		return 0.0f;
+	}
+	return currentStatData_->DropExp;
+}

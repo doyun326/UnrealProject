@@ -26,6 +26,7 @@ public:
 
 	void			EnemyDestroy();
 	void			SetEnemyState(ECharacterState _newState);
+	int32			GetExp() const;
 	ECharacterState	GetEnemyState() const;
 
 	UPROPERTY()

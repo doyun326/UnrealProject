@@ -67,8 +67,6 @@ AADEnemyCharacter::AADEnemyCharacter()
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
 	}
-
-	SetEnemyState(ECharacterState::READY);
 } 
 
 void AADEnemyCharacter::BeginPlay()
@@ -84,7 +82,7 @@ void AADEnemyCharacter::BeginPlay()
 		return;
 	}
 
-	if (enemyController_)
+	if (enemyController_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : enemyController"));
 		return;
@@ -105,6 +103,8 @@ void AADEnemyCharacter::BeginPlay()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
+
+	SetEnemyState(ECharacterState::READY);
 }
 
 void AADEnemyCharacter::Tick(float DeltaTime)
@@ -170,7 +170,6 @@ void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)
 
 	case ECharacterState::READY:
 	{
-
 		break;
 	}
 
@@ -205,14 +204,12 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	{
 		if (EventInstigator->IsPlayerController())
 		{
-			auto EnemyController = Cast<AADAIController>(EventInstigator);
-
-			if (EnemyController == nullptr)
+			if (enemyController_ == nullptr)
 			{
-				ABLOG(Error, TEXT("Nullptr : EnemyController"));
+				ABLOG(Error, TEXT("Nullptr : enemyController_"));
 				return 0.0f;
 			}
-			//enemyController_->EnemyKill(this);
+			enemyController_->EnemyKill(this);
 		}
 	}
 	return FinalDamage;
@@ -221,4 +218,9 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 void AADEnemyCharacter::EnemyDestroy()
 {
 	Destroy();
+}
+
+int32 AADEnemyCharacter::GetExp() const
+{
+	return 0;
 }

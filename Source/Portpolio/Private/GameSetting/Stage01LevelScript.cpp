@@ -42,7 +42,7 @@ void AStage01LevelScript::BeginPlay()
 
 	if (sequencePlayer_)
 	{
-		sequencePlayer_->Play();
+		//sequencePlayer_->Play();
 	}
 
 #ifdef DRAW_DEBUGHELPER
@@ -51,10 +51,10 @@ void AStage01LevelScript::BeginPlay()
 #endif //DRAW_DEBUGHELPER
 	
 	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
+	//GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
 
 	//빠른 진행을 위한 일단 스킵
-	//WidgetStart();
+	WidgetStart();
 }
 
 void AStage01LevelScript::WidgetStart()
