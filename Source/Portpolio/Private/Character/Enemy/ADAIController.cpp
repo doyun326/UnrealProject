@@ -2,6 +2,7 @@
 
 #include "../Public/Character/Enemy/ADAIController.h"
 #include "../Public/GameSetting/WarGameInstance.h"
+#include "../Public/Character/Enemy/ADEnemyCharacter.h"
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
@@ -82,5 +83,5 @@ void AADAIController::EnemyKill(class AADEnemyCharacter* _killedNpc) const
 		ABLOG(Error, TEXT("Nullptr : warGameInstance_"));
 		return;
 	}
-	ABLOG(Error, TEXT("Nullptr : EnemyKill"));
+	warGameInstance_->SetSaveExp(_killedNpc->GetExp());
 }

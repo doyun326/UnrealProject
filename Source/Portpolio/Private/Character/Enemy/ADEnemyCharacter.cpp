@@ -170,6 +170,10 @@ void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)
 
 	case ECharacterState::READY:
 	{
+		enemyStat_->onHpZero_.AddLambda([this]() -> void
+			{
+				SetEnemyState(ECharacterState::DEAD);
+			});
 		break;
 	}
 
@@ -202,15 +206,12 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 
 	if (currentState_ == ECharacterState::DEAD)
 	{
-		if (EventInstigator->IsPlayerController())
+		if (enemyController_ == nullptr)
 		{
-			if (enemyController_ == nullptr)
-			{
-				ABLOG(Error, TEXT("Nullptr : enemyController_"));
-				return 0.0f;
-			}
-			enemyController_->EnemyKill(this);
+			ABLOG(Error, TEXT("Nullptr : enemyController_"));
+			return 0.0f;
 		}
+		enemyController_->EnemyKill(this);
 	}
 	return FinalDamage;
 }
@@ -222,5 +223,5 @@ void AADEnemyCharacter::EnemyDestroy()
 
 int32 AADEnemyCharacter::GetExp() const
 {
-	return 0;
+	return enemyStat_->GetDropExp();
 }

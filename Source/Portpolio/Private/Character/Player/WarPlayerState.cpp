@@ -8,30 +8,42 @@ AWarPlayerState::AWarPlayerState()
 	gameScore_ = 0;
 	characterLevel_ = 1;
 	exp_ = 0;
+
 }
 
 void AWarPlayerState::InitPlayerData()
 {
 	SetPlayerName(TEXT("Sica"));
 	characterLevel_ = 5;
+	SetCharacterLevel(characterLevel_);
 	gameScore_ = 0;
 	exp_ = 0;
 }
 
-float AWarPlayerState::GetExpRatio()
+float AWarPlayerState::GetExpRatio() const
 {
+	if (currentStatData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : currentStatData"));
+		return 0.0f;
+	}
 	if (currentStatData_->NextExp <= KINDA_SMALL_NUMBER)
 	{
 		return 0.0f;
 	}
-	//float Result = (float)exp_ / (float)currentStatData_->NextExp;
 
+	float Result = (float)exp_ / (float)currentStatData_->NextExp;
 
-	return 0.0f;
+	return Result;
 }
 
 bool AWarPlayerState::AddExp(int32 _inComeExp)
 {
+	if (currentStatData_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nulltpr : currentStatData"));
+		return false;
+	}
 	if (currentStatData_->NextExp == -1)
 	{
 		return false;
@@ -47,6 +59,8 @@ bool AWarPlayerState::AddExp(int32 _inComeExp)
 		DidLevelUp = true;
 	}
 
+	ABLOG(Error, TEXT("%d"), exp_);
+
 	onPlayerStateChange.Broadcast();
 
 	return DidLevelUp;
@@ -54,15 +68,15 @@ bool AWarPlayerState::AddExp(int32 _inComeExp)
 
 void AWarPlayerState::SetCharacterLevel(int32 _newCharacterLevel)
 {
-	auto WarGameInstance = Cast<UWarGameInstance>(GetGameInstance());
+	warGameInstance_ = Cast<UWarGameInstance>(GetGameInstance());
 
-	if (WarGameInstance == nullptr)
+	if (warGameInstance_ == nullptr)
 	{
-		ABLOG(Error, TEXT("Nullptr : WarGameInstance"));
+		ABLOG(Error, TEXT("Nullptr : warGameInstance_"));
 		return;
 	}
 
-	currentStatData_ = WarGameInstance->GetPlayerData(_newCharacterLevel);
+	currentStatData_ = warGameInstance_->GetPlayerData(_newCharacterLevel);
 
 	if (currentStatData_ == nullptr)
 	{
@@ -83,17 +97,22 @@ int32 AWarPlayerState::GetCharacterLevel() const
 	return characterLevel_;
 }
 
+int32 AWarPlayerState::GetExp()
+{
+	return exp_;
+}
+
 void AWarPlayerState::ChangeInteractText(bool _isView)
 {
-	auto WarGameInstance = Cast<UWarGameInstance>(GetGameInstance());
+	warGameInstance_ = Cast<UWarGameInstance>(GetGameInstance());
 
-	if (WarGameInstance == nullptr)
+	if (warGameInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : WarGameInstance"));
 		return;
 	}
 
-	if (!WarGameInstance->GetCheckAddViewport())
+	if (!warGameInstance_->GetCheckAddViewport())
 	{
 		if (_isView)
 		{

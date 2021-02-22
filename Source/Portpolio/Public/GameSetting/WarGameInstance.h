@@ -4,13 +4,18 @@
 
 #include "GameSetting/Portpolio.h"
 
+#include "Containers/CircularQueue.h"
 #include "Engine/DataTable.h"
 #include "Engine/GameInstance.h"
 #include "WarGameInstance.generated.h"
 
+#define QUEUE_MAX 64
+
 DECLARE_MULTICAST_DELEGATE(FOnViewWidget);
 DECLARE_MULTICAST_DELEGATE(FOnFlashEffect)
-DECLARE_MULTICAST_DELEGATE(FOnLimitEffect)
+DECLARE_MULTICAST_DELEGATE(FOnLimitEffect);
+
+DECLARE_MULTICAST_DELEGATE(FOnChangeExp);
 
 /*
 * PlayerData
@@ -144,6 +149,8 @@ public:
 	void	StageViewWidgetStart(FString _name);
 	void	ActiveFlashEffect();
 	void	ActiveLimitEffect();
+	void	SetSaveExp(int32 _newExp);
+	int32	GetSaveExp();
 	
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
@@ -162,6 +169,7 @@ public:
 	FOnViewWidget	onViewWidget;
 	FOnFlashEffect	onFlashEffect;
 	FOnLimitEffect	onLimitEffect;
+	FOnChangeExp	onChangeExp;
 
 private:
 	UPROPERTY()
@@ -177,4 +185,6 @@ private:
 	FTimerHandle	reserveTiemrHandler_;
 	int32			checkCount_;
 	int32			shakeCount_;
+	int32			currentExp_ = 0;
+	TCircularQueue<int32> expArray_{ QUEUE_MAX };
 };

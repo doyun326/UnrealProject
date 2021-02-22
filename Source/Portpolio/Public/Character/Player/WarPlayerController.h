@@ -40,7 +40,9 @@ private:
 	UPROPERTY()
 		class APlayerCharacter* myPlayer_;
 	UPROPERTY()
-		class AWarPlayerState*		myPlayerState_;
+		class AWarPlayerState*	myPlayerState_;
+	UPROPERTY()
+		class UWarGameInstance*	warInstance_;
 
 	void	ZoomInStarted();
 	void	ZoomInReleased();
@@ -51,6 +53,7 @@ private:
 	void	OnFireReleased();
 	void	OnAvoid();
 	void	OnInfinityMode();
+	void	UpdateExp();
 
 	bool	zoomInBtn_;
 	bool	sprintBtn_;

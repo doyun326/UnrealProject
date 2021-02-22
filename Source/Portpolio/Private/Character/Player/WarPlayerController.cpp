@@ -5,6 +5,7 @@
 #include "../Public/Character/Player/PlayerAnimInstance.h"
 #include "../Public/UI//PlayerHudWidget.h"
 #include "../Public/Character/Player/WarPlayerState.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 
 #include "Engine/Engine.h"
 
@@ -90,6 +91,15 @@ void AWarPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (warInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("asdasd"));
+		return;
+	}
+	warInstance_->onChangeExp.AddUObject(this, &AWarPlayerController::UpdateExp);
+
 	myPlayer_ = Cast<APlayerCharacter>(GetCharacter());
 
 	if (myPlayer_ == nullptr)
@@ -155,6 +165,16 @@ void AWarPlayerController::OnAvoid()
 void AWarPlayerController::OnInfinityMode()
 {
 	myPlayer_->InfinityMode();
+}
+
+void AWarPlayerController::UpdateExp()
+{
+	if (myPlayerState_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : PlayerState"));
+		return;
+	}
+	myPlayerState_->AddExp(warInstance_->GetSaveExp());
 }
 
 void AWarPlayerController::ZoomInStarted()

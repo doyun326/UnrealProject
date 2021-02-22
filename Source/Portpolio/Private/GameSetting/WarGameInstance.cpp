@@ -5,6 +5,8 @@
 #include "../Public/GameSetting/MyCameraShake.h"
 #include "../Public/Character/Player/WarPlayerController.h"
 
+#include "Containers/CircularQueue.h"
+
 #define ADENEMYDT_PATH			"/Game/My/GameData/ADEnemyData.ADEnemyData"
 #define PLAYERDT_PATH			"/Game/My/GameData/PlayerData.PlayerData"
 #define MINIONDT_PATH			"/Game/My/GameData/MinionEnemyData.MinionEnemyData"
@@ -61,6 +63,8 @@ UWarGameInstance::UWarGameInstance()
 	viewCheck_ = false;
 	checkCount_ = 0;
 	shakeCount_ = 0;
+	currentExp_ = 0;
+	expArray_.Empty();
 }
 
 void UWarGameInstance::Init()
@@ -178,4 +182,23 @@ void UWarGameInstance::ActiveFlashEffect()
 void UWarGameInstance::ActiveLimitEffect()
 {
 	onLimitEffect.Broadcast();
+}
+
+void UWarGameInstance::SetSaveExp(int32 _newExp)
+{
+	expArray_.Enqueue(_newExp);
+	ABLOG(Error, TEXT("%d"), expArray_.Count());
+	onChangeExp.Broadcast();
+}
+
+int32 UWarGameInstance::GetSaveExp()
+{
+	if (expArray_.IsEmpty())
+	{
+		return 0.0f;
+	}
+	currentExp_ = *expArray_.Peek();
+	expArray_.Dequeue();
+
+	return currentExp_;
 }

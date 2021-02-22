@@ -22,16 +22,19 @@ public:
 	AWarPlayerState();
 
 	void	InitPlayerData();
-	int32	GetGameScore() const;
-	int32	GetCharacterLevel() const;
-	float	GetExpRatio();
+	float	GetExpRatio() const;
 	bool	AddExp(int32 _inComeExp);
 	void	ChangeInteractText(bool _isView);
+	int32	GetGameScore() const;
+	int32	GetCharacterLevel() const;
+	int32	GetExp();
 
 	FOnPlayerStateChangeDelegate	onPlayerStateChange;
 	FOnInteractionTextDelegate		onInteractChange;
 
 protected:
+	UPROPERTY()
+		class UWarGameInstance*	warGameInstance_;
 	UPROPERTY(Transient)
 		int32	gameScore_;
 	UPROPERTY(Transient)
