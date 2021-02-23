@@ -27,6 +27,7 @@ public:
 	void	ChangeInteractText(bool _isView);
 	int32	GetGameScore() const;
 	int32	GetCharacterLevel() const;
+	int32	GetLimitLevel();
 	int32	GetExp();
 
 	FOnPlayerStateChangeDelegate	onPlayerStateChange;

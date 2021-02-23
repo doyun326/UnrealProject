@@ -100,6 +100,7 @@ void UPlayerHudWidget::UpdatePlayerStat()
 		ABLOG(Error, TEXT("Nullptr : currentPlayerStat_"));
 		return;
 	}
+	levelText_->SetText(FText::FromString(FString::FromInt(currentWarPlayerState_->GetCharacterLevel())));
 	hpText_->SetText(FText::FromString(FString::FromInt(currentPlayerStat_->GetHpText())));
 	hpBar_->SetPercent(currentPlayerStat_->GetHpRatio());
 	mpText_->SetText(FText::FromString(FString::FromInt(currentPlayerStat_->GetMpText())));
@@ -115,7 +116,6 @@ void UPlayerHudWidget::UpdateWarPlayerState()
 	}
 	expBar_->SetPercent(currentWarPlayerState_->GetExpRatio());
 	expText_->SetText(FText::FromString(FString::FromInt(currentWarPlayerState_->GetExp())));
-	levelText_->SetText(FText::FromString(FString::FromInt(currentWarPlayerState_->GetCharacterLevel())));
 }
 
 void UPlayerHudWidget::isHideInteractText(bool _view)

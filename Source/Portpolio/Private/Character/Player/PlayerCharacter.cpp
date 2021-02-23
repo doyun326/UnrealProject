@@ -440,6 +440,7 @@ void APlayerCharacter::PlayLimintClearEffect()
 {
 	FName NoneName("none");
 	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(limitEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+	LimitLevelUp();
 }
 
 void APlayerCharacter::InfinityMode()
@@ -449,7 +450,7 @@ void APlayerCharacter::InfinityMode()
 
 void APlayerCharacter::LimitLevelUp()
 {
-
+	playerStat_->SetNewLevel(warPlayerState_->GetLimitLevel());
 }
 
 ECharacterState	APlayerCharacter::GetCharacterState() const

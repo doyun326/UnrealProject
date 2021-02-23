@@ -97,6 +97,13 @@ int32 AWarPlayerState::GetCharacterLevel() const
 	return characterLevel_;
 }
 
+int32 AWarPlayerState::GetLimitLevel()
+{
+	characterLevel_ += 10;
+
+	return characterLevel_;
+}
+
 int32 AWarPlayerState::GetExp()
 {
 	return exp_;
