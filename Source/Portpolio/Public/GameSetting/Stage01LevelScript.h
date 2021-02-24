@@ -18,15 +18,19 @@ class PORTPOLIO_API AStage01LevelScript : public ALevelScriptActor
 public:
 	AStage01LevelScript();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		USceneComponent*			rootComponent_;
+
 protected:
 	virtual void BeginPlay();
 
 private:
 	UFUNCTION()
 		void	OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+		void	OnNextMapTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	void	WidgetStart();
-
 
 	UPROPERTY()
 		class UWarGameInstance*		warInstance_;
@@ -36,6 +40,8 @@ private:
 		class ULevelSequence*		sequenceAsset_;
 	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
 		UBoxComponent*				walkTrigger_;
+	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
+		UBoxComponent*				nextMapTrigger_;
 
 	FTimerHandle	startWidgetHandler_;
 
