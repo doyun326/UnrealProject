@@ -14,5 +14,11 @@ UCLASS()
 class PORTPOLIO_API UBTTask_ADEnemyTurnToTarget : public UBTTaskNode
 {
 	GENERATED_BODY()
+
+public:
+	UBTTask_ADEnemyTurnToTarget();
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
+private:
 };
