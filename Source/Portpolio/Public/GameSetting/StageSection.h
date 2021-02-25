@@ -40,6 +40,9 @@ private:
 		UStaticMeshComponent*			mapMesh_;
 	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
 		TArray<UStaticMeshComponent*>	gateMeshs_;
+	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
+		UStaticMeshComponent*			celingMeshs_;
+
 	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
 		UBoxComponent*			startTrigger_;
 	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))

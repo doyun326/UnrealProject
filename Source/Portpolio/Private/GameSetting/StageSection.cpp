@@ -7,6 +7,7 @@
 
 #define SQUAREMESH_PATH		"/Game/My/Asset/Map/SM_SQUARE.SM_SQUARE"
 #define GATEMESH_PATH		"/Game/My/Asset/Map/SM_Plains_Castle_DemonDoor_01.SM_Plains_Castle_DemonDoor_01"
+#define CELINGMESH_PATH		"/Game/InfinityBladeGrassLands/Environments/Misc/Exo_Deco02/StaticMesh/SM_Exo_Doorframe_02.SM_Exo_Doorframe_02"
 
 AStageSection::AStageSection()
 {
@@ -24,6 +25,21 @@ AStageSection::AStageSection()
 		mapMesh_->SetStaticMesh(SM_SQUARE.Object);
 	}
 	mapMesh_->SetRelativeScale3D(FVector(2.0f, 2.0f, 5.0f));
+
+	//Celing Setting
+	celingMeshs_ = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CelingMesh"));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CELING(TEXT(CELINGMESH_PATH));
+
+	if (SM_CELING.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : SM_CELING"));
+		celingMeshs_->SetStaticMesh(SM_CELING.Object);
+	}
+	celingMeshs_->SetupAttachment(RootComponent);
+	celingMeshs_->SetRelativeLocation(FVector(0.0f, -1900.0f, 300.0f));
+	celingMeshs_->SetRelativeRotation(FRotator(00.0f, 00.0f, 90.0f));
+	celingMeshs_->SetRelativeScale3D(FVector(8.0f, 1.0f, 8.0f));
 
 	//Trigger Setting (startTrigger)
 	startTrigger_ = CreateDefaultSubobject<UBoxComponent>(TEXT("STARTTRIGGER"));
