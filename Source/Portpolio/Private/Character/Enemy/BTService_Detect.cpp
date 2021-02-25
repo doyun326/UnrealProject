@@ -57,13 +57,13 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 			if (Player)
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(AADAIController::targetKey_, Player);
-#ifdef DRAW_DEBUGHELPER
+#ifdef	DRAW_DEBUGHELPER
 				{
 					DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
 					DrawDebugPoint(World, Player->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
 					DrawDebugLine(World, ControllingPawn->GetActorLocation(), Player->GetActorLocation(), FColor::Blue, false, 0.2f);
 				}
-#endif
+#endif	//DRAW_DEBUGHELPER
 				return;
 			}
 		}
@@ -72,10 +72,9 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsObject(AADAIController::targetKey_, nullptr);
 	} 
-	//ABLOG(Warning, TEXT("%d"), bResult);
-#ifdef DRAW_DEBUGHELPER
+#ifdef	DRAW_DEBUGHELPER
 	{
 		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
 	}
-#endif
+#endif	//DRAW_DEBUGHELPER
 }

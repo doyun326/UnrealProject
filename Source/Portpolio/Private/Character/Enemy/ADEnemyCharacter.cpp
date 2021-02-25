@@ -67,6 +67,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
 	}
+	isHit_ = false;
 } 
 
 void AADEnemyCharacter::BeginPlay()

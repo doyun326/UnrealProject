@@ -47,4 +47,6 @@ private:
 		class UADAnimInstance* ADAnim_;
 	UPROPERTY()
 		class UEnemyHPWidget* EnemyHpWidget_;
+
+	bool	isHit_;
 };

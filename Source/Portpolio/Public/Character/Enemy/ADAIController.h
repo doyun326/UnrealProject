@@ -21,6 +21,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
+	void	StopAI();
 	void	EnemyKill(class AADEnemyCharacter* _killedNpc) const;
 
 	static const FName	homePosKey_;

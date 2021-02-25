@@ -72,6 +72,7 @@ AStageSection::AStageSection()
 		NewGate->SetStaticMesh(DEMON_GATE.Object);
 		NewGate->SetupAttachment(RootComponent, GateSocket);
 		NewGate->SetRelativeLocation(FVector(18.0f, 0.0f, 0.0f));
+		NewGate->SetRelativeRotation(FRotator(20.0f, 20.0f, 20.0f));
 		NewGate->SetRelativeScale3D(FVector(1.8f, 1.8f, 1.5f));
 		gateMeshs_.Add(NewGate);
 
@@ -173,6 +174,7 @@ void AStageSection::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedCompone
 		//SetState(ESectionState::BATTLE);
 		SetState(ESectionState::COMPLATE);
 		ABLOG(Error, TEXT("Overlap On"));
+
 	}
 }
 

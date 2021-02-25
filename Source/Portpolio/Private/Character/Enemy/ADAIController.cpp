@@ -76,6 +76,16 @@ void AADAIController::OnPossess(APawn* InPawn)
 	}
 }
 
+void AADAIController::StopAI()
+{
+	auto BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent);
+
+	if (BehaviorTreeComponent != nullptr)
+	{
+		BehaviorTreeComponent->StopTree(EBTStopMode::Safe);
+	}
+}
+
 void AADAIController::EnemyKill(class AADEnemyCharacter* _killedNpc) const
 {
 	if (warGameInstance_ == nullptr)
