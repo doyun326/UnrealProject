@@ -23,6 +23,8 @@ public:
 
 	void	StopAI();
 	void	EnemyKill(class AADEnemyCharacter* _killedNpc) const;
+	void	SetIsHit(bool _isHit);
+	bool	GetIsHit();
 
 	static const FName	homePosKey_;
 	static const FName	patrolPosKey_;
@@ -41,4 +43,6 @@ private:
 
 	class UBlackboardComponent*		blackboard_;
 	class UAISenseConfig_Sight*		sightConfig_;
+
+	bool	isHit_;
 };

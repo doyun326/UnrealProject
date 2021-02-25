@@ -12,7 +12,7 @@
 #define ADANIM_PATH				"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
 #define ADENEMY_WIDGET_PATH		"/Game/My/Blueprints/UI/EnemyHpBar_UI.EnemyHpBar_UI_C"
 
-#define MAX_SPEED		300.0f
+#define MAX_SPEED		800.0f
 
 AADEnemyCharacter::AADEnemyCharacter()
 {
@@ -32,6 +32,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 		GetMesh()->SetSkeletalMesh((AD_ENEMY.Object));
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -95.0f), FRotator(0.0f, -90.0f, 0.0f));
 	}
+	GetMesh()->SetRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
 
 	//Animation ¼³Á¤
 	static ConstructorHelpers::FClassFinder<UADAnimInstance> AD_ANIM(TEXT(ADANIM_PATH));
@@ -171,6 +172,8 @@ void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)
 
 	case ECharacterState::READY:
 	{
+		enemyController_->SetIsHit(isHit_);
+
 		enemyStat_->onHpZero_.AddLambda([this]() -> void
 			{
 				SetEnemyState(ECharacterState::DEAD);
@@ -196,8 +199,11 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	enemyStat_->SetDamage(FinalDamage);
-	ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController_"));
+		return 0.0f;
+	}
 
 	if (enemyStat_ == nullptr)
 	{
@@ -205,14 +211,17 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		return 0.0f;
 	}
 
+	enemyStat_->SetDamage(FinalDamage);
+	isHit_ = true;
+	enemyController_->SetIsHit(isHit_);
+	
+	ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+
 	if (currentState_ == ECharacterState::DEAD)
 	{
-		if (enemyController_ == nullptr)
-		{
-			ABLOG(Error, TEXT("Nullptr : enemyController_"));
-			return 0.0f;
-		}
+		
 		enemyController_->EnemyKill(this);
+		enemyController_->StopAI();
 	}
 	return FinalDamage;
 }

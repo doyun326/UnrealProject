@@ -95,3 +95,13 @@ void AADAIController::EnemyKill(class AADEnemyCharacter* _killedNpc) const
 	}
 	warGameInstance_->SetSaveExp(_killedNpc->GetExp());
 }
+
+void AADAIController::SetIsHit(bool _isHit)
+{
+	isHit_ = _isHit;
+}
+
+bool AADAIController::GetIsHit()
+{
+	return isHit_;
+}

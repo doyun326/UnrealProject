@@ -25,9 +25,27 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 		return;
 	}
 
+	auto Controller = Cast<AADAIController>(ControllingPawn->GetController());
+
+	if (Controller == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : ADAIController"));
+		return;
+	}
+
 	UWorld* World = ControllingPawn->GetWorld();
 	FVector Center = ControllingPawn->GetActorLocation();
-	float	DetectRadius = 600.0f;
+	float	DetectRadius;
+
+	if (Controller->GetIsHit())
+	{
+		DetectRadius = 4000.0f;
+	}
+	else
+	{
+		DetectRadius = 600.0f;
+	}
+	
 
 	if (World == nullptr)
 	{
@@ -74,7 +92,14 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	} 
 #ifdef	DRAW_DEBUGHELPER
 	{
-		DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
+		if (Controller->GetIsHit())
+		{
+			DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Blue, false, 0.2f);
+		}
+		else
+		{
+			DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Red, false, 0.2f);
+		}
 	}
 #endif	//DRAW_DEBUGHELPER
 }
