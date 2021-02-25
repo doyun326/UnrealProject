@@ -56,7 +56,7 @@ bool UBTDecorator_BossIsInAttackRange::CalculateRawConditionValue(UBehaviorTreeC
 			DrawDebugSphere(World, Center, ATTACK_RANGE, 16, FColor::Red, false, 0.2f);
 		}
 	}
-#endif
+#endif //DRAW_DEBUGHELPER
 
 	return bResult;
 }
