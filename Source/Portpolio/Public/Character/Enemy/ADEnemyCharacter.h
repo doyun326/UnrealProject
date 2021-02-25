@@ -7,6 +7,10 @@
 #include "Character/BaseCharacter.h"
 #include "ADEnemyCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnFistAttackDelegate, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnSecondAttackDelegate, bool);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHitDelegate, bool);
+
 /**
  * 
  */
@@ -37,6 +41,10 @@ public:
 		class UADEnemyStatComponent*	enemyStat_;
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
 		ECharacterState					currentState_;
+
+	FOnFistAttackDelegate	onFirstAttack_;
+	FOnFistAttackDelegate	onSecondAttack_;
+	FOnHitDelegate			onHit_;
 
 protected:
 	// Called when the game starts or when spawned
