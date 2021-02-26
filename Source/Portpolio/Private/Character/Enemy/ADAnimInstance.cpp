@@ -14,6 +14,7 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
 	auto Pawn = TryGetPawnOwner();
+	character_ = Cast<AADEnemyCharacter>(Pawn);
 
 	if (Pawn == nullptr)
 	{
@@ -21,11 +22,49 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		return;
 	}
 
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : ADEnemyCharacter"));
+		return;
+	}
+
 	if (::IsValid(Pawn))
 	{
+		isFirstAttacking_ = character_->GetFirstAttacking();
+		isSecondAttacking_ = character_->GetSecondAttacking();
 		curSpeed_ = Pawn->GetVelocity().Size();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 	}
+}
+
+void UADAnimInstance::AnimNotify_AttackFirEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	character_->onFirstAttack_.Broadcast(false);
+}
+
+void UADAnimInstance::AnimNotify_AttackSecEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	character_->onSecondAttack_.Broadcast(false);
+}
+
+void UADAnimInstance::AnimNotify_HitEnd()
+{
+	if (character_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : Character"));
+		return;
+	}
+	character_->onHit_.Broadcast(false);
 }
 
 void UADAnimInstance::SetDeadAnim()

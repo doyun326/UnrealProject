@@ -23,10 +23,26 @@ public:
 
 private:
 	UFUNCTION()
-		void AnimNotify_DieEnd();
+		void	AnimNotify_AttackFirEnd();
+	UFUNCTION()
+		void	AnimNotify_AttackSecEnd();
+	UFUNCTION()
+		void	AnimNotify_HitEnd();
+	UFUNCTION()
+		void	AnimNotify_DieEnd();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		float	curSpeed_;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		bool	isDead_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isFirstAttacking_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isSecondAttacking_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isInAir_;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
+		bool	isHit_;
+
+	class AADEnemyCharacter* character_;
 };
