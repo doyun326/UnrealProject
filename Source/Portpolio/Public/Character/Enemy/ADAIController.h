@@ -29,6 +29,7 @@ public:
 	static const FName	homePosKey_;
 	static const FName	patrolPosKey_;
 	static const FName	targetKey_;
+	static const FName	isHitKey_;
 
 protected:
 	virtual void BeginPlay() override;

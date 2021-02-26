@@ -14,5 +14,10 @@ UCLASS()
 class PORTPOLIO_API UBTService_IsADEnemyHit : public UBTService
 {
 	GENERATED_BODY()
-	
+
+public:
+	UBTService_IsADEnemyHit();
+
+	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+private:
 };

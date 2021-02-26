@@ -33,6 +33,14 @@ public:
 	int32			GetExp() const;
 	ECharacterState	GetEnemyState() const;
 
+	void	ChangeFirstAttack(bool _attack);
+	void	ChangeSecondAttack(bool _attack);
+	void	ChangeHit(bool _hit);
+
+	bool	GetFirstAttacking();
+	bool	GetSecondAttacking();
+	bool	GetIsHiting();
+
 	UPROPERTY()
 		class AADAIController*			enemyController_;
 	UPROPERTY(EditAnywhere, Category = "UI")
@@ -56,5 +64,8 @@ private:
 	UPROPERTY()
 		class UEnemyHPWidget* EnemyHpWidget_;
 
-	bool	isHit_;
+	bool	isFirstAttack_;
+	bool	isSecondAttack_;
+	bool	isThirdAttack_;
+	bool	isHiting_;
 };

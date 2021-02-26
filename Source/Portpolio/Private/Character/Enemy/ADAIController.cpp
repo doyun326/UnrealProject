@@ -14,6 +14,7 @@
 const FName AADAIController::homePosKey_(TEXT("HomePos"));
 const FName AADAIController::patrolPosKey_(TEXT("PatrolPos"));
 const FName AADAIController::targetKey_(TEXT("Target"));
+const FName AADAIController::isHitKey_(TEXT("isHit"));
 
 AADAIController::AADAIController()
 {

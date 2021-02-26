@@ -68,7 +68,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
 	}
-	isHit_ = false;
+	isHiting_ = false;
 } 
 
 void AADEnemyCharacter::BeginPlay()
@@ -89,6 +89,11 @@ void AADEnemyCharacter::BeginPlay()
 		ABLOG(Error, TEXT("Nullptr : enemyController"));
 		return;
 	}
+
+	//Delegate Setting
+	onFirstAttack_.AddUObject(this, &AADEnemyCharacter::ChangeFirstAttack);
+	onSecondAttack_.AddUObject(this, &AADEnemyCharacter::ChangeSecondAttack);
+	onHit_.AddUObject(this, &AADEnemyCharacter::ChangeHit);
 
 	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
 	if (HPBarWidget_ != nullptr)
@@ -172,7 +177,7 @@ void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)
 
 	case ECharacterState::READY:
 	{
-		enemyController_->SetIsHit(isHit_);
+		enemyController_->SetIsHit(isHiting_);
 
 		enemyStat_->onHpZero_.AddLambda([this]() -> void
 			{
@@ -212,8 +217,8 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	}
 
 	enemyStat_->SetDamage(FinalDamage);
-	isHit_ = true;
-	enemyController_->SetIsHit(isHit_);
+	isHiting_ = true;
+	enemyController_->SetIsHit(isHiting_);
 	
 	ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
 
@@ -224,6 +229,36 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		enemyController_->StopAI();
 	}
 	return FinalDamage;
+}
+
+void AADEnemyCharacter::ChangeFirstAttack(bool _attack)
+{
+	isFirstAttack_ = _attack;
+}
+
+void AADEnemyCharacter::ChangeSecondAttack(bool _attack)
+{
+	isSecondAttack_ = _attack;
+}
+
+void AADEnemyCharacter::ChangeHit(bool _hit)
+{
+	isHiting_ = _hit;
+}
+
+bool AADEnemyCharacter::GetFirstAttacking()
+{
+	return isFirstAttack_;
+}
+
+bool AADEnemyCharacter::GetSecondAttacking()
+{
+	return isSecondAttack_;
+}
+
+bool AADEnemyCharacter::GetIsHiting()
+{
+	return isHiting_;
 }
 
 void AADEnemyCharacter::EnemyDestroy()
