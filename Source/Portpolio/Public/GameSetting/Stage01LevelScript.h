@@ -50,4 +50,5 @@ private:
 	FTimerHandle	startWidgetHandler_;
 
 	bool	checkGo_;
+	bool	checkMapFront_;
 };
