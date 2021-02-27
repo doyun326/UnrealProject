@@ -60,6 +60,7 @@ protected:
 
 private:
 	void	AttackCheck();
+	void	NoDamageTime();
 
 	UPROPERTY()
 		class UADAnimInstance* ADAnim_;
@@ -70,4 +71,7 @@ private:
 	bool	isSecondAttack_;
 	bool	isThirdAttack_;
 	bool	isHiting_;
+	bool	isDamageTime_;
+
+	FTimerHandle	noDamageTimeHandler_;
 };

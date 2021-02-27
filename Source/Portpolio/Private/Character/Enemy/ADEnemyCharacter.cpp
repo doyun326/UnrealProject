@@ -70,6 +70,7 @@ AADEnemyCharacter::AADEnemyCharacter()
 		HPBarWidget_->SetDrawSize(FVector2D(120.0f, 50.0f));
 	}
 	isHiting_ = false;
+	isDamageTime_ = true;
 } 
 
 void AADEnemyCharacter::BeginPlay()
@@ -251,19 +252,33 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		return 0.0f;
 	}
 
-	enemyStat_->SetDamage(FinalDamage);
-	isHiting_ = true;
-	enemyController_->SetIsHit(isHiting_);
-	
-	ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
-
-	if (currentState_ == ECharacterState::DEAD)
+	if (isDamageTime_)
 	{
-		
-		enemyController_->EnemyKill(this);
-		enemyController_->StopAI();
+		enemyStat_->SetDamage(FinalDamage);
+		isHiting_ = true;
+		enemyController_->SetIsHit(isHiting_);
+		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AADEnemyCharacter::NoDamageTime, 1.5f, false);
+
+		ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+
+		if (currentState_ == ECharacterState::DEAD)
+		{
+			enemyController_->EnemyKill(this);
+			enemyController_->StopAI();
+		}
+		isDamageTime_ = false;
 	}
+	else
+	{
+		FinalDamage = 0.0f;
+	}
+
 	return FinalDamage;
+}
+
+void AADEnemyCharacter::NoDamageTime()
+{
+	isDamageTime_ = true;
 }
 
 void AADEnemyCharacter::ChangeFirstAttack(bool _attack)
