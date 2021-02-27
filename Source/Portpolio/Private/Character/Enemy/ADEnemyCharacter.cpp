@@ -7,6 +7,7 @@
 #include "../Public/UI/EnemyHPWidget.h"
 
 #include "Components/WidgetComponent.h"
+#include "DrawDebugHelpers.h"
 
 #define ENEMYMESH_PATH			"/Game/My/Asset/Character/Enemy/AD/mutant/mutant.mutant"
 #define ADANIM_PATH				"/Game/My/Blueprints/Anim/Enemy/ADAnim_BP.ADAnim_BP_C"
@@ -90,11 +91,6 @@ void AADEnemyCharacter::BeginPlay()
 		return;
 	}
 
-	//Delegate Setting
-	onFirstAttack_.AddUObject(this, &AADEnemyCharacter::ChangeFirstAttack);
-	onSecondAttack_.AddUObject(this, &AADEnemyCharacter::ChangeSecondAttack);
-	onHit_.AddUObject(this, &AADEnemyCharacter::ChangeHit);
-
 	//HPBar 연결(4.21ver 이 후, PostInitializeComponents()가 아닌 Widget초기화를 BeginPlay에서 한다.)
 	if (HPBarWidget_ != nullptr)
 	{
@@ -105,6 +101,12 @@ void AADEnemyCharacter::BeginPlay()
 			EnemyHpWidget_->BindCharacterStat(enemyStat_);
 		}
 	}
+
+	//Delegate Setting
+	onFirstAttack_.AddUObject(this, &AADEnemyCharacter::ChangeFirstAttack);
+	onSecondAttack_.AddUObject(this, &AADEnemyCharacter::ChangeSecondAttack);
+	onHit_.AddUObject(this, &AADEnemyCharacter::ChangeHit);
+	ADAnim_->onAttackHitCheck_.AddUObject(this, &AADEnemyCharacter::AttackCheck);
 	
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
@@ -150,6 +152,39 @@ void AADEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	GetCharacterMovement()->MaxWalkSpeed = MAX_SPEED;
+}
+
+void AADEnemyCharacter::AttackCheck()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	bool bResult = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * 200.0f,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(50.0f),
+		Params);
+
+	FVector TraceVec = GetActorForwardVector() * 50.0f;
+	FVector Center = GetActorLocation() + TraceVec * 0.5f;
+	float HalfHeight = 50.0f * 0.5f + 50.0f;
+	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
+	FColor DrawColor = bResult ? FColor::Green : FColor::Red;
+	float DebugLifeTime = 5.0f;
+
+	DrawDebugCapsule(
+		GetWorld(),
+		Center,
+		HalfHeight,
+		50.0f,
+		CapsuleRot,
+		DrawColor,
+		false,
+		DebugLifeTime
+	);
 }
 
 void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)

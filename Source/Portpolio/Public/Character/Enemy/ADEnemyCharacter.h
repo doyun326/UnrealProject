@@ -59,6 +59,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	void	AttackCheck();
+
 	UPROPERTY()
 		class UADAnimInstance* ADAnim_;
 	UPROPERTY()

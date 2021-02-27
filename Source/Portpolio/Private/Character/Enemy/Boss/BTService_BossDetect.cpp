@@ -67,7 +67,7 @@ void UBTService_BossDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* N
 					DrawDebugPoint(World, Player->GetActorLocation(), 10.0f, FColor::Blue, false, 0.2f);
 					DrawDebugLine(World, ControllingPawn->GetActorLocation(), Player->GetActorLocation(), FColor::Blue, false, 0.2f);
 				}
-#endif
+#endif //DRAW_DEBUGHELPER
 				return;
 			}
 		}

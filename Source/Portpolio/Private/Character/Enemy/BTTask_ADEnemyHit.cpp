@@ -1,6 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Character/Enemy/BTTask_ADEnemyHit.h"
+#include "../Public/Character/Enemy/ADAIController.h"
+#include "../Public/Character/Enemy/ADEnemyCharacter.h"
+#include "../Public/Character/Player/PlayerCharacter.h"
+
+#include "BehaviorTree/BlackboardComponent.h"
+#include "DrawDebugHelpers.h"
 
 UBTTask_ADEnemyHit::UBTTask_ADEnemyHit()
 {

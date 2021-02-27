@@ -40,7 +40,6 @@ void UBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		isThirdAttacking_ = character_->GetThirdAttacking();
 		isInAir_ = character_->GetMovementComponent()->IsFalling();
 		isHit_ = character_->GetIsHiting();
-		//isFirstAttacking_ = character_->GetAttacking();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 		//ABLOG(Warning, TEXT("%d"), isAttacking_);
 	}

@@ -6,6 +6,8 @@
 #include "Animation/AnimInstance.h"
 #include "ADAnimInstance.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheckDelegeate);
+
 /**
  * 
  */
@@ -21,11 +23,15 @@ public:
 
 	void	SetDeadAnim();
 
+	FOnAttackHitCheckDelegeate onAttackHitCheck_;
+
 private:
 	UFUNCTION()
 		void	AnimNotify_AttackFirEnd();
 	UFUNCTION()
 		void	AnimNotify_AttackSecEnd();
+	UFUNCTION()
+		void	AnimNotify_AttackHitCheck();
 	UFUNCTION()
 		void	AnimNotify_HitEnd();
 	UFUNCTION()

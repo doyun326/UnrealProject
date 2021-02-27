@@ -32,6 +32,7 @@ void UADAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		isFirstAttacking_ = character_->GetFirstAttacking();
 		isSecondAttacking_ = character_->GetSecondAttacking();
+		isHit_ = character_->GetIsHiting();
 		curSpeed_ = Pawn->GetVelocity().Size();
 		//ABLOG(Warning, TEXT("%f"), curSpeed_);
 	}
@@ -55,6 +56,11 @@ void UADAnimInstance::AnimNotify_AttackSecEnd()
 		return;
 	}
 	character_->onSecondAttack_.Broadcast(false);
+}
+
+void UADAnimInstance::AnimNotify_AttackHitCheck()
+{
+	onAttackHitCheck_.Broadcast();
 }
 
 void UADAnimInstance::AnimNotify_HitEnd()

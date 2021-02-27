@@ -34,6 +34,13 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	}
 
 	UWorld* World = ControllingPawn->GetWorld();
+
+	if (World == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : World"));
+		return;
+	}
+
 	FVector Center = ControllingPawn->GetActorLocation();
 	float	DetectRadius;
 
@@ -44,13 +51,6 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 	else
 	{
 		DetectRadius = 600.0f;
-	}
-	
-
-	if (World == nullptr)
-	{
-		ABLOG(Error, TEXT("Nullptr : World"));
-		return;
 	}
 	
 	TArray<FOverlapResult> OverlapResults;
@@ -75,6 +75,7 @@ void UBTService_Detect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeM
 			if (Player)
 			{
 				OwnerComp.GetBlackboardComponent()->SetValueAsObject(AADAIController::targetKey_, Player);
+
 #ifdef	DRAW_DEBUGHELPER
 				{
 					DrawDebugSphere(World, Center, DetectRadius, 16, FColor::Green, false, 0.2f);
