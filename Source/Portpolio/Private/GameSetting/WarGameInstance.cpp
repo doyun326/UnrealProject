@@ -172,6 +172,10 @@ void UWarGameInstance::StageViewWidgetStart(FString _name)
 	{
 		onViewWidget.Broadcast();
 	}
+	if (_name == "Stage_02")
+	{
+		onViewWidget.Broadcast();
+	}
 }
 
 void UWarGameInstance::ActiveFlashEffect()

@@ -68,7 +68,7 @@ void AStage01LevelScript::BeginPlay()
 
 	if (sequencePlayer_)
 	{
-		//sequencePlayer_->Play();
+		sequencePlayer_->Play();
 	}
 
 #ifdef DRAW_DEBUGHELPER
@@ -80,10 +80,10 @@ void AStage01LevelScript::BeginPlay()
 	DrawDebugBox(GetWorld(), FVector(-2607.0f, 6336.0f, 171.0f), FVector(500.0f, 500.0f, 200.0f), FColor::Green, true, -1, 0, 10);
 #endif //DRAW_DEBUGHELPER
 
-	//GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
+	GetWorld()->GetTimerManager().SetTimer(startWidgetHandler_, this, &AStage01LevelScript::WidgetStart, 10.5f, false);
 
 	//빠른 진행을 위한 일단 스킵
-	WidgetStart();
+	//WidgetStart();
 }
 
 void AStage01LevelScript::WidgetStart()
@@ -93,7 +93,8 @@ void AStage01LevelScript::WidgetStart()
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
 	}
-	warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
+	//warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
+	warInstance_->DialogueCreate();
 }
 
 void AStage01LevelScript::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

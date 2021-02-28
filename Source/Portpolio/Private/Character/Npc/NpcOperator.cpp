@@ -122,10 +122,11 @@ void ANpcOperator::Tick(float DeltaTime)
 
 void ANpcOperator::ViewWidget()
 {
-	if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
+	/*if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
 	{
 		DialogueCreate();
-	}
+	}*/
+	DialogueCreate();
 }
 
 void ANpcOperator::DialogueCreate()

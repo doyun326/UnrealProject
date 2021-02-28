@@ -71,8 +71,6 @@ AStageSection::AStageSection()
 		UStaticMeshComponent* NewGate = CreateDefaultSubobject<UStaticMeshComponent>(*GateSocket.ToString());
 		NewGate->SetStaticMesh(DEMON_GATE.Object);
 		NewGate->SetupAttachment(RootComponent, GateSocket);
-		NewGate->SetRelativeLocation(FVector(18.0f, 0.0f, 0.0f));
-		NewGate->SetRelativeRotation(FRotator(20.0f, 20.0f, 20.0f));
 		NewGate->SetRelativeScale3D(FVector(1.8f, 1.8f, 1.5f));
 		gateMeshs_.Add(NewGate);
 
@@ -155,7 +153,7 @@ void AStageSection::OperatorGates(bool _bOpen)
 {
 	for(UStaticMeshComponent* Gate : gateMeshs_)
 	{
-		Gate->SetRelativeLocation(_bOpen ? FVector::ZeroVector : FVector(150.0f, 80.0f, 0.0f));
+		Gate->SetRelativeLocation(_bOpen ? FVector::ZeroVector : FVector(-40.0f, -90.0f, 0.0f));
 		Gate->SetRelativeRotation(_bOpen ? FRotator(0.0f, -90.0f, 0.0f) : FRotator::ZeroRotator);
 	}
 }
@@ -199,7 +197,7 @@ void AStageSection::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 	TArray<FOverlapResult> OverlapResults;
 	FCollisionQueryParams CollisionQueryParam(NAME_None, false, this);
 	FCollisionObjectQueryParams	ObjectQueryParam(FCollisionObjectQueryParams::InitType::AllObjects);
-	
+
 	bool bResult = GetWorld()->OverlapMultiByObjectType
 	(
 		OverlapResults,
