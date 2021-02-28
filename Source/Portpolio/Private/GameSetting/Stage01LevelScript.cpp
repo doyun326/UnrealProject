@@ -93,8 +93,8 @@ void AStage01LevelScript::WidgetStart()
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
 	}
-	//warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
-	warInstance_->DialogueCreate();
+	warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
+	//warInstance_->DialogueCreate();
 }
 
 void AStage01LevelScript::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
