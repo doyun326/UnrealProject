@@ -36,13 +36,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY()
-		class UNpcOperatorAnimInstance* operAnim_;
-	UPROPERTY()
-		class UAIDeskInteractionWidget* dialougeWidget_;
-	UPROPERTY()
-		class UWarGameInstance*			WarInstance_;
 	UPROPERTY()
 		int32	npcID_;
 	UPROPERTY()
@@ -50,9 +43,17 @@ private:
 	UPROPERTY()
 		int32	currentLineID_;
 	UPROPERTY()
+		class UAIDeskInteractionWidget* dialougeWidget_;
+	UPROPERTY()
+		class UWarGameInstance* warInstance_;
+	UPROPERTY()
 		TArray<FString>	dialougeTexts_;
-
+	
 	TArray<struct FNpcDialogueData*>	dialogueDatas_;
+
+private:
+	UPROPERTY()
+		class UNpcOperatorAnimInstance* operAnim_;
 
 	FTimerHandle	viewTimeHandler_;
 	FTimerHandle	effectTimeHandler_;

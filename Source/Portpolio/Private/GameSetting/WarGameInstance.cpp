@@ -174,7 +174,7 @@ void UWarGameInstance::StageViewWidgetStart(FString _name)
 	}
 	if (_name == "Stage_02")
 	{
-		onViewWidget.Broadcast();
+		onViewWidget02.Broadcast();
 	}
 }
 

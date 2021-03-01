@@ -2,12 +2,15 @@
 
 #include "../Public/GameSetting/Stage01LevelScript.h"
 #include "../Public/GameSetting/WarGameInstance.h"
+#include "../Public/UI/AIDeskInteractionWidget.h"
 
+#include "Components/WidgetComponent.h"
 #include "LevelSequence/Public/LevelSequencePlayer.h"
 #include "LevelSequence/Public/LevelSequence.h"
 #include "DrawDebugHelpers.h"
 
 #define STAGE01_SEQUENCE_PATH "/Game/My/Cinematics/Stage01/Stage01_Master.Stage01_Master"
+#define DIALOGUEWIDGET_PATH	"/Game/My/Blueprints/UI/DialogueWidget.DialogueWidget_C"
 
 AStage01LevelScript::AStage01LevelScript()
 {
@@ -93,8 +96,8 @@ void AStage01LevelScript::WidgetStart()
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
 	}
+
 	warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
-	//warInstance_->DialogueCreate();
 }
 
 void AStage01LevelScript::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

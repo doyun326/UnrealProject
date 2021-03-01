@@ -12,6 +12,7 @@
 #define QUEUE_MAX 64
 
 DECLARE_MULTICAST_DELEGATE(FOnViewWidget);
+DECLARE_MULTICAST_DELEGATE(FOnViewWidget02);
 DECLARE_MULTICAST_DELEGATE(FOnFlashEffect)
 DECLARE_MULTICAST_DELEGATE(FOnLimitEffect);
 
@@ -167,6 +168,7 @@ public:
 		TSubclassOf<UCameraShake>	myShake_;
 
 	FOnViewWidget	onViewWidget;
+	FOnViewWidget02	onViewWidget02;
 	FOnFlashEffect	onFlashEffect;
 	FOnLimitEffect	onLimitEffect;
 	FOnChangeExp	onChangeExp;

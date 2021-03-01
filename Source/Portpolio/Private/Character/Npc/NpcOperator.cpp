@@ -48,7 +48,7 @@ ANpcOperator::ANpcOperator()
 	}
 
 	addViewportCheck_ = false;
-	effectCheck_ = false;
+	effectCheck_ = false;	
 	currentLineID_ = 1;
 	conversation_ = 1;
 	npcID_ = 2;
@@ -78,9 +78,9 @@ void ANpcOperator::BeginPlay()
 		return;
 	}
 
-	WarInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
-	if (WarInstance_ == nullptr)
+	if (warInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
@@ -94,9 +94,9 @@ void ANpcOperator::BeginPlay()
 
 	dialougeWidget_ = Cast<UAIDeskInteractionWidget>(dialogueWidgetClass_->GetUserWidgetObject());
 
-	for (int RowNum = 1; RowNum <= WarInstance_->GetDialogueRowNums(); RowNum++)
+	for (int RowNum = 1; RowNum <= warInstance_->GetDialogueRowNums(); RowNum++)
 	{
-		struct FNpcDialogueData* Data = WarInstance_->GetDialogueData(RowNum);
+		struct FNpcDialogueData* Data = warInstance_->GetDialogueData(RowNum);
 
 		if (Data == nullptr)
 		{
@@ -110,7 +110,7 @@ void ANpcOperator::BeginPlay()
 		}
 	}
 
-	WarInstance_->onViewWidget.AddUObject(this, &ANpcOperator::ViewWidget);
+	warInstance_->onViewWidget.AddUObject(this, &ANpcOperator::ViewWidget);
 }
 
 void ANpcOperator::Tick(float DeltaTime)
@@ -137,7 +137,7 @@ void ANpcOperator::DialogueCreate()
 		return;
 	}
 
-	if (WarInstance_ == nullptr)
+	if (warInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
@@ -202,11 +202,11 @@ void ANpcOperator::ControllPlayerEffect()
 {
 	if (currentLineID_ == 1)
 	{
-		WarInstance_->ActiveFlashEffect();
+		warInstance_->ActiveFlashEffect();
 	}
 	else if (currentLineID_ == 2)
 	{
-		WarInstance_->ActiveLimitEffect();
+		warInstance_->ActiveLimitEffect();
 	}
 
 	if (--remainNum_ < 0)

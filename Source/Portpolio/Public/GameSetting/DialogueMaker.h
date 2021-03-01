@@ -13,15 +13,22 @@ class PORTPOLIO_API ADialogueMaker : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ADialogueMaker();
 
+	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+		class UWidgetComponent* dialogueWidgetClass_;
+
+	void Test();
+
+	int32 asxd;
+	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY()
+		class UAIDeskInteractionWidget* dialougeWidget_;
 
 };
