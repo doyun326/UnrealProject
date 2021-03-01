@@ -122,10 +122,6 @@ void ANpcOperator::Tick(float DeltaTime)
 
 void ANpcOperator::ViewWidget()
 {
-	/*if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
-	{
-		DialogueCreate();
-	}*/
 	DialogueCreate();
 }
 
@@ -152,6 +148,12 @@ void ANpcOperator::DialogueCreate()
 		}
 	}
 
+	if (dialougeTexts_.Num() == 0)
+	{
+		ABLOG(Error, TEXT("dialogueTexts_ Zero"));
+		return;
+	}
+
 	dialougeWidget_->SetDialogueText(dialougeTexts_);
 	rowNum_++;
 
@@ -161,7 +163,7 @@ void ANpcOperator::DialogueCreate()
 		return;
 	}
 
-	if (currentLineID_ == 1)
+	if (currentLineID_ == 1 && UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
 	{
 		GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
 	}

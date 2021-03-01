@@ -21,6 +21,7 @@ AStage02Npc::AStage02Npc()
 	}*/
 
 	npcID_ = 3;
+	currentLineID_ = 1;
 }
 
 void AStage02Npc::BeginPlay()
@@ -33,22 +34,6 @@ void AStage02Npc::BeginPlay()
 	{
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
 		return;
-	}
-
-	for (int RowNum = 1; RowNum <= warInstance_->GetDialogueRowNums(); RowNum++)
-	{
-		struct FNpcDialogueData* Data = warInstance_->GetDialogueData(RowNum);
-
-		if (Data == nullptr)
-		{
-			ABLOG(Error, TEXT("Nullptr : NpcDialogueData"));
-			return;
-		}
-
-		if (Data->NpcID == npcID_)
-		{
-			dialogueDatas_.Add(Data);
-		}
 	}
 
 	warInstance_->onViewWidget02.AddUObject(this, &AStage02Npc::ViewWidget);
