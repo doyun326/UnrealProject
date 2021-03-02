@@ -257,7 +257,7 @@ float AADEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		enemyStat_->SetDamage(FinalDamage);
 		isHiting_ = true;
 		enemyController_->SetIsHit(isHiting_);
-		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AADEnemyCharacter::NoDamageTime, 1.5f, false);
+		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AADEnemyCharacter::NoDamageTime, NODAMAGETIME, false);
 
 		ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
 

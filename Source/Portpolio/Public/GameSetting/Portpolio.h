@@ -11,8 +11,10 @@ DECLARE_LOG_CATEGORY_EXTERN(Portpolio, Log, All);
 #define ABLOG(Verbosity, Format, ...) UE_LOG(Portpolio, Verbosity, TEXT("%s %s"), *ABLOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
 #define ABCHECK(Expr, ...) { if (!(Expr)) { ABLOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__; } }
 
+//수치 관련
 #define SPRINT_SPEED 1200.0f
 #define WALK_SPEED 700.0f
+#define NODAMAGETIME 1.0f
 
 //그립 종류
 #define REST_GRIPSOCKET		"RestGripPoint"

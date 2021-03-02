@@ -178,7 +178,7 @@ float AEnemyMinionCharacter::TakeDamage(float DamageAmount, FDamageEvent const& 
 		enemyStat_->SetDamage(FinalDamage);
 		isHiting_ = true;
 		enemyController_->SetIsHit(isHiting_);
-		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AEnemyMinionCharacter::NoDamageTime, 1.5f, false);
+		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AEnemyMinionCharacter::NoDamageTime, NODAMAGETIME, false);
 		isDamageTime_ = false;
 	}
 	else
