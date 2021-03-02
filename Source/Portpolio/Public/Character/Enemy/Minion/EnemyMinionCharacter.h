@@ -41,6 +41,8 @@ public:
 
 	void	EnemyDestroy();
 
+	UPROPERTY()
+		class AMinionAIController* enemyController_;
 	UPROPERTY(EditAnywhere, Category = "UI")
 		class UWidgetComponent*			HPBarWidget_;
 	UPROPERTY(VisibleAnywhere, Category = "Stat")

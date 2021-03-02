@@ -20,6 +20,9 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	void	SetIsHit(bool _isHit);
+	bool	GetIsHit();
+
 	static const FName	homePosKey_;
 	static const FName	patrolPosKey_;
 	static const FName	targetKey_;
@@ -34,4 +37,5 @@ private:
 	UPROPERTY()
 		class UBlackboardData* minionBB_;
 
+	bool	isHit_;
 };

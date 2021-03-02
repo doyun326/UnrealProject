@@ -38,14 +38,14 @@ AStageSection::AStageSection()
 	}
 	celingMeshs_->SetupAttachment(RootComponent);
 	celingMeshs_->SetRelativeLocation(FVector(0.0f, -1900.0f, 300.0f));
-	celingMeshs_->SetRelativeRotation(FRotator(00.0f, 00.0f, 90.0f));
+	celingMeshs_->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 	celingMeshs_->SetRelativeScale3D(FVector(8.0f, 1.0f, 8.0f));
 
 	//Trigger Setting (startTrigger)
 	startTrigger_ = CreateDefaultSubobject<UBoxComponent>(TEXT("STARTTRIGGER"));
 	startTrigger_->SetBoxExtent(FVector(100.0f, 100.0f, 100.0f));	//Trigger Box Extent(ºÎÇÇ)
 	startTrigger_->SetupAttachment(RootComponent);
-	startTrigger_->SetRelativeLocation(FVector(-50.0f, 0.0f, 10.0f)); //Trigger Box Location
+	startTrigger_->SetRelativeLocation(FVector(-90.0f, 0.0f, 10.0f)); //Trigger Box Location
 	startTrigger_->SetCollisionProfileName(TEXT("MapTrigger"));
 
 	startTrigger_->OnComponentBeginOverlap.AddDynamic(this, &AStageSection::OnTriggerBeginOverlap);

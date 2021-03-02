@@ -27,9 +27,26 @@ void UBTService_MinionDetect::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 		return;
 	}
 
+	auto Controller = Cast<AMinionAIController>(ControllingPawn->GetController());
+
+	if (Controller == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : MinionAIController"));
+		return;
+	}
+
 	UWorld* World = ControllingPawn->GetWorld();
 	FVector Center = ControllingPawn->GetActorLocation();
-	float	DetectRadius = DETECT_RADIUS;
+	float	DetectRadius;
+
+	if (Controller->GetIsHit())
+	{
+		DetectRadius = 4000.0f;
+	}
+	else
+	{
+		DetectRadius = DETECT_RADIUS;
+	}
 
 	if (World == nullptr)
 	{

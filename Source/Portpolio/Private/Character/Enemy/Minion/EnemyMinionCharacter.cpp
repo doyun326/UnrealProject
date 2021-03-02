@@ -78,6 +78,13 @@ void AEnemyMinionCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	minionAnim_ = Cast<UMinionAnimInstance>(GetMesh()->GetAnimInstance());
+	enemyController_ = Cast<AMinionAIController>(GetController());
+
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController"));
+		return;
+	}
 
 	if (minionAnim_ == nullptr)
 	{
@@ -160,11 +167,17 @@ float AEnemyMinionCharacter::TakeDamage(float DamageAmount, FDamageEvent const& 
 		return 0.0f;
 	}
 
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController_"));
+		return 0.0f;
+	}
+
 	if (isDamageTime_)
 	{
 		enemyStat_->SetDamage(FinalDamage);
 		isHiting_ = true;
-		//enemyController_->SetIsHit(isHiting_);
+		enemyController_->SetIsHit(isHiting_);
 		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AEnemyMinionCharacter::NoDamageTime, 1.5f, false);
 		isDamageTime_ = false;
 	}

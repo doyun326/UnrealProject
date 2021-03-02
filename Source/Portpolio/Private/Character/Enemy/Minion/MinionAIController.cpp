@@ -54,3 +54,13 @@ void AMinionAIController::OnPossess(APawn* InPawn)
 		}
 	}
 }
+
+void AMinionAIController::SetIsHit(bool _isHit)
+{
+	isHit_ = _isHit;
+}
+
+bool AMinionAIController::GetIsHit()
+{
+	return isHit_;
+}
