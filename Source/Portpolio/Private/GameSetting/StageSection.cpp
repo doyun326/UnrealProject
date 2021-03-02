@@ -2,6 +2,8 @@
 
 #include "../Public/GameSetting/StageSection.h"
 #include "../Public/GameSetting/WarGameMode.h"
+#include "../Public/Character/Enemy/Minion/MinionAIController.h"
+#include "../Public/Character/Enemy/Minion/EnemyMinionCharacter.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -86,6 +88,7 @@ AStageSection::AStageSection()
 		NewGateTrigger->OnComponentBeginOverlap.AddDynamic(this, &AStageSection::OnGateTriggerBeginOverlap);
 		NewGateTrigger->ComponentTags.Add(GateSocket);
 	}
+	enemySpawnTime_ = 1.0f;
 	bNoBattle_ = false;
 }
 
@@ -128,6 +131,7 @@ void AStageSection::SetState(ESectionState _newState)
 			GateTrigger->SetCollisionProfileName(TEXT("NoCollision"));
 		}
 		OperatorGates(false);
+		GetWorld()->GetTimerManager().SetTimer(spawnNpcTimerHandle_, FTimerDelegate::CreateUObject(this, &AStageSection::OnNpcSpawn), enemySpawnTime_, false);
 		ABLOG(Error, TEXT("ESectionState::BATTLE"));
 		break;
 	}
@@ -150,7 +154,7 @@ void AStageSection::SetState(ESectionState _newState)
 
 #ifdef DRAW_DEBUGHELPER
 	//StartTrigger - Center, Extent
-	DrawDebugBox(GetWorld(), FVector(-900.0f, 0.0f, 20.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Red, true, -1, 0, 10);
+	//DrawDebugBox(GetWorld(), FVector(-900.0f, 0.0f, 20.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Red, true, -1, 0, 10);
 #endif //DRAW_DEBUGHELPER
 }
 
@@ -174,10 +178,8 @@ void AStageSection::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedCompone
 {
 	if (currentState_ == ESectionState::READY)
 	{
-		//SetState(ESectionState::BATTLE);
-		SetState(ESectionState::COMPLATE);
+		SetState(ESectionState::BATTLE);
 		ABLOG(Error, TEXT("Overlap On"));
-
 	}
 }
 
@@ -225,4 +227,44 @@ void AStageSection::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 		ABLOG(Error, TEXT("New Section Area is not empty"));
 	}
 	ABLOG(Error, TEXT("Overlap On"));
+}
+
+void AStageSection::OnNpcSpawn()
+{
+	GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
+	auto KeyNpc = GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
+
+	if (KeyNpc != nullptr)
+	{
+		KeyNpc->OnDestroyed.AddDynamic(this, &AStageSection::OnKeyNpcDestroyed);
+	}
+}
+
+void AStageSection::OnKeyNpcDestroyed(AActor* _destroyedActor)
+{
+	auto MinionCharacter = Cast<AEnemyMinionCharacter>(_destroyedActor);
+
+	if (MinionCharacter == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : MinionCharacter"));
+		return;
+	}
+
+	auto MinionController = Cast<AEnemyMinionCharacter>(MinionCharacter->LastHitBy);
+
+	if (MinionController == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : MinionController"));
+		return;
+	}
+
+	auto WarGameMode = Cast<AWarGameMode>(GetWorld()->GetAuthGameMode());
+
+	if (WarGameMode == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarGameMode"));
+		return;
+	}
+
+	SetState(ESectionState::COMPLATE);
 }
