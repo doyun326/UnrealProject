@@ -45,7 +45,7 @@ AStageSection::AStageSection()
 	startTrigger_ = CreateDefaultSubobject<UBoxComponent>(TEXT("STARTTRIGGER"));
 	startTrigger_->SetBoxExtent(FVector(100.0f, 100.0f, 100.0f));	//Trigger Box Extent(ºÎÇÇ)
 	startTrigger_->SetupAttachment(RootComponent);
-	startTrigger_->SetRelativeLocation(FVector(-90.0f, 0.0f, 10.0f)); //Trigger Box Location
+	startTrigger_->SetRelativeLocation(FVector(-550.0f, 0.0f, 10.0f)); //Trigger Box Location
 	startTrigger_->SetCollisionProfileName(TEXT("MapTrigger"));
 
 	startTrigger_->OnComponentBeginOverlap.AddDynamic(this, &AStageSection::OnTriggerBeginOverlap);
@@ -147,6 +147,11 @@ void AStageSection::SetState(ESectionState _newState)
 	}
 	}
 	//currentState_ = _newState;
+
+#ifdef DRAW_DEBUGHELPER
+	//StartTrigger - Center, Extent
+	DrawDebugBox(GetWorld(), FVector(-900.0f, 0.0f, 20.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Red, true, -1, 0, 10);
+#endif //DRAW_DEBUGHELPER
 }
 
 void AStageSection::OperatorGates(bool _bOpen)
