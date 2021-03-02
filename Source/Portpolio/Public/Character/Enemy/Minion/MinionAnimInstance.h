@@ -20,6 +20,8 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	void	SetDeadAnim();
+
 private:
 	UFUNCTION()
 		void	AnimNotify_AttackFirEnd();
@@ -29,6 +31,8 @@ private:
 		void	AnimNotify_AttackThiEnd();
 	UFUNCTION()
 		void	AnimNotify_HitEnd();
+	UFUNCTION()
+		void	AnimNotify_DieEnd();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true)) 
 		float	curSpeed_;

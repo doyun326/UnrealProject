@@ -137,7 +137,7 @@ void AEnemyMinionCharacter::PostInitializeComponents()
 		enemyStat_->onHpZero_.AddLambda([this]()->void
 			{
 				ABLOG(Warning, TEXT("Character Die"));
-				//minionAnim_->SetDeadAnim();
+				minionAnim_->SetDeadAnim();
 				SetActorEnableCollision(false);
 			});
 	}

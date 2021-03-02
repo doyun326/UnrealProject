@@ -231,7 +231,7 @@ void AStageSection::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 
 void AStageSection::OnNpcSpawn()
 {
-	GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
+	//GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
 	auto KeyNpc = GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
 
 	if (KeyNpc != nullptr)
@@ -242,6 +242,7 @@ void AStageSection::OnNpcSpawn()
 
 void AStageSection::OnKeyNpcDestroyed(AActor* _destroyedActor)
 {
+	ABLOG_S(Error);
 	auto MinionCharacter = Cast<AEnemyMinionCharacter>(_destroyedActor);
 
 	if (MinionCharacter == nullptr)

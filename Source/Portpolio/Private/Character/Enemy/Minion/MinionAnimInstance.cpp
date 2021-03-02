@@ -66,3 +66,19 @@ void UMinionAnimInstance::AnimNotify_HitEnd()
 	ABLOG(Warning, TEXT("Minion Anim Hit"));
 	character_->onHit_.Broadcast(false);
 }
+
+void UMinionAnimInstance::SetDeadAnim()
+{
+	isDead_ = true;
+}
+
+void UMinionAnimInstance::AnimNotify_DieEnd()
+{
+	auto Pawn = TryGetPawnOwner();
+	auto Character = Cast<AEnemyMinionCharacter>(Pawn);
+
+	if (::IsValid(Pawn) && Character != nullptr)
+	{
+		Character->EnemyDestroy();
+	}
+}
