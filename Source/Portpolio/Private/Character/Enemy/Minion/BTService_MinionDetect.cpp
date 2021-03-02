@@ -7,7 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DrawDebugHelpers.h"
 
-#define DETECT_RADIUS 300.0f
+#define DETECT_RADIUS 600.0f
 
 UBTService_MinionDetect::UBTService_MinionDetect()
 {

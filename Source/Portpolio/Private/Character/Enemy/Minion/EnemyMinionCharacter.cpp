@@ -70,6 +70,7 @@ AEnemyMinionCharacter::AEnemyMinionCharacter()
 	isSecondAttack_ = false;
 	isThirdAttack_ = false;
 	isHiting_ = false;
+	isDamageTime_ = true;
 }
 
 void AEnemyMinionCharacter::BeginPlay()
@@ -152,16 +153,32 @@ float AEnemyMinionCharacter::TakeDamage(float DamageAmount, FDamageEvent const& 
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	ABLOG(Warning, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+
 	if (enemyStat_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : enemtStat_"));
 		return 0.0f;
 	}
 
-	enemyStat_->SetDamage(FinalDamage);
-	isHiting_ = true;
+	if (isDamageTime_)
+	{
+		enemyStat_->SetDamage(FinalDamage);
+		isHiting_ = true;
+		//enemyController_->SetIsHit(isHiting_);
+		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &AEnemyMinionCharacter::NoDamageTime, 1.5f, false);
+		isDamageTime_ = false;
+	}
+	else
+	{
+		FinalDamage = 0.0f;
+	}
 
 	return FinalDamage;
+}
+
+void AEnemyMinionCharacter::NoDamageTime()
+{
+	isDamageTime_ = true;
 }
 
 void AEnemyMinionCharacter::ChangeFirstAttack(bool _attack)

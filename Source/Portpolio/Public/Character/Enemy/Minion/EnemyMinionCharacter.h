@@ -55,6 +55,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	void	NoDamageTime();
+	
 	UPROPERTY()
 		class UMinionAnimInstance*	minionAnim_;
 	UPROPERTY()
@@ -64,4 +66,7 @@ private:
 	bool	isSecondAttack_;
 	bool	isThirdAttack_;
 	bool	isHiting_;
+	bool	isDamageTime_;
+
+	FTimerHandle	noDamageTimeHandler_;
 };
