@@ -144,8 +144,7 @@ void AStageSection::SetState(ESectionState _newState)
 		{
 			GateTrigger->SetCollisionProfileName(TEXT("MapTrigger"));
 		}
-		//OperatorGates(true);
-		OperatorGates(false);
+		OperatorGates(true);
 		ABLOG(Error, TEXT("ESectionState::COMPLATE"));
 		break;
 	}
@@ -231,18 +230,20 @@ void AStageSection::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 
 void AStageSection::OnNpcSpawn()
 {
-	//GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
-	auto KeyNpc = GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
-
-	if (KeyNpc != nullptr)
+	for (int32 i = 0; i < 3; i++)
 	{
-		KeyNpc->OnDestroyed.AddDynamic(this, &AStageSection::OnKeyNpcDestroyed);
+		auto KeyNpc = GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
+		minionArray_.Add(KeyNpc);
+
+		if (KeyNpc != nullptr)
+		{
+			KeyNpc->OnDestroyed.AddDynamic(this, &AStageSection::OnKeyNpcDestroyed);
+		}
 	}
 }
 
 void AStageSection::OnKeyNpcDestroyed(AActor* _destroyedActor)
 {
-	ABLOG_S(Error);
 	auto MinionCharacter = Cast<AEnemyMinionCharacter>(_destroyedActor);
 
 	if (MinionCharacter == nullptr)
@@ -250,22 +251,12 @@ void AStageSection::OnKeyNpcDestroyed(AActor* _destroyedActor)
 		ABLOG(Error, TEXT("Nullptr : MinionCharacter"));
 		return;
 	}
-
-	auto MinionController = Cast<AEnemyMinionCharacter>(MinionCharacter->LastHitBy);
-
-	if (MinionController == nullptr)
+	if (minionArray_.Num() != 0)
 	{
-		ABLOG(Error, TEXT("Nullptr : MinionController"));
-		return;
+		minionArray_.Pop(true);
 	}
-
-	auto WarGameMode = Cast<AWarGameMode>(GetWorld()->GetAuthGameMode());
-
-	if (WarGameMode == nullptr)
+	if (minionArray_.Num() == 0)
 	{
-		ABLOG(Error, TEXT("Nullptr : WarGameMode"));
-		return;
+		SetState(ESectionState::COMPLATE);
 	}
-
-	SetState(ESectionState::COMPLATE);
 }

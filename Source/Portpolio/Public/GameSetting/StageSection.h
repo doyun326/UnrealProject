@@ -54,6 +54,8 @@ private:
 		bool					bNoBattle_;
 	UPROPERTY(EditAnywhere, Category = Spawn, meta = (AllowPrivateAccess = true))
 		float					enemySpawnTime_;
+	UPROPERTY()
+		TArray<class AEnemyMinionCharacter*> minionArray_;
 		
 	ESectionState currentState_ = ESectionState::READY;
 	FTimerHandle	spawnNpcTimerHandle_;
