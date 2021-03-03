@@ -29,6 +29,8 @@ private:
 		void	OnBeginStartTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
 		void	OnLevelUpTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+		void	OnNextStageTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY()
 		class UWarGameInstance* warInstance_;
@@ -36,7 +38,10 @@ private:
 		UBoxComponent*			beginStartTrigger_;
 	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
 		UBoxComponent*			stage02LevelUpTrigger_;
+	UPROPERTY(VisibleAnywhere, Category = "Trigger", meta = (AllowPrivateAccess = true))
+		UBoxComponent*			nextStageTrigger_;
 
 	bool checkStart_;
 	bool checkLevelUp_;
+	bool checkNextStage_;
 };

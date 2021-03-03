@@ -28,8 +28,17 @@ AStage02LevelScript::AStage02LevelScript()
 	stage02LevelUpTrigger_->SetCollisionProfileName(TEXT("MapTrigger"));
 	stage02LevelUpTrigger_->OnComponentBeginOverlap.AddDynamic(this, &AStage02LevelScript::OnLevelUpTriggerBeginOverlap);
 
+	//TriggerSetting - nextStageTrigger_
+	nextStageTrigger_ = CreateDefaultSubobject<UBoxComponent>(TEXT("NextStageTrigger"));
+	nextStageTrigger_->SetBoxExtent(FVector(100.0f, 100.0f, 100.0f));	//Trigger Box Extent(ºÎÇÇ)
+	nextStageTrigger_->SetupAttachment(RootComponent);
+	nextStageTrigger_->SetRelativeLocation(FVector(8938.0f, 30.0f, 89.0f)); //Trigger Box Location
+	nextStageTrigger_->SetCollisionProfileName(TEXT("MapTrigger"));
+	nextStageTrigger_->OnComponentBeginOverlap.AddDynamic(this, &AStage02LevelScript::OnNextStageTriggerBeginOverlap);
+
 	checkStart_ = false;
 	checkLevelUp_ = false;
+	checkNextStage_ = false;
 }
 
 void AStage02LevelScript::BeginPlay()
@@ -47,6 +56,8 @@ void AStage02LevelScript::BeginPlay()
 	DrawDebugBox(GetWorld(), FVector(-4847.0f, -26.0f, 89.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Red, true, -1, 0, 10);
 	//stage02LevelUpTrigger_
 	DrawDebugBox(GetWorld(), FVector(-900.0f, 550.0f, 89.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Blue, true, -1, 0, 10);
+	//nextStageTrigger_
+	DrawDebugBox(GetWorld(), FVector(8938.0f, 30.0f, 89.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Blue, true, -1, 0, 10);
 #endif //DRAW_DEBUGHELPER
 }
 
@@ -76,4 +87,10 @@ void AStage02LevelScript::OnLevelUpTriggerBeginOverlap(UPrimitiveComponent* Over
 		warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
 		checkLevelUp_ = true;
 	}
+}
+
+void AStage02LevelScript::OnNextStageTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ABLOG_S(Error);
+	UGameplayStatics::OpenLevel(this, FName("Stage_03"));
 }
