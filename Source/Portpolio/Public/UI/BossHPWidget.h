@@ -14,5 +14,18 @@ UCLASS()
 class PORTPOLIO_API UBossHPWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+public:
+	void	BindCharacterStat(class UBossStatComponent* _newCharacterStat);
+
+protected:
+	virtual void NativeConstruct() override;
+
+	void	UpdateHpWidget();
+
+private:
+	TWeakObjectPtr<class UBossStatComponent> currentCharacterStat_;
+
+	UPROPERTY()
+		class UProgressBar* hpProgressBar_;
 };
