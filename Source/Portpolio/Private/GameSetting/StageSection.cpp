@@ -230,7 +230,7 @@ void AStageSection::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 
 void AStageSection::OnNpcSpawn()
 {
-	for (int32 i = 0; i < 3; i++)
+	/*for (int32 i = 0; i < 3; i++)
 	{
 		auto KeyNpc = GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
 		minionArray_.Add(KeyNpc);
@@ -239,6 +239,12 @@ void AStageSection::OnNpcSpawn()
 		{
 			KeyNpc->OnDestroyed.AddDynamic(this, &AStageSection::OnKeyNpcDestroyed);
 		}
+	}*/
+	auto KeyNpc = GetWorld()->SpawnActor<AEnemyMinionCharacter>(GetActorLocation() + FVector::UpVector * 88.0f, FRotator::ZeroRotator);
+
+	if (KeyNpc != nullptr)
+	{
+		KeyNpc->OnDestroyed.AddDynamic(this, &AStageSection::OnKeyNpcDestroyed);
 	}
 }
 
@@ -251,12 +257,13 @@ void AStageSection::OnKeyNpcDestroyed(AActor* _destroyedActor)
 		ABLOG(Error, TEXT("Nullptr : MinionCharacter"));
 		return;
 	}
-	if (minionArray_.Num() != 0)
+	/*if (minionArray_.Num() != 0)
 	{
 		minionArray_.Pop(true);
 	}
 	if (minionArray_.Num() == 0)
 	{
 		SetState(ESectionState::COMPLATE);
-	}
+	}*/
+	SetState(ESectionState::COMPLATE);
 }

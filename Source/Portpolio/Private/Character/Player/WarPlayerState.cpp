@@ -99,7 +99,14 @@ int32 AWarPlayerState::GetCharacterLevel() const
 
 int32 AWarPlayerState::GetLimitLevel()
 {
-	characterLevel_ += 10;
+	if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_02")
+	{
+		characterLevel_ += 15;
+	}
+	else
+	{
+		characterLevel_ += 10;
+	}
 
 	return characterLevel_;
 }

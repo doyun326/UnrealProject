@@ -44,6 +44,7 @@ void UPlayerStatComponent::SetNewLevel(int32 _newLevel)
 
 	currentStatData_ = WarGameInstance->GetPlayerData(_newLevel);
 
+	ABLOG(Error, TEXT("%d"), _newLevel);
 	if (currentStatData_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : currentStatData"));

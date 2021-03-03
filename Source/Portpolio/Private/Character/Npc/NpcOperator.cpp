@@ -167,6 +167,10 @@ void ANpcOperator::DialogueCreate()
 	{
 		GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
 	}
+	if (currentLineID_ == 2 && UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_02")
+	{
+		GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
+	}
 	GetWorld()->GetTimerManager().SetTimer(viewTimeHandler_, this, &ANpcOperator::ChangeDialogue, 2.5f, true);
 }
 
@@ -186,7 +190,7 @@ void ANpcOperator::ChangeDialogue()
 
 		if (currentLineID_ == 2 && rowNum_ == 3)
 		{
-			GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
+			GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 1.0f, false);
 		}
 	}
 	else if (dialougeTexts_.Num() - 1 == rowNum_)
@@ -210,7 +214,6 @@ void ANpcOperator::ControllPlayerEffect()
 	{
 		warInstance_->ActiveLimitEffect();
 	}
-
 	if (--remainNum_ < 0)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(effectTimeHandler_);

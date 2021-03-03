@@ -20,7 +20,16 @@ AStage02LevelScript::AStage02LevelScript()
 	beginStartTrigger_->SetCollisionProfileName(TEXT("MapTrigger"));
 	beginStartTrigger_->OnComponentBeginOverlap.AddDynamic(this, &AStage02LevelScript::OnBeginStartTriggerBeginOverlap);
 
+	//TriggerSetting - stage02LevelUpTrigger_
+	stage02LevelUpTrigger_ = CreateDefaultSubobject<UBoxComponent>(TEXT("LevelUpTrigger"));
+	stage02LevelUpTrigger_->SetBoxExtent(FVector(100.0f, 100.0f, 100.0f));	//Trigger Box Extent(ºÎÇÇ)
+	stage02LevelUpTrigger_->SetupAttachment(RootComponent);
+	stage02LevelUpTrigger_->SetRelativeLocation(FVector(-900.0f, 550.0f, 89.0f)); //Trigger Box Location
+	stage02LevelUpTrigger_->SetCollisionProfileName(TEXT("MapTrigger"));
+	stage02LevelUpTrigger_->OnComponentBeginOverlap.AddDynamic(this, &AStage02LevelScript::OnLevelUpTriggerBeginOverlap);
+
 	checkStart_ = false;
+	checkLevelUp_ = false;
 }
 
 void AStage02LevelScript::BeginPlay()
@@ -36,12 +45,13 @@ void AStage02LevelScript::BeginPlay()
 #ifdef DRAW_DEBUGHELPER
 	//WalkTrigger - Center, Extent
 	DrawDebugBox(GetWorld(), FVector(-4847.0f, -26.0f, 89.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Red, true, -1, 0, 10);
+	//stage02LevelUpTrigger_
+	DrawDebugBox(GetWorld(), FVector(-900.0f, 550.0f, 89.0f), FVector(100.0f, 100.0f, 100.0f), FColor::Blue, true, -1, 0, 10);
 #endif //DRAW_DEBUGHELPER
 }
 
 void AStage02LevelScript::OnBeginStartTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ABLOG_S(Error);
 	if (warInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
@@ -51,5 +61,19 @@ void AStage02LevelScript::OnBeginStartTriggerBeginOverlap(UPrimitiveComponent* O
 	{
 		warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
 		checkStart_ = true;
+	}
+}
+
+void AStage02LevelScript::OnLevelUpTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (warInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarInstance"));
+		return;
+	}
+	if (!checkLevelUp_)
+	{
+		warInstance_->StageViewWidgetStart(UGameplayStatics::GetCurrentLevelName(GetWorld()));
+		checkLevelUp_ = true;
 	}
 }
