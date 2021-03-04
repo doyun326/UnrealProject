@@ -20,6 +20,11 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	void	StopAI();
+	void	EnemyKill(class ABossCharacter* _killedNpc) const;
+	void	SetIsHit(bool _isHit);
+	bool	GetIsHit();
+
 	static const FName	homePosKey_;
 	static const FName	patrolPosKey_;
 	static const FName	targetKey_;
@@ -29,6 +34,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY()
+		class UWarGameInstance*			warGameInstance_;
 	UPROPERTY()
 		class UBehaviorTree*			bossBT_;
 	UPROPERTY()
@@ -40,4 +47,6 @@ private:
 
 	class UBlackboardComponent*	blackboard_;
 	class UAISenseConfig_Sight* sightConfig_;
+
+	bool	isHit_;
 };

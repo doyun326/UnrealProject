@@ -95,7 +95,7 @@ void ABossCharacter::BeginPlay()
 
 	if (enemyController_ == nullptr)
 	{
-		ABLOG(Error, "Nullptr : EnemyController");
+		ABLOG(Error, TEXT("Nullptr : EnemyController"));
 		return;
 	}
 
@@ -198,15 +198,15 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 	{
 		enemyStat_->SetDamage(FinalDamage);
 		isHiting_ = true;
-		//enemyController_->SetIsHit();
+		enemyController_->SetIsHit(isHiting_);
 		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &ABossCharacter::NoDamageTime, NODAMAGETIME, false);
 
 		ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
 
 		if (currentState_ == ECharacterState::DEAD)
 		{
-			enemyController_->EnemyKill(this);
-			enemyController_->StopAI();
+			//enemyController_->EnemyKill(this);
+			//enemyController_->StopAI();
 		}
 
 		isDamageTime_ = false;

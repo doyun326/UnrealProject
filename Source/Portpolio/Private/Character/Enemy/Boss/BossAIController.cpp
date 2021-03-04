@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "../Public/Character/Enemy/Boss/BossAIController.h"
+#include "../Public/GameSetting/WarGameInstance.h"
+#include "../Public/Character/Enemy/Boss/BossCharacter.h"
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
@@ -39,6 +41,13 @@ void ABossAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	warGameInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	if (warGameInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : WarGameInstance"));
+		return;
+	}
 }
 
 void ABossAIController::OnPossess(APawn* InPawn)
@@ -53,4 +62,34 @@ void ABossAIController::OnPossess(APawn* InPawn)
 			ABLOG(Warning, TEXT("BossAIController couldn't BehaviorTree!"));
 		}
 	}
+}
+
+void ABossAIController::StopAI()
+{
+	auto BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent);
+
+	if (BehaviorTreeComponent != nullptr)
+	{
+		BehaviorTreeComponent->StopTree(EBTStopMode::Safe);
+	}
+}
+
+void ABossAIController::EnemyKill(class ABossCharacter* _killedNpc) const
+{
+	if (warGameInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warGameInstance_"));
+		return;
+	}
+	//warGameInstance_->SetSaveExp(_killedNpc->GetExp());
+}
+
+void ABossAIController::SetIsHit(bool _isHit)
+{
+	isHit_ = _isHit;
+}
+
+bool ABossAIController::GetIsHit()
+{
+	return isHit_;
 }
