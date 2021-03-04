@@ -95,7 +95,7 @@ void AWarPlayerController::BeginPlay()
 
 	if (warInstance_ == nullptr)
 	{
-		ABLOG(Error, TEXT("asdasd"));
+		ABLOG(Error, TEXT("Nullptr : WarInstance_"));
 		return;
 	}
 	warInstance_->onChangeExp.AddUObject(this, &AWarPlayerController::UpdateExp);

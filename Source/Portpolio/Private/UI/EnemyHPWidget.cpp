@@ -15,14 +15,6 @@ void UEnemyHPWidget::BindCharacterStat(class UADEnemyStatComponent* _newCharacte
 
 	currentCharacterStat_ = _newCharacterStat;
 	_newCharacterStat->onHpChanged_.AddUObject(this, &UEnemyHPWidget::UpdateHpWidget);
-	/*_newCharacterStat->onHpChanged_.AddLambda([this]()->void
-		{
-			if (currentCharacterStat_.IsValid())
-			{
-				ABLOG(Warning, TEXT("HPRatio : %f"), currentCharacterStat_->GetHpRatio());
-			}
-		}
-	);*/
 }
 
 void UEnemyHPWidget::NativeConstruct()

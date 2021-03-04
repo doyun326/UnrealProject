@@ -38,6 +38,14 @@ public:
 	bool	GetSecondAttacking();
 	bool	GetThirdAttacking();
 	bool	GetIsHiting();
+	void	BossDestroy();
+
+	UPROPERTY()
+		class ABossAIController* enemyController_;
+	UPROPERTY(EditAnywhere, Category = "UI")
+		class UWidgetComponent* HPBarWidget_;
+	UPROPERTY(VisibleAnywhere, Category = "Stat")
+		class UBossStatComponent* enemyStat_;
 
 	FOnFistAttackDelegate	onFirstAttack_;
 	FOnFistAttackDelegate	onSecondAttack_;
@@ -48,11 +56,18 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	void	NoDamageTime();
+
 	UPROPERTY()
 		class UBossAnimInstance* bossAnim_;
+	UPROPERTY()
+		class UBossHPWidget*	bossHpWidget_;
 
 	bool	isFirstAttack_;
 	bool	isSecondAttack_;
 	bool	isThirdAttack_;
 	bool	isHiting_;
+	bool	isDamageTime_;
+
+	FTimerHandle	noDamageTimeHandler_;
 };

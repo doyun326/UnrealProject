@@ -3,9 +3,14 @@
 #include "../Public/Character/Enemy/Boss/BossCharacter.h"
 #include "../Public/Character/Enemy/Boss/BossAIController.h"
 #include "../Public/Character/Enemy/Boss/BossAnimInstance.h"
+#include "../Public/Character/Enemy/Boss/BossStatComponent.h"
+#include "../Public/UI/BossHPWidget.h"
 
-#define BOSSMESH_PATH	"/Game/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera.Khaimera"
-#define BOSSANIM_PATH	"/Game/My/Blueprints/Anim/Enemy/Boss/BossAnim_BP.BossAnim_BP_C"
+#include "Components/WidgetComponent.h"
+
+#define BOSSMESH_PATH		"/Game/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera.Khaimera"
+#define BOSSANIM_PATH		"/Game/My/Blueprints/Anim/Enemy/Boss/BossAnim_BP.BossAnim_BP_C"
+#define BOSSHPWIDGET_PATH	"/Game/My/Blueprints/UI/BossStausBar_UI.BossStausBar_UI_C"
 
 #define MAX_SPEED		500.0f
 
@@ -37,10 +42,30 @@ ABossCharacter::ABossCharacter()
 		GetMesh()->SetAnimInstanceClass(ANIM_PATH.Class);
 	}
 
+	//EnemyStat 설정
+	enemyStat_ = CreateDefaultSubobject<UBossStatComponent>(TEXT("BossStat"));
+
+	if (enemyStat_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemtStat"));
+	}
+
+	//HPBar설정
+	HPBarWidget_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_ENEMYHP(TEXT(BOSSHPWIDGET_PATH));
+
+	if (UI_ENEMYHP.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : UI_ENEMYHP"));
+
+		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
+	}
+
 	isFirstAttack_ = false;
 	isSecondAttack_ = false;
 	isThirdAttack_ = false;
 	isHiting_ = false;
+	isDamageTime_ = true;
 }
 
 void ABossCharacter::BeginPlay()
@@ -52,6 +77,25 @@ void ABossCharacter::BeginPlay()
 	if (bossAnim_ == nullptr)
 	{	
 		ABLOG(Error, TEXT("Nullptr : BossEnemyAnim"));
+		return;
+	}
+
+	if (HPBarWidget_ != nullptr)
+	{
+		bossHpWidget_ = Cast<UBossHPWidget>(HPBarWidget_->GetUserWidgetObject());
+
+		if (bossHpWidget_ != nullptr)
+		{
+			bossHpWidget_->AddToViewport();
+			bossHpWidget_->BindCharacterStat(enemyStat_);
+		}
+	}
+
+	enemyController_ = Cast<ABossAIController>(GetController());
+
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, "Nullptr : EnemyController");
 		return;
 	}
 
@@ -95,7 +139,35 @@ float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageE
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	isHiting_ = true;
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController_"));
+		return 0.0f;
+	}
+
+	if (enemyStat_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemtStat_"));
+		return 0.0f;
+	}
+
+	if (isDamageTime_)
+	{
+		enemyStat_->SetDamage(FinalDamage);
+		isHiting_ = true;
+		//enemyController_->SetIsHit();
+		GetWorld()->GetTimerManager().SetTimer(noDamageTimeHandler_, this, &ABossCharacter::NoDamageTime, NODAMAGETIME, false);
+
+		ABLOG(Error, TEXT("Actor : %s TakeDamage : %f"), *GetName(), FinalDamage);
+
+		if (currentState_ == ECharacterState::DEAD)
+		{
+			enemyController_->EnemyKill(this);
+			enemyController_->StopAI();
+		}
+
+		isDamageTime_ = false;
+	}
 
 	return FinalDamage;
 }
@@ -138,4 +210,14 @@ bool ABossCharacter::GetThirdAttacking()
 bool ABossCharacter::GetIsHiting()
 {
 	return isHiting_;
+}
+
+void ABossCharacter::BossDestroy()
+{
+	Destroy();
+}
+
+void ABossCharacter::NoDamageTime()
+{
+	isDamageTime_ = true;
 }
