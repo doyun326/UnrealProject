@@ -6,11 +6,14 @@
 #include "../Public/Character/Enemy/Boss/BossStatComponent.h"
 #include "../Public/UI/BossHPWidget.h"
 
+#include "Kismet/KismetMathLibrary.h"
+#include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Components/WidgetComponent.h"
 
 #define BOSSMESH_PATH		"/Game/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera.Khaimera"
 #define BOSSANIM_PATH		"/Game/My/Blueprints/Anim/Enemy/Boss/BossAnim_BP.BossAnim_BP_C"
 #define BOSSHPWIDGET_PATH	"/Game/My/Blueprints/UI/BossStausBar_UI.BossStausBar_UI_C"
+#define DIEEFFECT_PATH		"/Game/My/Asset/Niagara/Flash/BossDieSystem.BossDieSystem"
 
 #define MAX_SPEED		500.0f
 
@@ -59,6 +62,15 @@ ABossCharacter::ABossCharacter()
 		ABLOG(Warning, TEXT("Success : UI_ENEMYHP"));
 
 		HPBarWidget_->SetWidgetClass(UI_ENEMYHP.Class);
+	}
+
+	//Flahs System 설정
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> BOSSDIE_EFFECT(TEXT(DIEEFFECT_PATH));
+
+	if (BOSSDIE_EFFECT.Succeeded())
+	{
+		ABLOG(Warning, TEXT("Success : FLASH_EFFECT"));
+		flashEffect_ = BOSSDIE_EFFECT.Object;
 	}
 
 	isFirstAttack_ = false;
@@ -129,6 +141,20 @@ void ABossCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 void ABossCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
+
+	if (enemyStat_ != nullptr)
+	{
+		enemyStat_->onHpZero_.AddLambda([this]()->void 
+			{
+				bossAnim_->SetDeadAnim();
+				SetActorEnableCollision(false);
+			});
+	}
+	else
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyStat"));
+		return;
+	}
 }
 
 void ABossCharacter::PossessedBy(AController* NewController)
@@ -166,7 +192,6 @@ void ABossCharacter::SetEnemyState(ECharacterState _newState)
 		/*-------------해당 내용은 추후 Loading으로 옮길것----------------*/
 		bossHpWidget_->BindCharacterStat(enemyStat_);
 		enemyStat_->SetNewLevel(25);
-		//playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
 		/*--------------------------------------------------------------*/
 
 		enemyController_->SetIsHit(isHiting_);

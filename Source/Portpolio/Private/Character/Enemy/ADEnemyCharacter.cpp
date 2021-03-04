@@ -136,7 +136,6 @@ void AADEnemyCharacter::PostInitializeComponents()
 	{
 		enemyStat_->onHpZero_.AddLambda([this]()->void 
 			{
-				ABLOG(Warning, TEXT("Character Die"));
 				ADAnim_->SetDeadAnim();
 				SetActorEnableCollision(false);
 			});

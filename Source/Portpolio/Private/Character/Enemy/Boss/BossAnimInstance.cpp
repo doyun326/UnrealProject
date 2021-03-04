@@ -84,3 +84,13 @@ void UBossAnimInstance::AnimNotify_HitEnd()
 	}
 	character_->onHit_.Broadcast(false);
 }
+
+void UBossAnimInstance::SetDeadAnim()
+{
+	isDead_ = true;
+}
+
+void UBossAnimInstance::AnimNotify_DieEnd()
+{
+	onDieEnd_.Broadcast();
+}

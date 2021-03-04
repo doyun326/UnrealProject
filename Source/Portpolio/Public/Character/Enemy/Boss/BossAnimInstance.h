@@ -7,6 +7,8 @@
 #include "Animation/AnimInstance.h"
 #include "BossAnimInstance.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnDieEndDelegate)
+
 /**
  * 
  */
@@ -20,6 +22,10 @@ public:
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
+	void	SetDeadAnim();
+
+	FOnDieEndDelegate onDieEnd_;
+
 private:
 	UFUNCTION()
 		void	AnimNotify_AttackFirEnd();
@@ -29,6 +35,8 @@ private:
 		void	AnimNotify_AttackThiEnd();
 	UFUNCTION()
 		void	AnimNotify_HitEnd();
+	UFUNCTION()
+		void	AnimNotify_DieEnd();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AIStat", meta = (AllowPrivateAccess = true))
 		float	curSpeed_;

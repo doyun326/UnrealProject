@@ -61,7 +61,6 @@ void UBossStatComponent::SetHp(float _newHp)
 	{
 		currentHP_ = 0.0f;
 		onHpZero_.Broadcast();
-		ABLOG(Warning, TEXT("Character is Die"));
 	}
 }
 

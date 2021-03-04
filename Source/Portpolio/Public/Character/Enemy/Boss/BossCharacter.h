@@ -43,13 +43,13 @@ public:
 	void	BossDestroy();
 
 	UPROPERTY()
-		class ABossAIController* enemyController_;
+		class ABossAIController*	enemyController_;
 	UPROPERTY(EditAnywhere, Category = "UI")
-		class UWidgetComponent* HPBarWidget_;
+		class UWidgetComponent*		HPBarWidget_;
 	UPROPERTY(VisibleAnywhere, Category = "Stat")
-		class UBossStatComponent* enemyStat_;
+		class UBossStatComponent*	enemyStat_;
 	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
-		ECharacterState			currentState_;
+		ECharacterState				currentState_;
 
 	FOnFistAttackDelegate	onFirstAttack_;
 	FOnFistAttackDelegate	onSecondAttack_;
@@ -66,6 +66,8 @@ private:
 		class UBossAnimInstance* bossAnim_;
 	UPROPERTY()
 		class UBossHPWidget*	bossHpWidget_;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (AllowPrivateAccess = true))
+		class UNiagaraSystem*	flashEffect_;
 
 	bool	isFirstAttack_;
 	bool	isSecondAttack_;
