@@ -75,7 +75,7 @@ void ABossCharacter::BeginPlay()
 	bossAnim_ = Cast<UBossAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (bossAnim_ == nullptr)
-	{	
+	{
 		ABLOG(Error, TEXT("Nullptr : BossEnemyAnim"));
 		return;
 	}
@@ -86,6 +86,7 @@ void ABossCharacter::BeginPlay()
 
 		if (bossHpWidget_ != nullptr)
 		{
+			ABLOG(Warning, TEXT("Success : bossHPWidget"));
 			bossHpWidget_->AddToViewport();
 			bossHpWidget_->BindCharacterStat(enemyStat_);
 		}
@@ -109,6 +110,8 @@ void ABossCharacter::BeginPlay()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
+
+	SetEnemyState(ECharacterState::READY);
 }
 
 void ABossCharacter::Tick(float DeltaTime)
@@ -160,8 +163,13 @@ void ABossCharacter::SetEnemyState(ECharacterState _newState)
 
 	case ECharacterState::READY:
 	{
-		enemyController_->SetIsHit(isHiting_);
+		/*-------------해당 내용은 추후 Loading으로 옮길것----------------*/
+		bossHpWidget_->BindCharacterStat(enemyStat_);
+		enemyStat_->SetNewLevel(25);
+		//playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
+		/*--------------------------------------------------------------*/
 
+		enemyController_->SetIsHit(isHiting_);
 		enemyStat_->onHpZero_.AddLambda([this]() -> void
 			{
 				SetEnemyState(ECharacterState::DEAD);
