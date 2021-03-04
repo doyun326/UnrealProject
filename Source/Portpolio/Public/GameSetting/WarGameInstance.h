@@ -106,6 +106,29 @@ public:
 };
 
 /*
+* BossData(BossData 사용)
+*/
+USTRUCT(BlueprintType)
+struct FBossEnemyData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	FBossEnemyData() :
+		Level(1)
+		, MaxHP(100.0f)
+		, Damage(100.0f)
+	{}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
+		int32	Level;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
+		float	MaxHP;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MinionData")
+		float	Damage;
+};
+
+/*
 * Dialogue Structor(Npc대화용 자막)
 */
 USTRUCT(BlueprintType)
@@ -156,6 +179,7 @@ public:
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
 	FMinionEnemyData*	GetMinionEnemyData(int32 _level);
+	FBossEnemyData*		GetBossEnemyData(int32 _level);
 
 	//PlayerData
 	FPlayerData*		GetPlayerData(int32 _level);
@@ -180,6 +204,8 @@ private:
 		class UDataTable*	playerTable_;
 	UPROPERTY()
 		class UDataTable*	minionTable_;
+	UPROPERTY()
+		class UDataTable*	bossTable_;
 	UPROPERTY()
 		class UDataTable*	dialougeTable_;
 

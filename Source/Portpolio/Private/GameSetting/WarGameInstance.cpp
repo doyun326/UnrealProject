@@ -11,6 +11,7 @@
 #define PLAYERDT_PATH			"/Game/My/GameData/PlayerData.PlayerData"
 #define MINIONDT_PATH			"/Game/My/GameData/MinionEnemyData.MinionEnemyData"
 #define DIALOGUE_PATH			"/Game/My/GameData/NpcDialogue.NpcDialogue"
+#define BOSSDATA_PATH			"/Game/My/GameData/BossData.BossData"
 #define CAMERASHAKECLASS_PATH	"/Script/Portpolio.MyCameraShake"
 
 UWarGameInstance::UWarGameInstance()
@@ -40,6 +41,15 @@ UWarGameInstance::UWarGameInstance()
 	{
 		minionTable_ = MINION_DT.Object;
 		ABLOG(Warning, TEXT("Success : MinionTable"));
+	}
+
+	//BossData
+	static ConstructorHelpers::FObjectFinder<UDataTable> BOSS_DT(TEXT(BOSSDATA_PATH));
+
+	if (BOSS_DT.Succeeded())
+	{
+		bossTable_ = BOSS_DT.Object;
+		ABLOG(Warning, TEXT("Success : BossTable"));
 	}
 
 	//NpcDialogueData
@@ -115,6 +125,17 @@ FMinionEnemyData* UWarGameInstance::GetMinionEnemyData(int32 _level)
 	}
 
 	return minionTable_->FindRow<FMinionEnemyData>(*FString::FromInt(_level), TEXT(""));
+}
+
+FBossEnemyData* UWarGameInstance::GetBossEnemyData(int32 _level)
+{
+	if (bossTable_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : bossTable"));
+		return nullptr;
+	}
+
+	return bossTable_->FindRow<FBossEnemyData>(*FString::FromInt(_level), TEXT(""));
 }
 
 FNpcDialogueData* UWarGameInstance::GetDialogueData(int32 _npcID)
