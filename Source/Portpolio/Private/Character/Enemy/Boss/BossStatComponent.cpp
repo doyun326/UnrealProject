@@ -40,7 +40,7 @@ void UBossStatComponent::SetNewLevel(int32 _newLevel)
 		return;
 	}
 
-	currentStatData_ = WarGameInstance->GetMinionEnemyData(_newLevel);
+	currentStatData_ = WarGameInstance->GetBossEnemyData(_newLevel);
 
 	if (currentStatData_ == nullptr)
 	{
@@ -98,3 +98,7 @@ float UBossStatComponent::GetHpRatio()
 	return (currentStatData_->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (currentHP_ / currentStatData_->MaxHP);
 }
 
+int32 UBossStatComponent::GetLevel() const
+{
+	return level_;
+}

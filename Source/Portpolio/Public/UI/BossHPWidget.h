@@ -27,5 +27,7 @@ private:
 	TWeakObjectPtr<class UBossStatComponent> currentCharacterStat_;
 
 	UPROPERTY()
-		class UProgressBar* hpProgressBar_;
+		class UProgressBar*	hpBar_;
+	UPROPERTY()
+		class UTextBlock*	levelText_;
 };

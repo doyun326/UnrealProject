@@ -25,6 +25,7 @@ public:
 	void	SetDamage(float _newDamage);
 	float	GetDamage();
 	float	GetHpRatio();
+	int32	GetLevel() const;
 
 	FOnHpChangeDelegate onHpChanged_;
 	FOnHpZeroDelegate	onHpZero_;
@@ -34,7 +35,7 @@ protected:
 	virtual void InitializeComponent() override;
 
 private:
-	struct FMinionEnemyData* currentStatData_ = nullptr;
+	struct FBossEnemyData* currentStatData_ = nullptr;
 
 	UPROPERTY(EditInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 level_;

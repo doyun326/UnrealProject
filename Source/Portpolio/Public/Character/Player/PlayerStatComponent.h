@@ -23,7 +23,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void	SetNewLevel(int32 _newLevel);
-	//void	SetLimitLevel();
 	void	SetHp(float _newHp);
 	void	SetMp(float _newMp);
 	void	SetExp(int32 _newExp);

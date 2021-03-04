@@ -4,6 +4,7 @@
 #include "../Public/Character/Enemy/Boss/BossStatComponent.h"
 
 #include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 
 void UBossHPWidget::BindCharacterStat(class UBossStatComponent* _newCharacterStat)
 {
@@ -21,12 +22,18 @@ void UBossHPWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	hpProgressBar_ = Cast<UProgressBar>(GetWidgetFromName(TEXT("HpBar")));
-
-	if (hpProgressBar_ != nullptr)
+	hpBar_ = Cast<UProgressBar>(GetWidgetFromName(TEXT("HpBar")));
+	if(hpBar_ == nullptr)
 	{
-		ABLOG(Warning, TEXT("Success : hpProgressBar"));
-		UpdateHpWidget();
+		ABLOG(Error, TEXT("Nullptr : hpBar"));
+		return;
+	}
+
+	levelText_ = Cast<UTextBlock>(GetWidgetFromName(TEXT("LevelTextNum")));
+	if (hpBar_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : levelText_"));
+		return;
 	}
 }
 
@@ -34,9 +41,13 @@ void UBossHPWidget::UpdateHpWidget()
 {
 	if (currentCharacterStat_.IsValid())
 	{
-		if (hpProgressBar_ != nullptr)
+		if (hpBar_ != nullptr)
 		{
-			hpProgressBar_->SetPercent(currentCharacterStat_->GetHpRatio());
+			hpBar_->SetPercent(currentCharacterStat_->GetHpRatio());
+		}
+		if (levelText_ != nullptr)
+		{
+			levelText_->SetText(FText::FromString(FString::FromInt(currentCharacterStat_->GetLevel())));
 		}
 	}
 }
