@@ -135,6 +135,49 @@ void ABossCharacter::PossessedBy(AController* NewController)
 	GetCharacterMovement()->MaxWalkSpeed = MAX_SPEED;
 }
 
+void ABossCharacter::SetEnemyState(ECharacterState _newState)
+{
+	currentState_ = _newState;
+
+	if (enemyStat_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyStat"));
+		return;
+	}
+
+	if (enemyController_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : enemyController"));
+		return;
+	}
+
+	switch (currentState_)
+	{
+	case ECharacterState::LOADING:
+	{
+		break;
+	}
+
+	case ECharacterState::READY:
+	{
+		enemyController_->SetIsHit(isHiting_);
+
+		enemyStat_->onHpZero_.AddLambda([this]() -> void
+			{
+				SetEnemyState(ECharacterState::DEAD);
+			});
+		break;
+	}
+
+	case ECharacterState::DEAD:
+	{
+		SetActorEnableCollision(false);
+		GetMesh()->SetHiddenInGame(false);
+		break;
+	}
+	}
+}
+
 float ABossCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);

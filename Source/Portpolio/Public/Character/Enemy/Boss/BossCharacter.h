@@ -29,6 +29,8 @@ public:
 	virtual void	PossessedBy(AController* NewController) override;
 	virtual float	TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	void	SetEnemyState(ECharacterState _newState);
+
 	void	ChangeFirstAttack(bool _attack);
 	void	ChangeSecondAttack(bool _attack);
 	void	ChangeThirdAttack(bool _attack);
@@ -46,6 +48,8 @@ public:
 		class UWidgetComponent* HPBarWidget_;
 	UPROPERTY(VisibleAnywhere, Category = "Stat")
 		class UBossStatComponent* enemyStat_;
+	UPROPERTY(Transient, VisibleInstanceOnly, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true))
+		ECharacterState			currentState_;
 
 	FOnFistAttackDelegate	onFirstAttack_;
 	FOnFistAttackDelegate	onSecondAttack_;
