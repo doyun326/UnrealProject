@@ -41,6 +41,7 @@ void ACineLobyLevelScript::BeginPlay()
 
 	if (sequencePlayer_)
 	{
+		warInstance_->SetPlayingSequence(true);
 		sequencePlayer_->Play();
 	}
 
@@ -49,5 +50,6 @@ void ACineLobyLevelScript::BeginPlay()
 
 void ACineLobyLevelScript::NextLevel()
 {
+	warInstance_->SetPlayingSequence(false);
 	UGameplayStatics::OpenLevel(this, FName("SpaceShip_Loby"));
 }

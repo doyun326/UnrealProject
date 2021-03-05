@@ -71,6 +71,7 @@ UWarGameInstance::UWarGameInstance()
 	}
 
 	viewCheck_ = false;
+	sequenceCheck_ = false;
 	checkCount_ = 0;
 	shakeCount_ = 0;
 	currentExp_ = 0;
@@ -226,4 +227,14 @@ int32 UWarGameInstance::GetSaveExp()
 	expArray_.Dequeue();
 
 	return currentExp_;
+}
+
+void UWarGameInstance::SetPlayingSequence(bool _isplaying)
+{
+	sequenceCheck_ = _isplaying;
+}
+
+bool UWarGameInstance::GetPlayingSequence()
+{
+	return sequenceCheck_;
 }

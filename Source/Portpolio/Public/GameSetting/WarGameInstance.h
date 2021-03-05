@@ -175,6 +175,8 @@ public:
 	void	ActiveLimitEffect();
 	void	SetSaveExp(int32 _newExp);
 	int32	GetSaveExp();
+	void	SetPlayingSequence(bool _isplaying);
+	bool	GetPlayingSequence();
 	
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
@@ -210,6 +212,7 @@ private:
 		class UDataTable*	dialougeTable_;
 
 	bool			viewCheck_;
+	bool			sequenceCheck_;
 	FTimerHandle	reserveTiemrHandler_;
 	int32			checkCount_;
 	int32			shakeCount_;
