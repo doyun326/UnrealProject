@@ -224,3 +224,13 @@ class UPlayerHudWidget* AWarPlayerController::GetHudWidget() const
 {
 	return hudWidget_;
 }
+
+void AWarPlayerController::HideHUD()
+{
+	hudWidget_->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void AWarPlayerController::ShowHUD()
+{
+	hudWidget_->SetVisibility(ESlateVisibility::Visible);
+}

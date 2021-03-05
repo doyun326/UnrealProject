@@ -54,6 +54,8 @@ private:
 	void	OnAvoid();
 	void	OnInfinityMode();
 	void	UpdateExp();
+	void	HideHUD();
+	void	ShowHUD();
 
 	bool	zoomInBtn_;
 	bool	sprintBtn_;
