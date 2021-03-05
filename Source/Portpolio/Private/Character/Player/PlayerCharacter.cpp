@@ -10,6 +10,7 @@
 #include "../Public/Object/BaseInteractable.h"
 #include "../Public/GameSetting/WarGameInstance.h"
 
+#include "NiagaraSystem.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/KismetMathLibrary.h"

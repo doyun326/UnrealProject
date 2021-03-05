@@ -4,11 +4,16 @@
 #include "../Public/Character/Enemy/Boss/BossAIController.h"
 #include "../Public/Character/Enemy/Boss/BossAnimInstance.h"
 #include "../Public/Character/Enemy/Boss/BossStatComponent.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 #include "../Public/UI/BossHPWidget.h"
 
-#include "Kismet/KismetMathLibrary.h"
+#include "NiagaraSystem.h"
 #include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "Components/WidgetComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/StaticMesh.h"
 
 #define BOSSMESH_PATH		"/Game/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera.Khaimera"
 #define BOSSANIM_PATH		"/Game/My/Blueprints/Anim/Enemy/Boss/BossAnim_BP.BossAnim_BP_C"
@@ -70,7 +75,7 @@ ABossCharacter::ABossCharacter()
 	if (BOSSDIE_EFFECT.Succeeded())
 	{
 		ABLOG(Warning, TEXT("Success : FLASH_EFFECT"));
-		flashEffect_ = BOSSDIE_EFFECT.Object;
+		bossDieEffect_ = BOSSDIE_EFFECT.Object;
 	}
 
 	isFirstAttack_ = false;
@@ -122,6 +127,8 @@ void ABossCharacter::BeginPlay()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
+
+	bossAnim_->onDieEnd_.AddUObject(this, &ABossCharacter::BossDieEffect);
 
 	SetEnemyState(ECharacterState::READY);
 }
@@ -288,8 +295,16 @@ bool ABossCharacter::GetIsHiting()
 	return isHiting_;
 }
 
-void ABossCharacter::BossDestroy()
+void ABossCharacter::BossDieEffect()
 {
+	FName NoneName("none");
+	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(bossDieEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+
+	GetWorld()->GetTimerManager().SetTimer(effectEndTimeHandler_, this, &ABossCharacter::BossDestroy, 3.0f, false);
+}
+
+void ABossCharacter::BossDestroy()
+{	
 	Destroy();
 }
 

@@ -40,6 +40,7 @@ public:
 	bool	GetSecondAttacking();
 	bool	GetThirdAttacking();
 	bool	GetIsHiting();
+	void	BossDieEffect();
 	void	BossDestroy();
 
 	UPROPERTY()
@@ -67,7 +68,7 @@ private:
 	UPROPERTY()
 		class UBossHPWidget*	bossHpWidget_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem*	flashEffect_;
+		class UNiagaraSystem*	bossDieEffect_;
 
 	bool	isFirstAttack_;
 	bool	isSecondAttack_;
@@ -76,4 +77,5 @@ private:
 	bool	isDamageTime_;
 
 	FTimerHandle	noDamageTimeHandler_;
+	FTimerHandle	effectEndTimeHandler_;
 };
