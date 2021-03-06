@@ -165,12 +165,10 @@ void ANpcOperator::DialogueCreate()
 
 	if (currentLineID_ == 1 && UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
 	{
-		//GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
 		GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.5f, false);
 	}
 	if (currentLineID_ == 2 && UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_02")
 	{
-		//GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.3f, true, 1.0f);
 		GetWorld()->GetTimerManager().SetTimer(effectTimeHandler_, this, &ANpcOperator::ControllPlayerEffect, 0.5f, false);
 	}
 	GetWorld()->GetTimerManager().SetTimer(viewTimeHandler_, this, &ANpcOperator::ChangeDialogue, 2.5f, true);
