@@ -39,9 +39,10 @@ void ACineLobyLevelScript::BeginPlay()
 		return;
 	}
 
+	warInstance_->SetPlayingSequence(true);
+
 	if (sequencePlayer_)
 	{
-		warInstance_->SetPlayingSequence(true);
 		sequencePlayer_->Play();
 	}
 

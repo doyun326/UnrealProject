@@ -24,6 +24,8 @@ public:
 	virtual void ProcessPlayerInput(const float DeltaTime, const bool bGamePaused) override;
 
 	bool	GetFireBtn();
+	void	HideHUD();
+	void	ShowHUD();
 
 	class UPlayerHudWidget* GetHudWidget() const;
 
@@ -54,8 +56,6 @@ private:
 	void	OnAvoid();
 	void	OnInfinityMode();
 	void	UpdateExp();
-	void	HideHUD();
-	void	ShowHUD();
 
 	bool	zoomInBtn_;
 	bool	sprintBtn_;

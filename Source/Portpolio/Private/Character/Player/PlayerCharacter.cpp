@@ -250,6 +250,16 @@ void APlayerCharacter::Tick(float DeltaTime)
 	}
 #endif //DRAW_DEBUGHELPER
 	/*Draw rayCast debug Line START*/
+
+	if (warInstance_->GetPlayingSequence())
+	{
+		playerController_->HideHUD();
+	}
+	else
+	{
+		playerController_->ShowHUD();
+	}
+	
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

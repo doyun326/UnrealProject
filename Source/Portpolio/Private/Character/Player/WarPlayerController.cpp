@@ -117,15 +117,16 @@ void AWarPlayerController::BeginPlay()
 	}
 
 	hudWidget_ = CreateWidget<UPlayerHudWidget>(this, hudWidgetClass_);
-	hudWidget_->AddToViewport();
-
-	myPlayerState_ = Cast<AWarPlayerState>(myPlayer_->GetPlayerState());
 
 	if (hudWidget_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : hudWidget"));
 		return;
 	}
+
+	hudWidget_->AddToViewport();
+
+	myPlayerState_ = Cast<AWarPlayerState>(myPlayer_->GetPlayerState());
 
 	if (myPlayerState_ == nullptr)
 	{

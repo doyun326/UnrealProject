@@ -71,6 +71,7 @@ void AStage01LevelScript::BeginPlay()
 
 	if (sequencePlayer_)
 	{
+		warInstance_->SetPlayingSequence(true);
 		sequencePlayer_->Play();
 	}
 
@@ -91,6 +92,7 @@ void AStage01LevelScript::BeginPlay()
 
 void AStage01LevelScript::WidgetStart()
 {
+	warInstance_->SetPlayingSequence(false);
 	if (warInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : WarInstance"));
