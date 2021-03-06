@@ -163,7 +163,7 @@ void UWarGameInstance::ReserveShakeCamera(int32 _count)
 	}
 	else
 	{
-		GetWorld()->GetTimerManager().SetTimer(reserveTiemrHandler_, this, &UWarGameInstance::ShakeCamera, 2.0f, true);
+		GetWorld()->GetTimerManager().SetTimer(reserveTiemrHandler_, this, &UWarGameInstance::ShakeCamera, 1.0f, true);
 		checkCount_ = _count;
 	}
 }

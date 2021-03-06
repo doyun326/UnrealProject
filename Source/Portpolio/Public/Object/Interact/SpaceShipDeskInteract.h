@@ -41,6 +41,7 @@ private:
 	void	DialogueCreate();
 	void	ChangeDialogue();
 	void	RemoveWidget();
+	void	NextLevel();
 
 	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
 		UStaticMeshComponent*				terminalMesh_;
@@ -53,6 +54,7 @@ private:
 	TArray<FString>						lineText_;
 
 	FTimerHandle	viewTimeHandler_;
+	FTimerHandle	openLevelTimeHandler_;
 	bool			addViewportCheck_;
 	int32			rowNum_;
 };

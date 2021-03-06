@@ -173,11 +173,13 @@ void ASpaceShipDeskInteract::RemoveWidget()
 
 	if (currentLineID_ == 1)
 	{
-		WarInstance_->ReserveShakeCamera(5);
-	}
-	else
-	{
-		UGameplayStatics::OpenLevel(this, FName("Stage_01"));
+		WarInstance_->ReserveShakeCamera(3);
+		GetWorld()->GetTimerManager().SetTimer(openLevelTimeHandler_, this, &ASpaceShipDeskInteract::NextLevel, 7.0f, false);
 	}
 	currentLineID_++;
+}
+
+void  ASpaceShipDeskInteract::NextLevel()
+{
+	UGameplayStatics::OpenLevel(this, FName("Stage_01"));
 }
