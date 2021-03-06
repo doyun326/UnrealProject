@@ -174,7 +174,7 @@ void ASpaceShipDeskInteract::RemoveWidget()
 	if (currentLineID_ == 1)
 	{
 		WarInstance_->ReserveShakeCamera(3);
-		GetWorld()->GetTimerManager().SetTimer(openLevelTimeHandler_, this, &ASpaceShipDeskInteract::NextLevel, 7.0f, false);
+		GetWorld()->GetTimerManager().SetTimer(openLevelTimeHandler_, this, &ASpaceShipDeskInteract::NextLevel, 3.5f, false);
 	}
 	currentLineID_++;
 }
