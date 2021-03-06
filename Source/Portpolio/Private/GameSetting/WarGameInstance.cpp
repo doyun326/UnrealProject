@@ -75,6 +75,7 @@ UWarGameInstance::UWarGameInstance()
 	checkCount_ = 0;
 	shakeCount_ = 0;
 	currentExp_ = 0;
+	currentPlayerlevel_ = 5;
 	expArray_.Empty();
 }
 
@@ -238,4 +239,14 @@ void UWarGameInstance::SetPlayingSequence(bool _isplaying)
 bool UWarGameInstance::GetPlayingSequence()
 {
 	return sequenceCheck_;
+}
+
+void UWarGameInstance::SetPlayerLevel(int32 _level)
+{
+	currentPlayerlevel_ = _level;
+}
+
+int32 UWarGameInstance::GetPlayerLevel()
+{
+	return currentPlayerlevel_;
 }

@@ -6,15 +6,22 @@
 AWarPlayerState::AWarPlayerState()
 {
 	gameScore_ = 0;
-	characterLevel_ = 1;
 	exp_ = 0;
-
 }
 
 void AWarPlayerState::InitPlayerData()
 {
+	warGameInstance_ = Cast<UWarGameInstance>(GetGameInstance());
+
+	if (warGameInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warGameInstance_"));
+		return;
+	}
+
+	ABLOG_S(Error);
 	SetPlayerName(TEXT("Sica"));
-	characterLevel_ = 5;
+	characterLevel_ = warGameInstance_->GetPlayerLevel();
 	SetCharacterLevel(characterLevel_);
 	gameScore_ = 0;
 	exp_ = 0;
@@ -68,8 +75,6 @@ bool AWarPlayerState::AddExp(int32 _inComeExp)
 
 void AWarPlayerState::SetCharacterLevel(int32 _newCharacterLevel)
 {
-	warGameInstance_ = Cast<UWarGameInstance>(GetGameInstance());
-
 	if (warGameInstance_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : warGameInstance_"));
@@ -101,13 +106,13 @@ int32 AWarPlayerState::GetLimitLevel()
 {
 	if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_02")
 	{
-		characterLevel_ += 15;
+		characterLevel_ += 5;
 	}
 	else
 	{
 		characterLevel_ += 10;
 	}
-
+	warGameInstance_->SetPlayerLevel(characterLevel_);
 	return characterLevel_;
 }
 

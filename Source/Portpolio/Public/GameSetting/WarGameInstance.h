@@ -177,6 +177,8 @@ public:
 	int32	GetSaveExp();
 	void	SetPlayingSequence(bool _isplaying);
 	bool	GetPlayingSequence();
+	void	SetPlayerLevel(int32 _level);
+	int32	GetPlayerLevel();
 	
 	//EnemyData
 	FADEnemyData*		GetADEnemyData(int32 _level);
@@ -218,5 +220,6 @@ private:
 	int32			checkCount_;
 	int32			shakeCount_;
 	int32			currentExp_ = 0;
+	int32			currentPlayerlevel_;
 	TCircularQueue<int32> expArray_{ QUEUE_MAX };
 };
