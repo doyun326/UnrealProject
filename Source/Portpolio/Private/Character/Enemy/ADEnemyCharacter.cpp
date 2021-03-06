@@ -4,6 +4,7 @@
 #include "../Public/Character/Enemy/ADAIController.h"
 #include "../Public/Character/Enemy/ADAnimInstance.h"
 #include "../Public/Character/Enemy/ADEnemyStatComponent.h"
+#include "../Public/GameSetting/WarGameInstance.h"
 #include "../Public/UI/EnemyHPWidget.h"
 
 #include "Components/WidgetComponent.h"
@@ -79,6 +80,7 @@ void AADEnemyCharacter::BeginPlay()
 
 	ADAnim_ = Cast<UADAnimInstance>(GetMesh()->GetAnimInstance());
 	enemyController_ = Cast<AADAIController>(GetController());
+	warInstance_ = Cast<UWarGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
 	if (ADAnim_ == nullptr)
 	{
@@ -89,6 +91,12 @@ void AADEnemyCharacter::BeginPlay()
 	if (enemyController_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : enemyController"));
+		return;
+	}
+
+	if (warInstance_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Nullptr : warInstance"));
 		return;
 	}
 
@@ -108,13 +116,15 @@ void AADEnemyCharacter::BeginPlay()
 	onSecondAttack_.AddUObject(this, &AADEnemyCharacter::ChangeSecondAttack);
 	onHit_.AddUObject(this, &AADEnemyCharacter::ChangeHit);
 	ADAnim_->onAttackHitCheck_.AddUObject(this, &AADEnemyCharacter::AttackCheck);
+	warInstance_->onChangeSeqence.AddUObject(this, &AADEnemyCharacter::EndSequence);
 	
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 480.0f, 0.0f);
+	
 
-	SetEnemyState(ECharacterState::READY);
+	SetEnemyState(ECharacterState::LOADING);
 }
 
 void AADEnemyCharacter::Tick(float DeltaTime)
@@ -207,13 +217,14 @@ void AADEnemyCharacter::SetEnemyState(ECharacterState _newState)
 	{
 	case ECharacterState::LOADING:
 	{
+		EnemyHpWidget_->SetVisibility(ESlateVisibility::Hidden);
 		break;
 	}
 
 	case ECharacterState::READY:
 	{
+		EnemyHpWidget_->SetVisibility(ESlateVisibility::Visible);
 		enemyController_->SetIsHit(isHiting_);
-
 		enemyStat_->onHpZero_.AddLambda([this]() -> void
 			{
 				SetEnemyState(ECharacterState::DEAD);
@@ -318,4 +329,12 @@ void AADEnemyCharacter::EnemyDestroy()
 int32 AADEnemyCharacter::GetExp() const
 {
 	return enemyStat_->GetDropExp();
+}
+
+void AADEnemyCharacter::EndSequence(bool _isPlay)
+{
+	if (!_isPlay && UGameplayStatics::GetCurrentLevelName(GetWorld()) == "Stage_01")
+	{
+		SetEnemyState(ECharacterState::READY);
+	}
 }

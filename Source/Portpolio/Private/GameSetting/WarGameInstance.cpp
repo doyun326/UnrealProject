@@ -231,6 +231,7 @@ int32 UWarGameInstance::GetSaveExp()
 
 void UWarGameInstance::SetPlayingSequence(bool _isplaying)
 {
+	onChangeSeqence.Broadcast(_isplaying);
 	sequenceCheck_ = _isplaying;
 }
 

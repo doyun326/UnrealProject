@@ -13,9 +13,10 @@
 
 DECLARE_MULTICAST_DELEGATE(FOnViewWidget);
 DECLARE_MULTICAST_DELEGATE(FOnViewWidget02);
-DECLARE_MULTICAST_DELEGATE(FOnFlashEffect)
+DECLARE_MULTICAST_DELEGATE(FOnFlashEffect);
 DECLARE_MULTICAST_DELEGATE(FOnLimitEffect);
 DECLARE_MULTICAST_DELEGATE(FOnChangeExp);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnChangeSequence, bool);
 
 /*
 * PlayerData
@@ -192,11 +193,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 		TSubclassOf<UCameraShake>	myShake_;
 
-	FOnViewWidget	onViewWidget;
-	FOnViewWidget02	onViewWidget02;
-	FOnFlashEffect	onFlashEffect;
-	FOnLimitEffect	onLimitEffect;
-	FOnChangeExp	onChangeExp;
+	FOnViewWidget		onViewWidget;
+	FOnViewWidget02		onViewWidget02;
+	FOnFlashEffect		onFlashEffect;
+	FOnLimitEffect		onLimitEffect;
+	FOnChangeExp		onChangeExp;
+	FOnChangeSequence	onChangeSeqence;
 
 private:
 	UPROPERTY()

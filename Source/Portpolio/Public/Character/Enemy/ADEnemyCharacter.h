@@ -30,6 +30,7 @@ public:
 
 	void			EnemyDestroy();
 	void			SetEnemyState(ECharacterState _newState);
+	void			EndSequence(bool _isPlay);
 	int32			GetExp() const;
 	ECharacterState	GetEnemyState() const;
 
@@ -63,9 +64,11 @@ private:
 	void	NoDamageTime();
 
 	UPROPERTY()
-		class UADAnimInstance* ADAnim_;
+		class UADAnimInstance*	ADAnim_;
 	UPROPERTY()
-		class UEnemyHPWidget* EnemyHpWidget_;
+		class UEnemyHPWidget*	EnemyHpWidget_;
+	UPROPERTY()
+		class UWarGameInstance*	warInstance_;
 
 	bool	isFirstAttack_;
 	bool	isSecondAttack_;
