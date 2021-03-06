@@ -28,9 +28,8 @@
 #define ZOOMIN_ARMLENGTH	100.0f
 #define COMMON_ARMLENGTH	200.0f
 #define CHANGEVIEW_SPEED	7.0f		//카메라봉 변환 속도
-
-//Test 탄알 발사시 탄알 발사한 방향으로 회전
-#define SHOOTTURN_SPEED		20.0f
+#define SHOOTTURN_SPEED		20.0f		//Test 탄알 발사시 탄알 발사한 방향으로 회전
+#define EFFECTPLAY_COUNT	3
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -444,13 +443,20 @@ void APlayerCharacter::SetCharacterState(ECharacterState _newState)
 void APlayerCharacter::PlayFlashEffect()
 {
 	FName NoneName("none");
-	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+	for(int32 i = 0; i < EFFECTPLAY_COUNT; i++)
+	{
+		UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(flashEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+	}
 }
+	
 
 void APlayerCharacter::PlayLimintClearEffect()
 {
 	FName NoneName("none");
-	UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(limitEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+	for (int32 i = 0; i < EFFECTPLAY_COUNT; i++)
+	{
+		UNiagaraComponent* effect = UNiagaraFunctionLibrary::SpawnSystemAttached(limitEffect_, GetMesh(), NoneName, GetMesh()->GetRelativeLocation(), GetMesh()->GetRelativeRotation(), FVector(1.0f, 1.0f, 1.0f), EAttachLocation::KeepRelativeOffset, false, ENCPoolMethod::None);
+	}
 	LimitLevelUp();
 }
 
