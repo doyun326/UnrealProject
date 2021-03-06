@@ -15,4 +15,12 @@ class PORTPOLIO_API ACineBossCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 	
+public:
+	ACineBossCharacter();
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+
 };
