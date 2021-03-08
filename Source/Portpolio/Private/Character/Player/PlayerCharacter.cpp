@@ -158,12 +158,7 @@ void APlayerCharacter::BeginPlay()
 	warInstance_->onFlashEffect.AddUObject(this, &APlayerCharacter::PlayFlashEffect);
 	warInstance_->onLimitEffect.AddUObject(this, &APlayerCharacter::PlayLimintClearEffect);
 
-	//SetCharacterState(ECharacterState::LOADING);
 	SetCharacterState(ECharacterState::READY);
-
-	//playerAnim_->OnChangeWalkSocket.BindUFunction(this, FName("WalkSocket"));
-	//playerAnim_->OnChangeRestSocket.BindUFunction(this, FName("WalkSocket"));
-	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, GetWorld()->GetName());
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -403,8 +398,6 @@ void APlayerCharacter::SetCharacterState(ECharacterState _newState)
 		SetActorHiddenInGame(true);
 		SetCanBeDamaged(false);
 		DisableInput(playerController_);
-		//playerController_->GetHudWidget()->BindPlayerStat(playerStat_);
-		//playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
 		break;
 	}
 
@@ -413,10 +406,8 @@ void APlayerCharacter::SetCharacterState(ECharacterState _newState)
 		SetActorHiddenInGame(false);
 		SetCanBeDamaged(true);
 
-		/*-------------해당 내용은 추후 Loading으로 옮길것----------------*/
 		playerController_->GetHudWidget()->BindPlayerStat(playerStat_);
 		playerStat_->SetNewLevel(warPlayerState_->GetCharacterLevel());
-		/*--------------------------------------------------------------*/
 
 		playerStat_->onHpIsZero_.AddLambda([this]()->void 
 			{
