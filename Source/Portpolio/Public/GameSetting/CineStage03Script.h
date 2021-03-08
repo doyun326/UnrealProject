@@ -23,6 +23,7 @@ protected:
 
 private:
 	void	OpenLevel();
+	void	FadeInOut();
 
 	UPROPERTY()
 		class UWarGameInstance*		warInstance_;
@@ -30,6 +31,10 @@ private:
 		class ULevelSequencePlayer* sequencePlayer_;
 	UPROPERTY(EditAnywhere)
 		class ULevelSequence*		sequenceAsset_;
+	UPROPERTY()
+		class ULevelSequencePlayer* fadeInOutPlayer_;
+	UPROPERTY(EditAnywhere)
+		class ULevelSequence*		fadeInOutAsset_;
 
 	FTimerHandle openLevelTimer_;
 };

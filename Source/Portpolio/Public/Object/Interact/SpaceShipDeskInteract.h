@@ -41,6 +41,7 @@ private:
 	void	DialogueCreate();
 	void	ChangeDialogue();
 	void	RemoveWidget();
+	void	OnFadeInOut();
 	void	NextLevel();
 
 	UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
@@ -49,12 +50,17 @@ private:
 		class UAIDeskInteractionWidget*		dialougeWidget_;
 	UPROPERTY()
 		class UWarGameInstance*				WarInstance_;
+	UPROPERTY()
+		class ULevelSequencePlayer*			fadeInOutPlayer_;
+	UPROPERTY(EditAnywhere)
+		class ULevelSequence*				fadeInOutAsset_;
 
 	TArray<struct FNpcDialogueData*>	dialogueDatas_;
 	TArray<FString>						lineText_;
 
 	FTimerHandle	viewTimeHandler_;
 	FTimerHandle	openLevelTimeHandler_;
+	FTimerHandle	fadeInOutHandler_;
 	bool			addViewportCheck_;
 	int32			rowNum_;
 };

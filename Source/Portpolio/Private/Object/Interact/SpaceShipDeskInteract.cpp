@@ -4,11 +4,14 @@
 #include "../Public/GameSetting/WarGameInstance.h"
 #include "../Public/UI/AIDeskInteractionWidget.h"
 
+#include "LevelSequence/Public/LevelSequencePlayer.h"
+#include "LevelSequence/Public/LevelSequence.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/Engine.h"
 
 #define TERMINAL_MESH_PATH	"/Game/StarterBundle/ModularSci_Comm/Meshes/SM_Terminal_A_UI.SM_Terminal_A_UI"
 #define DIALOGUEWIDGET_PATH	"/Game/My/Blueprints/UI/DialogueWidget.DialogueWidget_C"
+#define FADEINOUT_PATH		"/Game/My/Cinematics/FadeInOut/FadeOutIn.FadeOutIn"
 
 ASpaceShipDeskInteract::ASpaceShipDeskInteract()
 {
@@ -76,6 +79,20 @@ void ASpaceShipDeskInteract::BeginPlay()
 			dialogueDatas_.Add(Data);
 		}
 	}
+
+	FStringAssetReference FadeInOutName(TEXT(FADEINOUT_PATH));
+	ALevelSequenceActor* FadeInOutSequenceActor = nullptr;
+
+	fadeInOutAsset_ = Cast<ULevelSequence>(FadeInOutName.TryLoad());
+	fadeInOutPlayer_ = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), fadeInOutAsset_, FMovieSceneSequencePlaybackSettings(), FadeInOutSequenceActor);
+
+	if (fadeInOutPlayer_ == nullptr || fadeInOutAsset_ == nullptr)
+	{
+		ABLOG(Error, TEXT("Error : seqence"));
+		return;
+	}
+
+
 }
 
 void ASpaceShipDeskInteract::Interact()
@@ -174,12 +191,18 @@ void ASpaceShipDeskInteract::RemoveWidget()
 	if (currentLineID_ == 1)
 	{
 		WarInstance_->ReserveShakeCamera(3);
-		GetWorld()->GetTimerManager().SetTimer(openLevelTimeHandler_, this, &ASpaceShipDeskInteract::NextLevel, 3.5f, false);
+		GetWorld()->GetTimerManager().SetTimer(fadeInOutHandler_, this, &ASpaceShipDeskInteract::OnFadeInOut, 3.4f, false);
 	}
 	currentLineID_++;
 }
 
-void  ASpaceShipDeskInteract::NextLevel()
+void ASpaceShipDeskInteract::OnFadeInOut()
+{
+	fadeInOutPlayer_->Play();
+	GetWorld()->GetTimerManager().SetTimer(openLevelTimeHandler_, this, &ASpaceShipDeskInteract::NextLevel, 1.5f, false);
+}
+
+void ASpaceShipDeskInteract::NextLevel()
 {
 	UGameplayStatics::OpenLevel(this, FName("Stage_01"));
 }

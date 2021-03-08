@@ -105,6 +105,7 @@ void AWarPlayerController::BeginPlay()
 	if (myPlayer_ == nullptr)
 	{
 		ABLOG(Error, TEXT("Nullptr : myCharacter"));
+		return;
 	}
 
 	//Player Input Mode¿¡ ¿¬°á

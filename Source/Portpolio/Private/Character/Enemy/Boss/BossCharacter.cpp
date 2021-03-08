@@ -305,6 +305,7 @@ void ABossCharacter::BossDieEffect()
 
 void ABossCharacter::BossDestroy()
 {	
+	bossHpWidget_->SetVisibility(ESlateVisibility::Hidden);
 	Destroy();
 }
 
