@@ -12,7 +12,8 @@
 #include "Math/UnrealMathUtility.h"
 #include "DrawDebugHelpers.h"
 
-#define FIRE_EFFECT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_ONCE.NS_AR_Muzzleflash_1_ONCE"
+#define FIRE_EFFECT_PATH	"/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_1_ONCE.NS_AR_Muzzleflash_1_ONCE"
+#define MUZZLE_PLASH_PATH	"/Game/ParagonWraith/FX/Particles/Abilities/Primary/FX/P_Wraith_Primary_MuzzleFlash.P_Wraith_Primary_MuzzleFlash"
 
 // Sets default values
 AGunWeapon::AGunWeapon()
@@ -25,11 +26,11 @@ AGunWeapon::AGunWeapon()
 	weapon_->SetCollisionProfileName(TEXT("No Collison"));
 
 	//발사 이펙트
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> FIRE_EFFECT(TEXT(FIRE_EFFECT_PATH));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> FIRE_EFFECT(TEXT(MUZZLE_PLASH_PATH));
 
 	if (FIRE_EFFECT.Succeeded())
 	{
-		fireEffect_ = FIRE_EFFECT.Object;
+		muzzleEffect_ = FIRE_EFFECT.Object;
 		ABLOG(Warning, TEXT("Success : FIRE_EFFECT"));
 	}
 
@@ -42,7 +43,6 @@ AGunWeapon::AGunWeapon()
 		ABLOG(Warning, TEXT("Success : BULLET_OBJECT"));
 	}
 
-	onEffect_ = nullptr;
 	fireStateOld_ = true;
 }
 
@@ -96,18 +96,19 @@ void AGunWeapon::ShootBullet()
 		ABLOG(Error, TEXT("Nullptr : WeaponBullet"));
 		return;
 	}
+	ABLOG_S(Error);
 
 	FVector SpawnLocation = muzzleLocation_;
 	FRotator SpawnRotation = muzzleRotation_;
 
 	FActorSpawnParameters ActorSpawnParams;
-	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
+	//ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;//관통 여부
 
 	//Bullet Spawn
 	ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(bullet_, SpawnLocation, SpawnRotation, ActorSpawnParams);
 
 	//소염기 이펙트
-	onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, fireEffect_, SpawnLocation, SpawnRotation);
+	spawnShootEffect_ = UGameplayStatics::SpawnEmitterAtLocation(this, muzzleEffect_, SpawnLocation, SpawnRotation);
 
 	Bullet->SetFormation(playerAimVector_);
 	Bullet->SetDamage(currentDamage_);

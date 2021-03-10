@@ -5,7 +5,6 @@
 #include "GameSetting/Portpolio.h"
 
 #include "GameFramework/Actor.h"
-#include "NiagaraComponent.h"
 #include "GunWeapon.generated.h"
 
 /*
@@ -45,7 +44,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem* fireEffect_;
+		class UParticleSystem* muzzleEffect_;
 
 	bool		rayHit_;
 	bool		isShooting_;
@@ -57,7 +56,5 @@ private:
 	FVector		playerAimVector_;
 	
 	FTimerHandle		shootDelayTimerHandle_;
-
-	UNiagaraComponent* onEffect_;
-	UNiagaraComponent* spawnShootEffect_;
+	UParticleSystemComponent* spawnShootEffect_;
 };

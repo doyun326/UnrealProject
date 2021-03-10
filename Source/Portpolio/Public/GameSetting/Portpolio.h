@@ -23,7 +23,7 @@ DECLARE_LOG_CATEGORY_EXTERN(Portpolio, Log, All);
 #define WALK_GRIPSOCKET		"WalkGripPoint"
 
 //Flag
-#define DRAW_DEBUGHELPER			//Draw Debug On/Off
+//#define DRAW_DEBUGHELPER			//Draw Debug On/Off
 
 //컨트롤 종류
 enum class ControlMode

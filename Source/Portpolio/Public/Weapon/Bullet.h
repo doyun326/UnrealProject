@@ -37,12 +37,10 @@ public:
 	float bulletExpiry_ = 0.0f;
 
 private:
-	UPROPERTY()
-		class AGunWeapon* weapon_;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FX", meta = (AllowPrivateAccess = true))
-		class UNiagaraSystem* bulletEffect_;
+		class UParticleSystem* bulletEffect_;
 
-	UNiagaraComponent*	onEffect_;
+	UParticleSystemComponent* onEffect_;
 
 	FVector	bulletEndVector_;
 	int32	currentDamage_;

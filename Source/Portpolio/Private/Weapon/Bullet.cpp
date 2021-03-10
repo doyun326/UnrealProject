@@ -4,24 +4,22 @@
 #include "../Public/Character/Player/WarPlayerController.h"
 #include "../Public/Weapon/GunWeapon.h"
 
+#include "Particles/ParticleSystemComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "NiagaraFunctionLibrary.h"
-#include "Niagara/Public/NiagaraFunctionLibrary.h"
 #include "DrawDebugHelpers.h"
 
-#define BULLET_WALL_HIT_PATH "/Game/My/Asset/Niagara/FireEffect/NS_AR_Muzzleflash_2_ONCE.NS_AR_Muzzleflash_2_ONCE"
+#define BULLET_HIT_PATH "/Game/ParagonWraith/FX/Particles/Abilities/Primary/FX/P_Wraith_Primary_HitCharacter.P_Wraith_Primary_HitCharacter"
 
 ABullet::ABullet()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	//≈∫æÀ ¿Ã∆Â∆Æ
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> BULLET_EFFECT(TEXT(BULLET_WALL_HIT_PATH));
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> BULLET_EFFECT(TEXT(BULLET_HIT_PATH));
 
 	if (BULLET_EFFECT.Succeeded())
 	{
 		bulletEffect_ = BULLET_EFFECT.Object;
-		ABLOG(Warning, TEXT("Success : BULLET_EFFECT"));
 	}
 
 	currentDamage_ = 0;
@@ -56,7 +54,7 @@ void ABullet::Tick(float DeltaTime)
 	{
 		FRotator bulletRoatator = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), HitResult.ImpactPoint);
 		bulletRoatator.Pitch = bulletRoatator.Pitch * 180.0f;
-		onEffect_ = UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, bulletEffect_, HitResult.ImpactPoint, bulletRoatator);
+		onEffect_ = UGameplayStatics::SpawnEmitterAtLocation(this, bulletEffect_, HitResult.ImpactPoint);
 
 		if (HitResult.GetActor())
 		{
